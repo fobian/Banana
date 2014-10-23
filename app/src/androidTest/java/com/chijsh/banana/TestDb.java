@@ -64,7 +64,7 @@ public class TestDb extends AndroidTestCase {
         // Create a new map of values, where column names are the keys
         ContentValues testValues = new ContentValues();
         testValues.put(PostEntry.COLUMN_CONTRIBUTOR, "Jason Chi");
-        testValues.put(PostEntry.COLUMN_CONTRIBUTIONS, 20);
+        testValues.put(PostEntry.COLUMN_CONTRIBUTIONS, 42);
         return testValues;
     }
 

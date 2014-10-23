@@ -17,6 +17,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <provider
+            android:authorities="com.chijsh.banana.app"
+            android:name=".data.PostProvider" />
     </application>
 
 </manifest>
