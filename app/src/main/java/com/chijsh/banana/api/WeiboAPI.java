@@ -44,13 +44,9 @@ public class WeiboAPI {
         );
     }
 
-    public String getContributors() {
-        String ss = "";
-        List<Post> contributors = gitHub.contributors("square", "retrofit");
-        for (Post contributor : contributors) {
-            ss  = ss + contributor.login + " (" + contributor.contributions + ")" + "\n";
-        }
-        return ss;
+    public List<Post> getContributors() {
+        return gitHub.contributors("square", "retrofit");
+
     }
 
 
