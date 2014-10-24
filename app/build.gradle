@@ -11,10 +11,29 @@ android {
         versionCode 1
         versionName "1.0"
     }
+
     buildTypes {
         release {
-            runProguard false
+            runProguard true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    signingConfigs {
+
+        debug {
+            storeFile file('../../release.keystore')
+            storePassword "banana"
+            keyAlias "Banana"
+            keyPassword "banana"
+        }
+
+
+        release {
+            storeFile file('../../release.keystore')
+            storePassword "banana"
+            keyAlias "Banana"
+            keyPassword "banana"
         }
     }
 

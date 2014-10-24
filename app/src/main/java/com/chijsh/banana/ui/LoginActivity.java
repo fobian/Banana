@@ -79,6 +79,8 @@ public class LoginActivity extends ActionBarActivity implements WeiboAuthListene
             // 保存 Token 到 SharedPreferences
             AccessTokenKeeper.writeAccessToken(this, mAccessToken);
             Toast.makeText(this, R.string.weibo_auth_success, Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
         } else {
             // 以下几种情况，您会收到 Code：
             // 1. 当您未在平台上注册的应用程序的包名与签名时；
