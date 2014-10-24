@@ -20,6 +20,8 @@
         <provider
             android:authorities="com.chijsh.banana.app"
             android:name=".data.PostProvider" />
+        <service android:name=".service.WeiboService"/>
+        <receiver android:name=".service.WeiboService$AlarmReceiver"/>
     </application>
 
 </manifest>

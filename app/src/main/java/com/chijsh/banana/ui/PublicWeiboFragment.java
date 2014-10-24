@@ -1,8 +1,12 @@
 package com.chijsh.banana.ui;
 
+import android.app.AlarmManager;
 import android.app.Fragment;
 import android.app.LoaderManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
@@ -19,6 +23,7 @@ import com.chijsh.banana.R;
 
 import java.util.ArrayList;
 import com.chijsh.banana.data.PostContract.PostEntry;
+import com.chijsh.banana.service.WeiboService;
 
 /**
  * Created by chijsh on 10/20/14.
@@ -92,7 +97,17 @@ public class PublicWeiboFragment extends Fragment implements LoaderManager.Loade
     @Override
     public void onStart() {
         super.onStart();
-        new FetchWeiboTask(getActivity(), mPostAdapter).execute();
+        updateWeibo();
+    }
+
+    private void updateWeibo() {
+        Intent alarmIntent = new Intent(getActivity(), WeiboService.AlarmReceiver.class);
+
+        PendingIntent pi = PendingIntent.getBroadcast(getActivity(), 0,alarmIntent,PendingIntent.FLAG_ONE_SHOT);
+
+        AlarmManager am=(AlarmManager)getActivity().getSystemService(Context.ALARM_SERVICE);
+
+        am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 5000, pi);
     }
 
     @Override
