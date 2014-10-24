@@ -8,7 +8,12 @@
     <!-- SyncAdapter related -->
     <string name="sync_account_type">www.banana.com</string>
     <string name="content_authority">com.chijsh.banana.app</string>
+
     <string name="title_activity_login">Login</string>
     <string name="login_with_weibo">Login with Weibo</string>
+    <string name="weibo_auth_cancel">Auth cancelled</string>
+    <string name="weibo_auth_failed">Auth failed</string>
+    <string name="weibo_auth_success">Auth success</string>
+
 
 </resources>
