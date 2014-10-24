@@ -21,9 +21,8 @@ import android.widget.TextView;
 
 import com.chijsh.banana.R;
 
-import java.util.ArrayList;
 import com.chijsh.banana.data.PostContract.PostEntry;
-import com.chijsh.banana.service.WeiboService;
+import com.chijsh.banana.sync.WeiboSyncAdapter;
 
 /**
  * Created by chijsh on 10/20/14.
@@ -94,20 +93,8 @@ public class PublicWeiboFragment extends Fragment implements LoaderManager.Loade
         return rootView;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        updateWeibo();
-    }
-
     private void updateWeibo() {
-        Intent alarmIntent = new Intent(getActivity(), WeiboService.AlarmReceiver.class);
-
-        PendingIntent pi = PendingIntent.getBroadcast(getActivity(), 0,alarmIntent,PendingIntent.FLAG_ONE_SHOT);
-
-        AlarmManager am=(AlarmManager)getActivity().getSystemService(Context.ALARM_SERVICE);
-
-        am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 5000, pi);
+        WeiboSyncAdapter.syncImmediately(getActivity());
     }
 
     @Override

@@ -3,6 +3,13 @@
     package="com.chijsh.banana" >
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- Permissions required by the sync adapter -->
+    <uses-permission
+        android:name="android.permission.READ_SYNC_SETTINGS"/>
+    <uses-permission
+        android:name="android.permission.WRITE_SYNC_SETTINGS"/>
+    <uses-permission
+        android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -18,10 +25,33 @@
             </intent-filter>
         </activity>
         <provider
-            android:authorities="com.chijsh.banana.app"
-            android:name=".data.PostProvider" />
-        <service android:name=".service.WeiboService"/>
-        <receiver android:name=".service.WeiboService$AlarmReceiver"/>
+            android:authorities="@string/content_authority"
+            android:name=".data.PostProvider"
+            android:exported="false"
+            android:syncable="true"/>
+        <!-- SyncAdapter's dummy authentication service -->
+        <service
+            android:name=".sync.WeiboAuthenticatorService"
+            >
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator" />
+        </service>
+        <!-- The SyncAdapter service -->
+        <service
+            android:name=".sync.WeiboSyncService"
+            android:exported="true"
+            >
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter" />
+            </intent-filter>
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/syncadapter" />
+        </service>
     </application>
 
 </manifest>

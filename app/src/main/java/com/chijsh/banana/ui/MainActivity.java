@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.chijsh.banana.R;
+import com.chijsh.banana.sync.WeiboSyncAdapter;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -18,6 +19,7 @@ public class MainActivity extends ActionBarActivity {
                     .add(R.id.container, new PublicWeiboFragment())
                     .commit();
         }
+        WeiboSyncAdapter.initializeSyncAdapter(this);
     }
 
 
