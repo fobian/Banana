@@ -39,7 +39,6 @@ public class WeiboSyncAdapter extends AbstractThreadedSyncAdapter {
 
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
-        Log.d(LOG_TAG, "SYNCSYNCSYNCSYNCSYNCSYNCSYNC");
 
         List<Post> posts = WeiboAPI.getInstance().getContributors();
         Vector<ContentValues> cVVector = new Vector<ContentValues>(posts.size());
@@ -54,9 +53,9 @@ public class WeiboSyncAdapter extends AbstractThreadedSyncAdapter {
         if (cVVector.size() > 0) {
             ContentValues[] cvArray = new ContentValues[cVVector.size()];
             cVVector.toArray(cvArray);
-            int rowsInserted = getContext().getContentResolver()
+            getContext().getContentResolver()
                     .bulkInsert(PostContract.PostEntry.CONTENT_URI, cvArray);
-            Log.v(LOG_TAG, "inserted " + rowsInserted + " rows of weather data");
+
         }
     }
 
