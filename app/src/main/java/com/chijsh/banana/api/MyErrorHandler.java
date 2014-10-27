@@ -1,9 +1,11 @@
 package com.chijsh.banana.api;
 
 import android.util.Log;
+import android.view.KeyCharacterMap;
 
 import retrofit.ErrorHandler;
 import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * Created by chijsh on 10/23/14.
@@ -13,6 +15,10 @@ public class MyErrorHandler implements ErrorHandler {
     @Override
     public Throwable handleError(RetrofitError cause) {
         Log.d(LOG_TAG, cause.getMessage());
-        return null;
+        Response r = cause.getResponse();
+        if (r != null && r.getStatus() == 401) {
+            return new UnknownError(cause.toString());
+        }
+        return cause;
     }
 }

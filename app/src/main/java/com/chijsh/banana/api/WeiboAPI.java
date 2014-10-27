@@ -1,31 +1,52 @@
 package com.chijsh.banana.api;
 
 
-import com.chijsh.banana.model.Post;
 
+import com.chijsh.banana.Config;
+import com.chijsh.banana.model.MyDeserializer;
+import com.chijsh.banana.model.Post;
+import com.chijsh.banana.model.Posts;
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit.RestAdapter;
+import retrofit.converter.GsonConverter;
 import retrofit.http.GET;
-import retrofit.http.Path;
+import retrofit.http.Query;
 
 /**
  * Created by chijsh on 10/20/14.
  */
 public class WeiboAPI {
 
-
-    private static GitHub gitHub;
+    private static Weibo weibo;
     private static WeiboAPI sAPI;
+
+    interface Weibo {
+
+        @GET("/statuses/friends_timeline.json")
+        List<Post> getHomeTimeLine(@Query("access_token") String token);
+
+
+    }
     private WeiboAPI() {
-        // Create a very simple REST adapter which points the GitHub API endpoint.
+        Gson gson = new GsonBuilder()
+                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                .registerTypeAdapter(new ArrayList<Post>().getClass(), new MyDeserializer<Posts>())
+                .create();
         RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint(API_URL)
+                .setEndpoint(Config.BASE_URL)
+                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .setConverter(new GsonConverter(gson))
                 .setErrorHandler(new MyErrorHandler())
                 .build();
 
-        // Create an instance of our GitHub API interface.
-        gitHub = restAdapter.create(GitHub.class);
+        weibo = restAdapter.create(Weibo.class);
     }
     public static WeiboAPI getInstance() {
         if(sAPI == null) {
@@ -34,18 +55,9 @@ public class WeiboAPI {
         return sAPI;
     }
 
-    private static final String API_URL = "https://api.github.com";
 
-    interface GitHub {
-        @GET("/repos/{owner}/{repo}/contributors")
-        List<Post> contributors(
-                @Path("owner") String owner,
-                @Path("repo") String repo
-        );
-    }
-
-    public List<Post> getContributors() {
-        return gitHub.contributors("square", "retrofit");
+    public List<Post> getHomeLine(String token) {
+        return weibo.getHomeTimeLine(token);
 
     }
 

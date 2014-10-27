@@ -5,7 +5,6 @@ import android.accounts.AccountManager;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.SyncRequest;
 import android.content.SyncResult;
@@ -13,10 +12,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.chijsh.banana.AccessTokenKeeper;
 import com.chijsh.banana.R;
 import com.chijsh.banana.api.WeiboAPI;
-import com.chijsh.banana.data.PostContract;
 import com.chijsh.banana.model.Post;
+import com.chijsh.banana.model.Posts;
 
 import java.util.List;
 import java.util.Vector;
@@ -40,22 +40,29 @@ public class WeiboSyncAdapter extends AbstractThreadedSyncAdapter {
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
 
-        List<Post> posts = WeiboAPI.getInstance().getContributors();
-        Vector<ContentValues> cVVector = new Vector<ContentValues>(posts.size());
+//        List<Post> posts = WeiboAPI.getInstance(getContext()).getContributors();
+//        Vector<ContentValues> cVVector = new Vector<ContentValues>(posts.size());
+//        Post post;
+//        for (int i = 0; i < posts.size(); ++i) {
+//            ContentValues values = new ContentValues();
+//            post = posts.get(i);
+//            values.put(PostContract.PostEntry.COLUMN_CONTRIBUTOR, post.login);
+//            values.put(PostContract.PostEntry.COLUMN_CONTRIBUTIONS, post.contributions);
+//            cVVector.add(values);
+//        }
+//        if (cVVector.size() > 0) {
+//            ContentValues[] cvArray = new ContentValues[cVVector.size()];
+//            cVVector.toArray(cvArray);
+//            getContext().getContentResolver()
+//                    .bulkInsert(PostContract.PostEntry.CONTENT_URI, cvArray);
+//
+//        }
+        String token = AccessTokenKeeper.readAccessToken(getContext()).getToken();
+        List<Post> posts = WeiboAPI.getInstance().getHomeLine(token);
         Post post;
         for (int i = 0; i < posts.size(); ++i) {
-            ContentValues values = new ContentValues();
             post = posts.get(i);
-            values.put(PostContract.PostEntry.COLUMN_CONTRIBUTOR, post.login);
-            values.put(PostContract.PostEntry.COLUMN_CONTRIBUTIONS, post.contributions);
-            cVVector.add(values);
-        }
-        if (cVVector.size() > 0) {
-            ContentValues[] cvArray = new ContentValues[cVVector.size()];
-            cVVector.toArray(cvArray);
-            getContext().getContentResolver()
-                    .bulkInsert(PostContract.PostEntry.CONTENT_URI, cvArray);
-
+            Log.d("ssssssssss", post.text+"\n");
         }
     }
 

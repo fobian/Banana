@@ -38,6 +38,11 @@ public class LoginActivity extends ActionBarActivity implements WeiboAuthListene
         ButterKnife.inject(this);
 
         mWeiboAuth = new WeiboAuth(this, Config.APP_KEY, Config.REDIRECT_URL, Config.SCOPE);
+
+        if(AccessTokenKeeper.readAccessToken(this).isSessionValid()) {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        }
     }
 
     @OnClick(R.id.login)

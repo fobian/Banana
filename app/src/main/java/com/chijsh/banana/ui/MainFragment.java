@@ -1,12 +1,8 @@
 package com.chijsh.banana.ui;
 
-import android.app.AlarmManager;
 import android.app.Fragment;
 import android.app.LoaderManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.CursorLoader;
-import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
@@ -14,7 +10,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
@@ -27,7 +22,7 @@ import com.chijsh.banana.sync.WeiboSyncAdapter;
 /**
  * Created by chijsh on 10/20/14.
  */
-public class PublicWeiboFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+public class MainFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
     private static final int POST_LOADER = 0;
 
     private ListView listView;
@@ -44,7 +39,7 @@ public class PublicWeiboFragment extends Fragment implements LoaderManager.Loade
     public static final int COL_POST_CONTRIBUTOR = 1;
     public static final int COL_POST_CONTRIBUTIONS = 2;
 
-    public PublicWeiboFragment() {
+    public MainFragment() {
     }
 
     @Override

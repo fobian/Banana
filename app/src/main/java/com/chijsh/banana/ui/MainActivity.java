@@ -2,10 +2,13 @@ package com.chijsh.banana.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.chijsh.banana.AccessTokenKeeper;
 import com.chijsh.banana.R;
+import com.chijsh.banana.api.WeiboAPI;
 import com.chijsh.banana.sync.WeiboSyncAdapter;
 
 public class MainActivity extends ActionBarActivity {
@@ -16,10 +19,11 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
-                    .add(R.id.container, new PublicWeiboFragment())
+                    .add(R.id.container, new MainFragment())
                     .commit();
         }
         WeiboSyncAdapter.initializeSyncAdapter(this);
+
     }
 
 
