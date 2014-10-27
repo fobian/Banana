@@ -30,14 +30,13 @@ public class WeiboAPI {
     interface Weibo {
 
         @GET("/statuses/friends_timeline.json")
-        List<Post> getHomeTimeLine(@Query("access_token") String token);
+        Posts getHomeTimeLine(@Query("access_token") String token);
 
 
     }
     private WeiboAPI() {
         Gson gson = new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-                .registerTypeAdapter(new ArrayList<Post>().getClass(), new MyDeserializer<Posts>())
                 .create();
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint(Config.BASE_URL)
@@ -56,7 +55,7 @@ public class WeiboAPI {
     }
 
 
-    public List<Post> getHomeLine(String token) {
+    public Posts getHomeLine(String token) {
         return weibo.getHomeTimeLine(token);
 
     }

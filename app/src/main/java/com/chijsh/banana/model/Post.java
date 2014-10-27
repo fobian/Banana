@@ -14,7 +14,7 @@ public class Post {
     public int sourceType;
     public boolean favorited;
     public boolean truncated;
-    public List<String> picUrls;
+    //public List<String> picUrls;
     public String geo;
     public User user;
 }

@@ -58,7 +58,7 @@ public class WeiboSyncAdapter extends AbstractThreadedSyncAdapter {
 //
 //        }
         String token = AccessTokenKeeper.readAccessToken(getContext()).getToken();
-        List<Post> posts = WeiboAPI.getInstance().getHomeLine(token);
+        Posts posts = WeiboAPI.getInstance().getHomeLine(token);
         Post post;
         for (int i = 0; i < posts.size(); ++i) {
             post = posts.get(i);

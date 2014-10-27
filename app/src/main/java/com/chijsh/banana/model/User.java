@@ -4,7 +4,7 @@ package com.chijsh.banana.model;
  * Created by chijsh on 10/20/14.
  */
 public class User {
-    public Integer id;
+    public String idstr;
     public String screenName;
     public String name;
     public String province;
@@ -15,20 +15,20 @@ public class User {
     public String profileImageUrl;
     public String domain;
     public String gender;
-    public Integer followersCount;
-    public Integer friendsCount;
-    public Integer statusesCount;
-    public Integer favouritesCount;
+    public int followersCount;
+    public int friendsCount;
+    public int statusesCount;
+    public int favouritesCount;
     public String createdAt;
-    public Boolean following;
-    public Boolean allowAllActMsg;
+    public boolean following;
+    public boolean allowAllActMsg;
     public String remark;
-    public Boolean geoEnabled;
-    public Boolean verified;
-    public Boolean allowAllComment;
+    public boolean geoEnabled;
+    public boolean verified;
+    public boolean allowAllComment;
     public String avatarLarge;
     public String verifiedReason;
-    public Boolean followMe;
-    public Integer onlineStatus;
-    public Integer biFollowersCount;
+    public boolean followMe;
+    public int onlineStatus;
+    public int biFollowersCount;
 }

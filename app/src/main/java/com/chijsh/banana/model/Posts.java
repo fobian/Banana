@@ -7,4 +7,10 @@ import java.util.List;
  */
 public class Posts {
     public List<Post> statuses;
+    public int size() {
+        return statuses.size();
+    }
+    public Post get(int i) {
+        return statuses.get(i);
+    }
 }
