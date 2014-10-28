@@ -1,5 +1,7 @@
 package com.chijsh.banana;
 
+import java.util.List;
+
 /**
  * Created by chijsh on 10/28/14.
  */
@@ -9,12 +11,12 @@ public class Utility {
         return source.split(",");
     }
 
-    public static String arrayToStr(String[] list) {
-        int size = list.length;
+    public static String arrayToStr(List<String> list) {
+        int size = list.size();
         String str = "";
         for (int i = 0; i < size; ++i) {
             str += ",";
-            str += list[i];
+            str += list.get(i);
         }
         return str;
     }

@@ -66,7 +66,7 @@ public class TestProvider extends AndroidTestCase {
 
         ContentValues updatedValues = new ContentValues(values);
         updatedValues.put(PostEntry._ID, postRowId);
-        updatedValues.put(PostEntry.COLUMN_CONTRIBUTOR, "Jason Chi");
+        updatedValues.put(PostEntry.COLUMN_POST_TEXT, "oaha!");
 
         int count = mContext.getContentResolver().update(
                 PostEntry.CONTENT_URI, updatedValues, PostEntry._ID + "= ?",

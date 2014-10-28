@@ -25,16 +25,15 @@ public class PostDbHelper extends SQLiteOpenHelper {
 
         final String SQL_CREATE_POST_TABLE = "CREATE TABLE " + PostEntry.TABLE_NAME + " (" +
                 PostEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-
                 PostEntry.COLUMN_CREATED_AT + " TEXT NOT NULL, " +
                 PostEntry.COLUMN_POST_ID + " TEXT NOT NULL, " +
                 PostEntry.COLUMN_POST_TEXT + " TEXT NOT NULL, " +
                 PostEntry.COLUMN_POST_SOURCE + " TEXT NOT NULL, " +
                 PostEntry.COLUMN_POST_FAVORITED + " INTEGER NOT NULL, " +
-                PostEntry.COLUMN_POST_PICURLS + " TEXT NOT NULL, " +
-                PostEntry.COLUMN_POST_GEO + " TEXT NOT NULL, " +
+                PostEntry.COLUMN_POST_PICURLS + " TEXT, " +
+                PostEntry.COLUMN_POST_GEO + " TEXT, " +
                 PostEntry.COLUMN_USER_ID + " TEXT NOT NULL, " +
-                PostEntry.COLUMN_RETWEETED_ID + " TEXT NOT NULL, " +
+                PostEntry.COLUMN_RETWEETED_ID + " TEXT, " +
                 PostEntry.COLUMN_REPOST_COUNT + " INTEGER NOT NULL, " +
                 PostEntry.COLUMN_COMMENT_COUNT + " INTEGER NOT NULL, " +
                 PostEntry.COLUMN_ATTITUDE_COUNT + " INTEGER NOT NULL" + " );";

@@ -30,14 +30,24 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
 
     private static final String[] POST_COLUMNS = {
             PostEntry.TABLE_NAME + "." + PostEntry._ID,
-            PostEntry.COLUMN_CONTRIBUTOR,
-            PostEntry.COLUMN_CONTRIBUTIONS
+            PostEntry.COLUMN_CREATED_AT,
+            PostEntry.COLUMN_POST_ID,
+            PostEntry.COLUMN_POST_TEXT,
+            PostEntry.COLUMN_POST_SOURCE,
+            PostEntry.COLUMN_POST_FAVORITED,
+            PostEntry.COLUMN_POST_PICURLS,
+            PostEntry.COLUMN_POST_GEO,
+            PostEntry.COLUMN_USER_ID,
+            PostEntry.COLUMN_RETWEETED_ID,
+            PostEntry.COLUMN_REPOST_COUNT,
+            PostEntry.COLUMN_COMMENT_COUNT,
+            PostEntry.COLUMN_ATTITUDE_COUNT,
 
     };
 
     public static final int COL_POST_ID = 0;
-    public static final int COL_POST_CONTRIBUTOR = 1;
-    public static final int COL_POST_CONTRIBUTIONS = 2;
+    public static final int COL_USER_ID = 1;
+    public static final int COL_POST_TEXT = 2;
 
     public MainFragment() {
     }
@@ -52,8 +62,8 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
                         R.layout.list_item,
                         null,
                         // the column names to use to fill the textviews
-                        new String[]{PostEntry.COLUMN_CONTRIBUTOR,
-                                PostEntry.COLUMN_CONTRIBUTIONS,
+                        new String[]{PostEntry.COLUMN_USER_ID,
+                                PostEntry.COLUMN_POST_TEXT,
 
                         },
                         // the textviews to fill with the data pulled from the columns above
@@ -67,15 +77,15 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
             @Override
             public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
                 switch (columnIndex) {
-                    case COL_POST_CONTRIBUTOR: {
+                    case COL_USER_ID: {
                         // we have to do some formatting and possibly a conversion
                         ((TextView) view).setText(cursor.getString(columnIndex));
                         return true;
                     }
-                    case COL_POST_CONTRIBUTIONS: {
-                        int num = cursor.getInt(columnIndex);
+                    case COL_POST_TEXT: {
+                        String text = cursor.getString(columnIndex);
                         TextView dateView = (TextView) view;
-                        dateView.setText(num + "");
+                        dateView.setText(text);
                         return true;
                     }
                 }

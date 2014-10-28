@@ -55,8 +55,10 @@ public class WeiboSyncAdapter extends AbstractThreadedSyncAdapter {
             values.put(PostEntry.COLUMN_POST_TEXT, post.text);
             values.put(PostEntry.COLUMN_POST_SOURCE, post.source);
             values.put(PostEntry.COLUMN_POST_FAVORITED, post.favorited);
-            values.put(PostEntry.COLUMN_POST_PICURLS, Utility.arrayToStr(post.picUrls.toArray(new String[post.picUrls.size()])));
-            values.put(PostEntry.COLUMN_POST_GEO, post.geo.toString());
+            if (!post.picUrls.isEmpty())
+                values.put(PostEntry.COLUMN_POST_PICURLS, post.picUrls.get(0).toString());//TODO
+            if (post.geo != null)
+                values.put(PostEntry.COLUMN_POST_GEO, post.geo.toString());
             values.put(PostEntry.COLUMN_USER_ID, post.user.idstr);
             if (post.retweetedStatus != null)
                 values.put(PostEntry.COLUMN_RETWEETED_ID, post.retweetedStatus.idstr);
