@@ -14,14 +14,13 @@ import android.net.Uri;
 public class PostProvider extends ContentProvider {
 
     private static final int POST = 100;
-    private static final int POST_WITH_CONTRIBUTOR = 101;
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
     private static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = PostContract.CONTENT_AUTHORITY;
         matcher.addURI(authority, PostContract.PATH_POST, POST);
-        matcher.addURI(authority, PostContract.PATH_POST + "/*", POST_WITH_CONTRIBUTOR);
+        //matcher.addURI(authority, PostContract.PATH_POST + "/*", POST_WITH_CONTRIBUTOR);
         return matcher;
     }
 
@@ -39,8 +38,6 @@ public class PostProvider extends ContentProvider {
         switch (type) {
             case POST:
                 return PostContract.PostEntry.CONTENT_TYPE;
-            case POST_WITH_CONTRIBUTOR:
-                return PostContract.PostEntry.CONTENT_ITEM_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -53,10 +50,6 @@ public class PostProvider extends ContentProvider {
         Uri returnUri;
 
         switch (match) {
-            case POST_WITH_CONTRIBUTOR: {
-                returnUri = null;
-                break;
-            }
             case POST: {
                 long _id = db.insert(PostContract.PostEntry.TABLE_NAME, null, values);
                 if ( _id > 0 )
@@ -116,18 +109,6 @@ public class PostProvider extends ContentProvider {
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         Cursor retCursor;
         switch (sUriMatcher.match(uri)) {
-            case POST_WITH_CONTRIBUTOR: {
-                retCursor = mDbHelper.getReadableDatabase().query(
-                        PostContract.PostEntry.TABLE_NAME,
-                        projection,
-                        PostContract.PostEntry.COLUMN_CONTRIBUTOR + " = '" + PostContract.PostEntry.getContributorFromUri(uri) + "'",
-                        null,
-                        null,
-                        null,
-                        sortOrder
-                );
-                break;
-            }
             case POST: {
                 retCursor = mDbHelper.getReadableDatabase().query(
                         PostContract.PostEntry.TABLE_NAME,

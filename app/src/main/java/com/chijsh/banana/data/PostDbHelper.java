@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import com.chijsh.banana.data.PostContract.PostEntry;
+import com.chijsh.banana.model.Post;
+
 /**
  * Created by chijsh on 10/22/14.
  */
@@ -24,8 +26,18 @@ public class PostDbHelper extends SQLiteOpenHelper {
         final String SQL_CREATE_POST_TABLE = "CREATE TABLE " + PostEntry.TABLE_NAME + " (" +
                 PostEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
 
-                PostEntry.COLUMN_CONTRIBUTOR + " TEXT NOT NULL, " +
-                PostEntry.COLUMN_CONTRIBUTIONS + " INTEGER NOT NULL" + " );";
+                PostEntry.COLUMN_CREATED_AT + " TEXT NOT NULL, " +
+                PostEntry.COLUMN_POST_ID + " TEXT NOT NULL, " +
+                PostEntry.COLUMN_POST_TEXT + " TEXT NOT NULL, " +
+                PostEntry.COLUMN_POST_SOURCE + " TEXT NOT NULL, " +
+                PostEntry.COLUMN_POST_FAVORITED + " INTEGER NOT NULL, " +
+                PostEntry.COLUMN_POST_PICURLS + " TEXT NOT NULL, " +
+                PostEntry.COLUMN_POST_GEO + " TEXT NOT NULL, " +
+                PostEntry.COLUMN_USER_ID + " TEXT NOT NULL, " +
+                PostEntry.COLUMN_RETWEETED_ID + " TEXT NOT NULL, " +
+                PostEntry.COLUMN_REPOST_COUNT + " INTEGER NOT NULL, " +
+                PostEntry.COLUMN_COMMENT_COUNT + " INTEGER NOT NULL, " +
+                PostEntry.COLUMN_ATTITUDE_COUNT + " INTEGER NOT NULL" + " );";
 
         db.execSQL(SQL_CREATE_POST_TABLE);
     }

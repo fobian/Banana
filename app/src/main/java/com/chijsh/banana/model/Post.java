@@ -12,7 +12,7 @@ public class Post {
     public String text;
     public String source;
     public boolean favorited;
-    public boolean truncated;
+    //public boolean truncated;
     public List<PicUrl> picUrls;
     public Geo geo;
     public User user;

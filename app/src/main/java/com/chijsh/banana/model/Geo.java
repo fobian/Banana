@@ -9,4 +9,8 @@ import java.util.List;
 public class Geo {
     public String type;
     public List<Float> coordinates = new ArrayList<Float>(2);
+    public String toString() {
+        //TODO
+        return "CA";
+    }
 }

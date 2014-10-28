@@ -5,6 +5,7 @@ import android.accounts.AccountManager;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SyncRequest;
 import android.content.SyncResult;
@@ -14,9 +15,13 @@ import android.util.Log;
 
 import com.chijsh.banana.AccessTokenKeeper;
 import com.chijsh.banana.R;
+import com.chijsh.banana.Utility;
 import com.chijsh.banana.api.WeiboAPI;
+import com.chijsh.banana.data.PostContract.PostEntry;
 import com.chijsh.banana.model.Post;
 import com.chijsh.banana.model.Posts;
+
+import java.util.Vector;
 
 
 /**
@@ -38,33 +43,43 @@ public class WeiboSyncAdapter extends AbstractThreadedSyncAdapter {
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
 
-//        List<Post> posts = WeiboAPI.getInstance(getContext()).getContributors();
-//        Vector<ContentValues> cVVector = new Vector<ContentValues>(posts.size());
-//        Post post;
-//        for (int i = 0; i < posts.size(); ++i) {
-//            ContentValues values = new ContentValues();
-//            post = posts.get(i);
-//            values.put(PostContract.PostEntry.COLUMN_CONTRIBUTOR, post.login);
-//            values.put(PostContract.PostEntry.COLUMN_CONTRIBUTIONS, post.contributions);
-//            cVVector.add(values);
-//        }
-//        if (cVVector.size() > 0) {
-//            ContentValues[] cvArray = new ContentValues[cVVector.size()];
-//            cVVector.toArray(cvArray);
-//            getContext().getContentResolver()
-//                    .bulkInsert(PostContract.PostEntry.CONTENT_URI, cvArray);
-//
-//        }
         String token = AccessTokenKeeper.readAccessToken(getContext()).getToken();
         Posts posts = WeiboAPI.getInstance().getHomeLine(token);
+        Vector<ContentValues> cVVector = new Vector<ContentValues>(posts.size());
         Post post;
         for (int i = 0; i < posts.size(); ++i) {
+            ContentValues values = new ContentValues();
             post = posts.get(i);
-            if(post.retweetedStatus != null)
-                Log.d("ssssssssss", post.user.screenName+":"+post.text+"\n"+post.retweetedStatus.user.screenName + ":" + post.retweetedStatus.text + "\n");
-            else
-                Log.d("zzzzzzzzzz", post.user.screenName+":"+post.text+"\n"+ "picurls:" + post.picUrls.size() + "\n");
+            values.put(PostEntry.COLUMN_CREATED_AT, post.createdAt);
+            values.put(PostEntry.COLUMN_POST_ID, post.idstr);
+            values.put(PostEntry.COLUMN_POST_TEXT, post.text);
+            values.put(PostEntry.COLUMN_POST_SOURCE, post.source);
+            values.put(PostEntry.COLUMN_POST_FAVORITED, post.favorited);
+            values.put(PostEntry.COLUMN_POST_PICURLS, Utility.arrayToStr(post.picUrls.toArray(new String[post.picUrls.size()])));
+            values.put(PostEntry.COLUMN_POST_GEO, post.geo.toString());
+            values.put(PostEntry.COLUMN_USER_ID, post.user.idstr);
+            if (post.retweetedStatus != null)
+                values.put(PostEntry.COLUMN_RETWEETED_ID, post.retweetedStatus.idstr);
+            values.put(PostEntry.COLUMN_REPOST_COUNT, post.repostsCount);
+            values.put(PostEntry.COLUMN_COMMENT_COUNT, post.commentsCount);
+            values.put(PostEntry.COLUMN_ATTITUDE_COUNT, post.attitudesCount);
+            cVVector.add(values);
         }
+        if (cVVector.size() > 0) {
+            ContentValues[] cvArray = new ContentValues[cVVector.size()];
+            cVVector.toArray(cvArray);
+            getContext().getContentResolver()
+                    .bulkInsert(PostEntry.CONTENT_URI, cvArray);
+
+        }
+
+//        for (int i = 0; i < posts.size(); ++i) {
+//            post = posts.get(i);
+//            if(post.retweetedStatus != null)
+//                Log.d("ssssssssss", post.user.screenName+":"+post.text+"\n"+post.retweetedStatus.user.screenName + ":" + post.retweetedStatus.text + "\n");
+//            else
+//                Log.d("zzzzzzzzzz", post.user.screenName+":"+post.text+"\n"+ "picurls:" + post.picUrls.size() + "\n");
+//        }
     }
 
     /**

@@ -5,4 +5,7 @@ package com.chijsh.banana.model;
  */
 public class PicUrl {
     public String thumbnailPic;
+    public String toString() {
+        return thumbnailPic;
+    }
 }
