@@ -11,11 +11,13 @@ public class Post {
     public String idstr;
     public String text;
     public String source;
-    public int sourceType;
     public boolean favorited;
     public boolean truncated;
     public List<PicUrl> picUrls;
     public Geo geo;
     public User user;
     public Post retweetedStatus;
+    public int repostsCount;
+    public int commentsCount;
+    public int attitudesCount;
 }
