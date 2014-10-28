@@ -18,8 +18,6 @@ import com.chijsh.banana.api.WeiboAPI;
 import com.chijsh.banana.model.Post;
 import com.chijsh.banana.model.Posts;
 
-import java.util.List;
-import java.util.Vector;
 
 /**
  * Created by chijsh on 10/24/14.
@@ -62,7 +60,10 @@ public class WeiboSyncAdapter extends AbstractThreadedSyncAdapter {
         Post post;
         for (int i = 0; i < posts.size(); ++i) {
             post = posts.get(i);
-            Log.d("ssssssssss", post.text+"\n");
+            if(post.retweetedStatus != null)
+                Log.d("ssssssssss", post.user.screenName+":"+post.text+"\n"+post.retweetedStatus.user.screenName + ":" + post.retweetedStatus.text + "\n");
+            else
+                Log.d("zzzzzzzzzz", post.user.screenName+":"+post.text+"\n"+ "picurls:" + post.picUrls.size() + "\n");
         }
     }
 
