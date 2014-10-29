@@ -15,5 +15,5 @@
     <string name="weibo_auth_failed">Auth failed</string>
     <string name="weibo_auth_success">Auth success</string>
 
-
+    <string name="weibo_source">From</string>
 </resources>

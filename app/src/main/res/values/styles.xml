@@ -8,8 +8,6 @@
 
         <item name="titleTextStyle">@style/TitleTextStyle</item>
         <item name="background">@color/theme_primary</item>
-        <item name="backgroundStacked">@drawable/actionbar_background</item>
-        <item name="backgroundSplit">@drawable/actionbar_background</item>
     </style>
 
     <!-- action bar title text -->
@@ -27,11 +25,13 @@
     <!-- cardview header title text -->
     <style name="CardHeaderTitleStyle" parent="TextAppearance.AppCompat.Title">
         <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <!-- cardview header subhead text -->
     <style name="CardHeaderSubStyle" parent="TextAppearance.AppCompat.Subhead">
         <item name="android:textColor">@android:color/darker_gray</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
     <!-- cardview header body text -->

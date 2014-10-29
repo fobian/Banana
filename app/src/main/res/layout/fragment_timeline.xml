@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:paddingLeft="@dimen/card_screen_padding"
     android:paddingRight="@dimen/card_screen_padding"
+    android:background="@android:color/darker_gray"
     tools:context=".MainFragment">
 
     <android.support.v7.widget.RecyclerView

@@ -1,6 +1,8 @@
 <resources>
-    <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="card_screen_padding">8dp</dimen>
     <dimen name="card_content_padding">16dp</dimen>
     <dimen name="card_between_padding">8dp</dimen>
+
+    <dimen name="user_avatar_size">40dp</dimen>
+    <dimen name="text_line_spacing">5dp</dimen>
 </resources>

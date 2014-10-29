@@ -3,6 +3,7 @@
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -17,11 +18,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             >
-            <ImageView
+            <com.chijsh.banana.ui.widget.BezelImageView
                 android:id="@+id/user_avatar"
-                android:src="@drawable/ic_launcher"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:src="@drawable/user_avatar_empty"
+                android:layout_width="@dimen/user_avatar_size"
+                android:layout_height="@dimen/user_avatar_size"
+                android:scaleType="centerCrop"
+                app:maskDrawable="@drawable/circle_mask"/>
+
             <LinearLayout
                 android:layout_toRightOf="@id/user_avatar"
                 android:layout_marginLeft="16dp"
@@ -45,6 +49,7 @@
             </LinearLayout>
         </RelativeLayout>
         <RelativeLayout
+            android:paddingTop="16dp"
             android:layout_below="@id/header_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -52,6 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/user_text"
+                android:lineSpacingExtra="@dimen/text_line_spacing"
                 android:textAppearance="@style/CardBodyStyle"
                 />
         </RelativeLayout>
