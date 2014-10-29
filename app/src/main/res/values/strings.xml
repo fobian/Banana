@@ -2,6 +2,9 @@
 <resources>
 
     <string name="app_name">Banana</string>
+    <string name="app_author">by Xiaosi</string>
+    <string name="app_intro">It\'s better to burn out than to fade away</string>
+
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <!-- Account type (for sync-adapter authenticator) -->
@@ -10,7 +13,7 @@
     <string name="content_authority">com.chijsh.banana.app</string>
 
     <string name="title_activity_login">Login</string>
-    <string name="login_with_weibo">Login with Weibo</string>
+    <string name="login_with_weibo">LOGIN WITH WEIBO</string>
     <string name="weibo_auth_cancel">Auth cancelled</string>
     <string name="weibo_auth_failed">Auth failed</string>
     <string name="weibo_auth_success">Auth success</string>

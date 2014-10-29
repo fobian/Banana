@@ -2,18 +2,59 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/card_screen_padding"
-    android:paddingRight="@dimen/card_screen_padding"
-    android:paddingTop="@dimen/card_screen_padding"
-    android:paddingBottom="@dimen/card_screen_padding"
+    android:background="@android:color/white"
     tools:context="com.chijsh.banana.ui.LoginActivity">
-
-    <Button
-        android:id="@+id/login"
-        android:text="@string/login_with_weibo"
-        android:layout_alignParentBottom="true"
+    <ImageView
+        android:layout_marginTop="60dp"
+        android:id="@+id/login_logo"
+        android:src="@drawable/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"/>
+    <TextView
+        android:layout_marginTop="30dp"
+        android:textColor="@android:color/black"
+        android:id="@+id/login_app_name"
+        android:text="@string/app_name"
+        android:textSize="45sp"
+        android:layout_below="@id/login_logo"
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/login_app_author"
+        android:text="@string/app_author"
+        android:textSize="20sp"
+        android:textColor="@android:color/darker_gray"
+        android:layout_below="@id/login_app_name"
+        android:layout_alignRight="@id/login_app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:layout_marginTop="60dp"
+        android:id="@+id/app_intro"
+        android:text="@string/app_intro"
+        android:textSize="15sp"
+        android:textColor="@android:color/darker_gray"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/login_app_author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <View
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="90dp"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@android:color/darker_gray"/>
+    <TextView
+        android:id="@+id/login"
+        android:text="@string/login_with_weibo"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:background="@drawable/login_button"
+        android:textColor="@color/theme_light"
+        android:layout_width="match_parent"
+        android:layout_height="90dp" />
 
 </RelativeLayout>

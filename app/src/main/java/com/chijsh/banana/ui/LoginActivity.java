@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chijsh.banana.AccessTokenKeeper;
@@ -25,7 +26,7 @@ import butterknife.OnClick;
 public class LoginActivity extends ActionBarActivity implements WeiboAuthListener {
 
     @InjectView(R.id.login)
-    Button loginButton;
+    TextView loginButton;
 
     private WeiboAuth mWeiboAuth;
     private Oauth2AccessToken mAccessToken;
