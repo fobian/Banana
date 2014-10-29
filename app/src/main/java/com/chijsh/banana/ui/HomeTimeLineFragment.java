@@ -7,6 +7,7 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,9 +22,11 @@ import com.chijsh.banana.sync.WeiboSyncAdapter;
 /**
  * Created by chijsh on 10/20/14.
  */
-public class HomeTimeLineFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+public class HomeTimeLineFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
+                                                                SwipeRefreshLayout.OnRefreshListener {
     private static final int POST_LOADER = 0;
 
+    private SwipeRefreshLayout mSwipeLayout;
     private RecyclerView mRecyclerView;
     private CursorRecyclerViewAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -57,6 +60,9 @@ public class HomeTimeLineFragment extends Fragment implements LoaderManager.Load
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_timeline, container, false);
 
+        mSwipeLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.swipe_container);
+        mSwipeLayout.setOnRefreshListener(this);
+
         mRecyclerView = (RecyclerView)rootView.findViewById(R.id.time_line);
 
         // use this setting to improve performance if you know that changes
@@ -71,6 +77,11 @@ public class HomeTimeLineFragment extends Fragment implements LoaderManager.Load
         mAdapter = new MyAdapter(getActivity(), null);
         mRecyclerView.setAdapter(mAdapter);
         return rootView;
+    }
+
+    @Override
+    public void onRefresh() {
+        refreshTimeLine();
     }
 
     private void refreshTimeLine() {
@@ -105,6 +116,7 @@ public class HomeTimeLineFragment extends Fragment implements LoaderManager.Load
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mAdapter.swapCursor(data);
+        mSwipeLayout.setRefreshing(false);
     }
 
     @Override
