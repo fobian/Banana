@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
-        android:id="@+id/contributor"
+        android:id="@+id/user"
         />
 
     <TextView
@@ -19,6 +19,6 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
-        android:id="@+id/contributions"
+        android:id="@+id/text"
         />
 </LinearLayout>

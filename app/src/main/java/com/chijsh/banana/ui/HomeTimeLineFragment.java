@@ -7,12 +7,11 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
-import android.widget.TextView;
 
 import com.chijsh.banana.R;
 
@@ -22,11 +21,12 @@ import com.chijsh.banana.sync.WeiboSyncAdapter;
 /**
  * Created by chijsh on 10/20/14.
  */
-public class MainFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+public class HomeTimeLineFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
     private static final int POST_LOADER = 0;
 
-    private ListView listView;
-    private SimpleCursorAdapter mPostAdapter;
+    private RecyclerView mRecyclerView;
+    private CursorRecyclerViewAdapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     private static final String[] POST_COLUMNS = {
             PostEntry.TABLE_NAME + "." + PostEntry._ID,
@@ -45,60 +45,31 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
 
     };
 
-    public static final int COL_POST_ID = 0;
-    public static final int COL_USER_ID = 1;
-    public static final int COL_POST_TEXT = 2;
-
-    public MainFragment() {
+    public HomeTimeLineFragment() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        mPostAdapter =
-                new SimpleCursorAdapter(
-                        getActivity(),
-                        R.layout.list_item,
-                        null,
-                        // the column names to use to fill the textviews
-                        new String[]{PostEntry.COLUMN_USER_ID,
-                                PostEntry.COLUMN_POST_TEXT,
+        View rootView = inflater.inflate(R.layout.fragment_timeline, container, false);
 
-                        },
-                        // the textviews to fill with the data pulled from the columns above
-                        new int[]{R.id.contributor,
-                                R.id.contributions,
+        mRecyclerView = (RecyclerView)rootView.findViewById(R.id.time_line);
 
-                        },
-                        0);
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        //mRecyclerView.setHasFixedSize(true);
 
-        mPostAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
-            @Override
-            public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
-                switch (columnIndex) {
-                    case COL_USER_ID: {
-                        // we have to do some formatting and possibly a conversion
-                        ((TextView) view).setText(cursor.getString(columnIndex));
-                        return true;
-                    }
-                    case COL_POST_TEXT: {
-                        String text = cursor.getString(columnIndex);
-                        TextView dateView = (TextView) view;
-                        dateView.setText(text);
-                        return true;
-                    }
-                }
-                return false;
-            }
-        });
+        // use a linear layout manager
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerView.setLayoutManager(mLayoutManager);
 
-        listView = (ListView)rootView.findViewById(R.id.test);
-        listView.setAdapter(mPostAdapter);
+        // specify an adapter (see also next example)
+        mAdapter = new MyAdapter(getActivity(), null);
+        mRecyclerView.setAdapter(mAdapter);
         return rootView;
     }
 
-    private void updateWeibo() {
+    private void refreshTimeLine() {
         WeiboSyncAdapter.syncImmediately(getActivity());
     }
 
@@ -129,14 +100,12 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        mPostAdapter.swapCursor(data);
+        mAdapter.swapCursor(data);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        mPostAdapter.swapCursor(null);
+        mAdapter.swapCursor(null);
     }
-
-
 
 }

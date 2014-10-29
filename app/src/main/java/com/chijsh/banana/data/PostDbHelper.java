@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import com.chijsh.banana.data.PostContract.PostEntry;
-import com.chijsh.banana.model.Post;
 
 /**
  * Created by chijsh on 10/22/14.
