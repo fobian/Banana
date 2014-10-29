@@ -61,6 +61,7 @@ public class HomeTimeLineFragment extends Fragment implements LoaderManager.Load
         View rootView = inflater.inflate(R.layout.fragment_timeline, container, false);
 
         mSwipeLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.swipe_container);
+        mSwipeLayout.setColorSchemeColors(getResources().getColor(R.color.theme_accent));
         mSwipeLayout.setOnRefreshListener(this);
 
         mRecyclerView = (RecyclerView)rootView.findViewById(R.id.time_line);
