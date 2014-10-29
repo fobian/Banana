@@ -23,4 +23,20 @@
         parent="@style/Widget.AppCompat.ActionBar.TabText">
         <item name="android:textColor">@android:color/white</item>
     </style>
+
+    <!-- cardview header title text -->
+    <style name="CardHeaderTitleStyle" parent="TextAppearance.AppCompat.Title">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <!-- cardview header subhead text -->
+    <style name="CardHeaderSubStyle" parent="TextAppearance.AppCompat.Subhead">
+        <item name="android:textColor">@android:color/darker_gray</item>
+    </style>
+
+    <!-- cardview header body text -->
+    <style name="CardBodyStyle" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
 </resources>

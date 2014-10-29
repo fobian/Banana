@@ -32,7 +32,11 @@ public class PostDbHelper extends SQLiteOpenHelper {
                 PostEntry.COLUMN_POST_PICURLS + " TEXT, " +
                 PostEntry.COLUMN_POST_GEO + " TEXT, " +
                 PostEntry.COLUMN_USER_ID + " TEXT NOT NULL, " +
+                PostEntry.COLUMN_USER_SCREENNAME + " TEXT NOT NULL, " +
+                PostEntry.COLUMN_USER_AVATAR + " TEXT NOT NULL, " +
                 PostEntry.COLUMN_RETWEETED_ID + " TEXT, " +
+                PostEntry.COLUMN_RETWEETED_USER_SCREENNAME + " TEXT, " +
+                PostEntry.COLUMN_RETWEETED_TEXT + " TEXT, " +
                 PostEntry.COLUMN_REPOST_COUNT + " INTEGER NOT NULL, " +
                 PostEntry.COLUMN_COMMENT_COUNT + " INTEGER NOT NULL, " +
                 PostEntry.COLUMN_ATTITUDE_COUNT + " INTEGER NOT NULL" + " );";
