@@ -4,8 +4,6 @@
     android:layout_height="match_parent"
     android:paddingLeft="@dimen/card_screen_padding"
     android:paddingRight="@dimen/card_screen_padding"
-    android:paddingTop="@dimen/card_screen_padding"
-    android:paddingBottom="@dimen/card_screen_padding"
     tools:context=".MainFragment">
 
     <android.support.v7.widget.RecyclerView

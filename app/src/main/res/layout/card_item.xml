@@ -6,6 +6,7 @@
     android:layout_gravity="center"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    card_view:contentPadding="@dimen/card_content_padding"
     card_view:cardCornerRadius="2dp">
 
     <RelativeLayout
@@ -15,8 +16,7 @@
             android:id="@+id/header_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="15dp"
-            android:paddingBottom="15dp">
+            >
             <ImageView
                 android:id="@+id/user_avatar"
                 android:src="@drawable/ic_launcher"
@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content" />
             <LinearLayout
                 android:layout_toRightOf="@id/user_avatar"
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="16dp"
                 android:layout_centerVertical="true"
                 android:orientation="vertical"
                 android:layout_width="wrap_content"

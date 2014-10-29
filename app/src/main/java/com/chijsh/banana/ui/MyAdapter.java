@@ -3,6 +3,7 @@ package com.chijsh.banana.ui;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -68,7 +69,7 @@ public class MyAdapter extends CursorRecyclerViewAdapter<MyAdapter.ViewHolder> {
                 load(cursor.getString(COL_USER_AVATAR))
                 .into(viewHolder.mAvatarView);
         viewHolder.mNameView.setText(cursor.getString(COL_USER_SCREENNAME));
-        viewHolder.mSubHeadView.setText(cursor.getString(COL_CREATED_AT) + " " + cursor.getString(COL_POST_SOURCE));
+        viewHolder.mSubHeadView.setText(cursor.getString(COL_CREATED_AT) + " " + Html.fromHtml(cursor.getString(COL_POST_SOURCE)));
         viewHolder.mTextView.setText(cursor.getString(COL_POST_TEXT));
     }
 }
