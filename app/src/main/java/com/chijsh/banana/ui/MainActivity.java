@@ -8,6 +8,7 @@ import android.view.MenuItem;
 
 import com.chijsh.banana.R;
 import com.chijsh.banana.sync.WeiboSyncAdapter;
+import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -18,6 +19,11 @@ public class MainActivity extends ActionBarActivity {
 
         //Toolbar toolbar = (Toolbar)findViewById(R.id.main_toolbar);
         //setSupportActionBar(toolbar);
+
+        SystemBarTintManager tintManager = new SystemBarTintManager(this);
+        tintManager.setStatusBarTintEnabled(true);
+        tintManager.setNavigationBarTintEnabled(true);
+        tintManager.setTintColor(getResources().getColor(R.color.theme_primary_dark));
 
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
