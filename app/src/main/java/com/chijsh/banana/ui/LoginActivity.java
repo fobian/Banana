@@ -17,6 +17,7 @@ import com.chijsh.banana.AccessTokenKeeper;
 import com.chijsh.banana.Config;
 import com.chijsh.banana.R;
 import com.chijsh.banana.ui.widget.LinkEnabledTextView;
+import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 import com.sina.weibo.sdk.auth.WeiboAuth;
 import com.sina.weibo.sdk.auth.WeiboAuthListener;
@@ -41,6 +42,10 @@ public class LoginActivity extends ActionBarActivity implements WeiboAuthListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.inject(this);
+
+        SystemBarTintManager tintManager = new SystemBarTintManager(this);
+        tintManager.setStatusBarTintEnabled(true);
+        tintManager.setTintColor(getResources().getColor(R.color.theme_primary_dark));
 
         mWeiboAuth = new WeiboAuth(this, Config.APP_KEY, Config.REDIRECT_URL, Config.SCOPE);
 

@@ -2,7 +2,7 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppTheme">
-        
+
     </style>
     <style name="MyActionBar" parent="@style/Widget.AppCompat.ActionBar">
 

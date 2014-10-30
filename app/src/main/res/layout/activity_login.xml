@@ -5,7 +5,7 @@
     android:background="@android:color/white"
     tools:context="com.chijsh.banana.ui.LoginActivity">
     <ImageView
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="@dimen/login_logo_padding_top"
         android:id="@+id/login_logo"
         android:src="@drawable/logo"
         android:layout_width="wrap_content"

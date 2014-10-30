@@ -22,7 +22,6 @@ public class MainActivity extends ActionBarActivity {
 
         SystemBarTintManager tintManager = new SystemBarTintManager(this);
         tintManager.setStatusBarTintEnabled(true);
-        tintManager.setNavigationBarTintEnabled(true);
         tintManager.setTintColor(getResources().getColor(R.color.theme_primary_dark));
 
         if (savedInstanceState == null) {
