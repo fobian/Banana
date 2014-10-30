@@ -1,5 +1,6 @@
 package com.chijsh.banana;
 
+import android.os.Build;
 import android.text.format.DateFormat;
 
 import java.text.SimpleDateFormat;
@@ -43,5 +44,9 @@ public class Utility {
         }catch (Exception e) {
         }
         return "";
+    }
+
+    public static int getSDKVersion() {
+        return Build.VERSION.SDK_INT;
     }
 }

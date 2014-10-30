@@ -54,7 +54,7 @@
             android:layout_below="@id/header_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <TextView
+            <com.chijsh.banana.ui.widget.LinkEnabledTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/user_text"

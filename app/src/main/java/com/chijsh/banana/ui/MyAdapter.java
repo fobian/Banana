@@ -2,15 +2,20 @@ package com.chijsh.banana.ui;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
+import android.text.method.MovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.chijsh.banana.R;
 import com.chijsh.banana.Utility;
+import com.chijsh.banana.ui.widget.LinkEnabledTextView;
 import com.squareup.picasso.Picasso;
 
 
@@ -18,7 +23,7 @@ import com.squareup.picasso.Picasso;
  * Created by chijsh on 10/28/14.
  */
 
-public class MyAdapter extends CursorRecyclerViewAdapter<MyAdapter.ViewHolder> {
+public class MyAdapter extends CursorRecyclerViewAdapter<MyAdapter.ViewHolder> implements LinkEnabledTextView.TextLinkClickListener {
 
     public static final int COL_CREATED_AT = 1;
     public static final int COL_POST_ID = 2;
@@ -42,18 +47,21 @@ public class MyAdapter extends CursorRecyclerViewAdapter<MyAdapter.ViewHolder> {
         public ImageView mAvatarView;
         public TextView mNameView;
         public TextView mSubHeadView;
-        public TextView mTextView;
+        public LinkEnabledTextView mTextView;
         public ViewHolder(View itemView) {
             super(itemView);
             mAvatarView = (ImageView)itemView.findViewById(R.id.user_avatar);
             mNameView = (TextView)itemView.findViewById(R.id.user_name);
             mSubHeadView = (TextView)itemView.findViewById(R.id.user_subhead);
-            mTextView = (TextView)itemView.findViewById(R.id.user_text);
+            mTextView = (LinkEnabledTextView)itemView.findViewById(R.id.user_text);
         }
+
     }
 
+    private Context mContext;
     public MyAdapter(Context context, Cursor cursor) {
         super(context, cursor);
+        mContext = context;
     }
 
     @Override
@@ -71,6 +79,24 @@ public class MyAdapter extends CursorRecyclerViewAdapter<MyAdapter.ViewHolder> {
                 .into(viewHolder.mAvatarView);
         viewHolder.mNameView.setText(cursor.getString(COL_USER_SCREENNAME));
         viewHolder.mSubHeadView.setText(Utility.getFriendlyDate(cursor.getString(COL_CREATED_AT)) + " " + context.getString(R.string.weibo_source) + Html.fromHtml(cursor.getString(COL_POST_SOURCE)));
-        viewHolder.mTextView.setText(cursor.getString(COL_POST_TEXT));
+
+        viewHolder.mTextView.setOnTextLinkClickListener(this);
+        viewHolder.mTextView.gatherLinksForText(cursor.getString(COL_POST_TEXT));
+        viewHolder.mTextView.setLinkTextColor(context.getResources().getColor(R.color.txt_link));
+
+        MovementMethod m = viewHolder.mTextView.getMovementMethod();
+        if ((m == null) || !(m instanceof LinkMovementMethod)) {
+            if (viewHolder.mTextView.getLinksClickable()) {
+                viewHolder.mTextView.setMovementMethod(LinkMovementMethod.getInstance());
+            }
+        }
+
     }
+
+
+    @Override
+    public void onTextLinkClick(View textView, String clickedString) {
+        Toast.makeText(mContext, clickedString, Toast.LENGTH_SHORT).show();
+    }
+
 }
