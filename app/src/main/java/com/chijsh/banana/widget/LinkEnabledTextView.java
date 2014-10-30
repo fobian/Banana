@@ -1,4 +1,4 @@
-package com.chijsh.banana.ui.widget;
+package com.chijsh.banana.widget;
 
 import android.annotation.TargetApi;
 import android.content.Context;

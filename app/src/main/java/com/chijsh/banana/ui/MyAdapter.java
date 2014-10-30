@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import com.chijsh.banana.R;
 import com.chijsh.banana.Utility;
-import com.chijsh.banana.ui.widget.LinkEnabledTextView;
+import com.chijsh.banana.widget.LinkEnabledTextView;
 import com.squareup.picasso.Picasso;
 
 
@@ -78,7 +78,7 @@ public class MyAdapter extends CursorRecyclerViewAdapter<MyAdapter.ViewHolder> i
                 load(cursor.getString(COL_USER_AVATAR))
                 .into(viewHolder.mAvatarView);
         viewHolder.mNameView.setText(cursor.getString(COL_USER_SCREENNAME));
-        viewHolder.mSubHeadView.setText(Utility.getFriendlyDate(cursor.getString(COL_CREATED_AT)) + " " + context.getString(R.string.weibo_source) + " " + Html.fromHtml(cursor.getString(COL_POST_SOURCE)));
+        viewHolder.mSubHeadView.setText(Utility.getFriendlyDate(cursor.getString(COL_CREATED_AT)) + " " + Html.fromHtml(cursor.getString(COL_POST_SOURCE)));
 
         viewHolder.mTextView.setOnTextLinkClickListener(this);
         viewHolder.mTextView.gatherLinksForText(cursor.getString(COL_POST_TEXT));

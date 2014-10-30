@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.chijsh.banana.AccessTokenKeeper;
 import com.chijsh.banana.Config;
 import com.chijsh.banana.R;
-import com.chijsh.banana.ui.widget.LinkEnabledTextView;
+import com.chijsh.banana.widget.LinkEnabledTextView;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 import com.sina.weibo.sdk.auth.WeiboAuth;

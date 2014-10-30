@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.chijsh.banana.ui.widget;
+package com.chijsh.banana.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
