@@ -78,11 +78,10 @@ public class MyAdapter extends CursorRecyclerViewAdapter<MyAdapter.ViewHolder> i
                 load(cursor.getString(COL_USER_AVATAR))
                 .into(viewHolder.mAvatarView);
         viewHolder.mNameView.setText(cursor.getString(COL_USER_SCREENNAME));
-        viewHolder.mSubHeadView.setText(Utility.getFriendlyDate(cursor.getString(COL_CREATED_AT)) + " " + context.getString(R.string.weibo_source) + Html.fromHtml(cursor.getString(COL_POST_SOURCE)));
+        viewHolder.mSubHeadView.setText(Utility.getFriendlyDate(cursor.getString(COL_CREATED_AT)) + " " + context.getString(R.string.weibo_source) + " " + Html.fromHtml(cursor.getString(COL_POST_SOURCE)));
 
         viewHolder.mTextView.setOnTextLinkClickListener(this);
         viewHolder.mTextView.gatherLinksForText(cursor.getString(COL_POST_TEXT));
-        viewHolder.mTextView.setLinkTextColor(context.getResources().getColor(R.color.txt_link));
 
         MovementMethod m = viewHolder.mTextView.getMovementMethod();
         if ((m == null) || !(m instanceof LinkMovementMethod)) {
