@@ -64,7 +64,8 @@ public class WeiboSyncAdapter extends AbstractThreadedSyncAdapter {
             values.put(PostEntry.COLUMN_USER_AVATAR, post.user.avatarLarge);
             if (post.retweetedStatus != null) {
                 values.put(PostEntry.COLUMN_RETWEETED_ID, post.retweetedStatus.idstr);
-                values.put(PostEntry.COLUMN_RETWEETED_USER_SCREENNAME, post.retweetedStatus.user.screenName);
+                if(post.retweetedStatus.user != null)
+                    values.put(PostEntry.COLUMN_RETWEETED_USER_SCREENNAME, post.retweetedStatus.user.screenName);
                 values.put(PostEntry.COLUMN_RETWEETED_TEXT, post.retweetedStatus.text);
             }
             values.put(PostEntry.COLUMN_REPOST_COUNT, post.repostsCount);
