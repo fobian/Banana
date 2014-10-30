@@ -80,18 +80,12 @@ public class HomeTimeLineFragment extends Fragment implements LoaderManager.Load
 
         SatelliteMenu menu = (SatelliteMenu) rootView.findViewById(R.id.sat);
         //menu.setRotation(270);
-//		  Set from XML, possible to programmatically set
-//        float distance = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 170, getResources().getDisplayMetrics());
-//        menu.setSatelliteDistance((int) distance);
-//        menu.setExpandDuration(500);
-//        menu.setCloseItemsOnClick(false);
-//        menu.setTotalSpacingDegree(60);
 
         List<SatelliteMenuItem> items = new ArrayList<SatelliteMenuItem>();
-        items.add(new SatelliteMenuItem(4, R.drawable.ic_chat_grey600_24dp));
-        items.add(new SatelliteMenuItem(3, R.drawable.ic_chat_grey600_24dp));
-        items.add(new SatelliteMenuItem(2, R.drawable.ic_chat_grey600_24dp));
-        items.add(new SatelliteMenuItem(1, R.drawable.ic_chat_grey600_24dp));
+        items.add(new SatelliteMenuItem(4, R.drawable.ic_camera_alt_black_24dp));
+        items.add(new SatelliteMenuItem(3, R.drawable.ic_image_black_24dp));
+        items.add(new SatelliteMenuItem(2, R.drawable.ic_format_quote_black_24dp));
+        items.add(new SatelliteMenuItem(1, R.drawable.ic_room_black_24dp));
 //        items.add(new SatelliteMenuItem(5, R.drawable.sat_item));
         menu.addItems(items);
 

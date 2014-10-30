@@ -28,6 +28,6 @@
         sat:satelliteDistance="120dp"
         sat:totalSpacingDegree="90"
         sat:closeOnClick="true"
-        sat:expandDuration="700"/>
+        sat:expandDuration="600"/>
 
 </RelativeLayout>
