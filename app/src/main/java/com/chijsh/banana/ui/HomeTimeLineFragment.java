@@ -19,6 +19,12 @@ import com.chijsh.banana.R;
 
 import com.chijsh.banana.data.PostContract.PostEntry;
 import com.chijsh.banana.sync.WeiboSyncAdapter;
+import com.chijsh.banana.widget.fab.FloatingActionButton;
+import com.chijsh.banana.widget.satellitemenu.SatelliteMenu;
+import com.chijsh.banana.widget.satellitemenu.SatelliteMenuItem;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by chijsh on 10/20/14.
@@ -31,6 +37,7 @@ public class HomeTimeLineFragment extends Fragment implements LoaderManager.Load
     private RecyclerView mRecyclerView;
     private CursorRecyclerViewAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private FloatingActionButton mFloatingButton;
 
     private static final String[] POST_COLUMNS = {
             PostEntry.TABLE_NAME + "." + PostEntry._ID,
@@ -67,9 +74,35 @@ public class HomeTimeLineFragment extends Fragment implements LoaderManager.Load
 
         mRecyclerView = (RecyclerView)rootView.findViewById(R.id.time_line);
 
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        //mRecyclerView.setHasFixedSize(true);
+        //mFloatingButton = (FloatingActionButton)rootView.findViewById(R.id.fab);
+        //mFloatingButton.attachToRecyclerView(mRecyclerView);
+
+
+        SatelliteMenu menu = (SatelliteMenu) rootView.findViewById(R.id.sat);
+        //menu.setRotation(270);
+//		  Set from XML, possible to programmatically set
+//        float distance = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 170, getResources().getDisplayMetrics());
+//        menu.setSatelliteDistance((int) distance);
+//        menu.setExpandDuration(500);
+//        menu.setCloseItemsOnClick(false);
+//        menu.setTotalSpacingDegree(60);
+
+        List<SatelliteMenuItem> items = new ArrayList<SatelliteMenuItem>();
+        items.add(new SatelliteMenuItem(4, R.drawable.ic_chat_grey600_24dp));
+        items.add(new SatelliteMenuItem(3, R.drawable.ic_chat_grey600_24dp));
+        items.add(new SatelliteMenuItem(2, R.drawable.ic_chat_grey600_24dp));
+        items.add(new SatelliteMenuItem(1, R.drawable.ic_chat_grey600_24dp));
+//        items.add(new SatelliteMenuItem(5, R.drawable.sat_item));
+        menu.addItems(items);
+
+        menu.setOnItemClickedListener(new SatelliteMenu.SateliteClickedListener() {
+
+            public void eventOccured(int id) {
+                Log.i("sat", "Clicked on " + id);
+            }
+        });
+
+        menu.attachToRecyclerView(mRecyclerView);
 
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(getActivity());

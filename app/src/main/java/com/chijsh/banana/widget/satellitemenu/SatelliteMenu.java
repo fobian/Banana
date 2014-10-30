@@ -5,6 +5,8 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.chijsh.banana.R;
+import com.chijsh.banana.widget.fab.FloatingActionButton;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -35,12 +38,12 @@ public class SatelliteMenu extends FrameLayout {
 	private static final int DEFAULT_SATELLITE_DISTANCE = 200;
 	private static final float DEFAULT_TOTAL_SPACING_DEGREES = 90f;
 	private static final boolean DEFAULT_CLOSE_ON_CLICK = true;
-	private static final int DEFAULT_EXPAND_DURATION = 400;
+	private static final int DEFAULT_EXPAND_DURATION = 800;
 
 	private Animation mainRotateRight;
 	private Animation mainRotateLeft;
 
-	private ImageView imgMain;
+	private FloatingActionButton imgMain;
 	private SateliteClickedListener itemClickedListener;
 	private InternalSatelliteOnClickListener internalItemClickListener;
 
@@ -78,7 +81,7 @@ public class SatelliteMenu extends FrameLayout {
 
 	private void init(Context context, AttributeSet attrs, int defStyle) {
 		LayoutInflater.from(context).inflate(R.layout.sat_main, this, true);		
-		imgMain = (ImageView) findViewById(R.id.sat_main);
+		imgMain = (FloatingActionButton)findViewById(R.id.sat_main);
 
 		if(attrs != null){			
             TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SatelliteMenu, defStyle, 0);					
@@ -138,6 +141,14 @@ public class SatelliteMenu extends FrameLayout {
 			rotated = !rotated;
 		}
 	}
+
+    public void attachToRecyclerView(@NonNull RecyclerView recyclerView) {
+        imgMain.attachToRecyclerView(recyclerView);
+    }
+
+    public void attachToRecyclerView(@NonNull RecyclerView recyclerView, @NonNull FloatingActionButton.FabRecyclerOnViewScrollListener onScrollListener) {
+        imgMain.attachToRecyclerView(recyclerView, onScrollListener);
+    }
 
 	private void openItems() {
 		if (plusAnimationActive.compareAndSet(false, true)) {
@@ -431,7 +442,7 @@ public class SatelliteMenu extends FrameLayout {
 	/**
 	 * Sets the image drawable for the center button.
 	 *
-	 * @param resource The image drawable.
+	 * @param drawable The image drawable.
 	 */
 	public void setMainImage(Drawable drawable) {
 		this.imgMain.setImageDrawable(drawable);

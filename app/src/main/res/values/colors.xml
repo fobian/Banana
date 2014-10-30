@@ -3,6 +3,8 @@
     <color name="theme_primary">#3f51b5</color>
     <color name="theme_primary_dark">#303f9f</color>
     <color name="theme_accent">#ff4081</color>
+    <color name="theme_accent_pressed">#f50057</color>
+    <color name="ripple">#ff80ab</color>
     <color name="theme_light">#0091ea</color>
     <color name="txt_link">#5c6bc0</color>
 
