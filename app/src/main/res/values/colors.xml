@@ -5,4 +5,7 @@
     <color name="theme_accent">#ff4081</color>
     <color name="theme_light">#0091ea</color>
     <color name="txt_link">#5c6bc0</color>
+
+    <color name="fab_blue_normal">#5677fc</color>
+    <color name="fab_blue_pressed">#4e6cef</color>
 </resources>
