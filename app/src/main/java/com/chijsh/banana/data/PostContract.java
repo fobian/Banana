@@ -12,6 +12,7 @@ public class PostContract {
     public static final String CONTENT_AUTHORITY = "com.chijsh.banana.app";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
     public static final String PATH_POST = "post";
+    public static final String PATH_USER = "user";
 
     public static final class PostEntry implements BaseColumns {
 
@@ -46,5 +47,43 @@ public class PostContract {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
 
+    }
+
+    public static final class UserEntry implements BaseColumns {
+
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_USER).build();
+
+        public static final String CONTENT_TYPE =
+                "vnd.android.cursor.dir/" + CONTENT_AUTHORITY + "/" + PATH_USER;
+        public static final String CONTENT_ITEM_TYPE =
+                "vnd.android.cursor.item/" + CONTENT_AUTHORITY + "/" + PATH_USER;
+
+        public static final String TABLE_NAME = "user";
+
+        public static final String COLUMN_USER_ID = "idstr";
+        public static final String COLUMN_NAME = "name";
+
+        public static final String COLUMN_PROVINCE = "province";
+        public static final String COLUMN_CITY = "city";
+        public static final String COLUMN_LOCATION = "location";
+
+        public static final String COLUMN_DESCRIPTION = "description";
+        public static final String COLUMN_URL = "url";
+        public static final String COLUMN_PROFILE_URL = "profile_url";
+        public static final String COLUMN_DOMAIN = "domain";
+        public static final String COLUMN_GENDER = "gender";
+
+        public static final String COLUMN_FOLLOWERS_COUNT= "followers_count";
+        public static final String COLUMN_FRIENDS_COUNT= "friends_count";
+        public static final String COLUMN_STATUSES_COUNT= "statuses_count";
+        public static final String COLUMN_FAVOURITES_COUNT= "favourites_count";
+
+        public static final String COLUMN_CREATED_AT = "created_at";
+        public static final String COLUMN_AVATAR_LARGE = "avatar_large";
+
+        public static Uri buildUserUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
     }
 }
