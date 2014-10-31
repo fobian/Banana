@@ -40,6 +40,7 @@ public class PostDbHelper extends SQLiteOpenHelper {
                 UserEntry.COLUMN_FAVOURITES_COUNT + " INTEGER NOT NULL, " +
                 UserEntry.COLUMN_CREATED_AT + " TEXT NOT NULL, " +
                 UserEntry.COLUMN_AVATAR_LARGE + " TEXT, " +
+
                 "UNIQUE (" + UserEntry.COLUMN_USER_ID +") ON CONFLICT IGNORE"+
                 " );";
 
@@ -63,8 +64,11 @@ public class PostDbHelper extends SQLiteOpenHelper {
                 PostEntry.COLUMN_REPOST_COUNT + " INTEGER NOT NULL, " +
                 PostEntry.COLUMN_COMMENT_COUNT + " INTEGER NOT NULL, " +
                 PostEntry.COLUMN_ATTITUDE_COUNT + " INTEGER NOT NULL, " +
+
                 " FOREIGN KEY (" + PostEntry.COLUMN_USER_ID + ") REFERENCES " +
-                UserEntry.TABLE_NAME + " (" + UserEntry.COLUMN_USER_ID + "));";
+                UserEntry.TABLE_NAME + " (" + UserEntry.COLUMN_USER_ID + "), " +
+
+                "UNIQUE (" + PostEntry.COLUMN_POST_ID + ") ON CONFLICT REPLACE);";
 
         db.execSQL(SQL_CREATE_USER_TABLE);
         db.execSQL(SQL_CREATE_POST_TABLE);

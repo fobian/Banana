@@ -7,6 +7,7 @@ import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.SyncRequest;
 import android.content.SyncResult;
 import android.os.Build;
@@ -36,6 +37,8 @@ public class WeiboSyncAdapter extends AbstractThreadedSyncAdapter {
     public static final int SYNC_INTERVAL = 60 * 180;
     public static final int SYNC_FLEXTIME = SYNC_INTERVAL/3;
 
+    public static final String SINCE_ID_PREF = "since_id_pref";
+
     public WeiboSyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
     }
@@ -44,7 +47,7 @@ public class WeiboSyncAdapter extends AbstractThreadedSyncAdapter {
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
 
         String token = AccessTokenKeeper.readAccessToken(getContext()).getToken();
-        Posts posts = WeiboAPI.getInstance().getHomeLine(token);
+        Posts posts = WeiboAPI.getInstance().getHomeLine(token, readSinceId());
         Vector<ContentValues> cVVector = new Vector<ContentValues>(posts.size());
         Post post;
         for (int i = posts.size() - 1; i >= 0; --i) {
@@ -72,6 +75,11 @@ public class WeiboSyncAdapter extends AbstractThreadedSyncAdapter {
             values.put(PostEntry.COLUMN_COMMENT_COUNT, post.commentsCount);
             values.put(PostEntry.COLUMN_ATTITUDE_COUNT, post.attitudesCount);
             cVVector.add(values);
+
+            if(i == posts.size() - 1) {
+                writeSinceId(post.idstr);
+            }
+
         }
         if (cVVector.size() > 0) {
             ContentValues[] cvArray = new ContentValues[cVVector.size()];
@@ -179,5 +187,17 @@ public class WeiboSyncAdapter extends AbstractThreadedSyncAdapter {
 
     public static void initializeSyncAdapter(Context context) {
         getSyncAccount(context);
+    }
+
+    private void writeSinceId(String sinceId) {
+        SharedPreferences pref = getContext().getSharedPreferences(SINCE_ID_PREF, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putLong(SINCE_ID_PREF, Long.parseLong(sinceId));
+        editor.commit();
+    }
+
+    private long readSinceId() {
+        SharedPreferences pref = getContext().getSharedPreferences(SINCE_ID_PREF, Context.MODE_PRIVATE);
+        return pref.getLong(SINCE_ID_PREF, 0);
     }
 }

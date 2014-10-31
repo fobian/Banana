@@ -30,7 +30,7 @@ public class WeiboAPI {
     interface Weibo {
 
         @GET("/statuses/friends_timeline.json")
-        Posts getHomeTimeLine(@Query("access_token") String token);
+        Posts getHomeTimeLine(@Query("access_token") String token, @Query("since_id") long sinceId);
 
 
     }
@@ -55,8 +55,8 @@ public class WeiboAPI {
     }
 
 
-    public Posts getHomeLine(String token) {
-        return weibo.getHomeTimeLine(token);
+    public Posts getHomeLine(String token, long sinceId) {
+        return weibo.getHomeTimeLine(token, sinceId);
 
     }
 
