@@ -27,18 +27,22 @@ public class PostContract {
 
         public static final String TABLE_NAME = "post";
         public static final String COLUMN_CREATED_AT = "created_at";
+
         public static final String COLUMN_POST_ID = "idstr";
         public static final String COLUMN_POST_TEXT = "text";
         public static final String COLUMN_POST_SOURCE = "source";
         public static final String COLUMN_POST_FAVORITED = "favorited";
         public static final String COLUMN_POST_PICURLS = "pic_urls";
         public static final String COLUMN_POST_GEO = "geo";
+
         public static final String COLUMN_USER_ID = "user_id";
         public static final String COLUMN_USER_SCREENNAME = "user_screenname";
         public static final String COLUMN_USER_AVATAR = "user_avatar";
+
         public static final String COLUMN_RETWEETED_ID = "retweeted_id";
         public static final String COLUMN_RETWEETED_USER_SCREENNAME = "retweeted_user_screenname";
         public static final String COLUMN_RETWEETED_TEXT = "retweeted_text";
+        
         public static final String COLUMN_REPOST_COUNT = "repost_count";
         public static final String COLUMN_COMMENT_COUNT = "comment_count";
         public static final String COLUMN_ATTITUDE_COUNT = "attitude_count";

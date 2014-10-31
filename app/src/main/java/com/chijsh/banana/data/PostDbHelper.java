@@ -14,8 +14,6 @@ public class PostDbHelper extends SQLiteOpenHelper {
     private static final int VERSION = 1;
     public static final String NAME = "post.db";
 
-
-
     public PostDbHelper(Context context) {
         super(context, NAME, null, VERSION);
     }
