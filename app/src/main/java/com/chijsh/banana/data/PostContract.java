@@ -62,7 +62,7 @@ public class PostContract {
         public static final String TABLE_NAME = "user";
 
         public static final String COLUMN_USER_ID = "idstr";
-        public static final String COLUMN_NAME = "name";
+        public static final String COLUMN_SCREEN_NAME = "screen_name";
 
         public static final String COLUMN_PROVINCE = "province";
         public static final String COLUMN_CITY = "city";
