@@ -3,6 +3,8 @@ package com.chijsh.banana;
 import android.os.Build;
 import android.text.format.DateFormat;
 
+import com.chijsh.banana.model.PicUrl;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -20,14 +22,15 @@ public class Utility {
         return source.split(",");
     }
 
-    public static String arrayToStr(List<String> list) {
-        int size = list.size();
-        String str = "";
-        for (int i = 0; i < size; ++i) {
-            str += ",";
-            str += list.get(i);
+    public static String urlsToString(List<PicUrl> urls) {
+        String s = "";
+        for (int i = 0; i < urls.size(); ++i) {
+            s += urls.get(i).toString();
+            if(i != urls.size() - 1) {
+                s += ",";
+            }
         }
-        return str;
+        return s;
     }
 
     public static String getFriendlyDate(String time) {

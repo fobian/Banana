@@ -42,7 +42,7 @@ public class PostContract {
         public static final String COLUMN_RETWEETED_ID = "retweeted_id";
         public static final String COLUMN_RETWEETED_USER_SCREENNAME = "retweeted_user_screenname";
         public static final String COLUMN_RETWEETED_TEXT = "retweeted_text";
-        
+
         public static final String COLUMN_REPOST_COUNT = "repost_count";
         public static final String COLUMN_COMMENT_COUNT = "comment_count";
         public static final String COLUMN_ATTITUDE_COUNT = "attitude_count";

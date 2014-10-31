@@ -18,9 +18,11 @@ import com.chijsh.banana.R;
 import com.chijsh.banana.Utility;
 import com.chijsh.banana.api.WeiboAPI;
 import com.chijsh.banana.data.PostContract.PostEntry;
+import com.chijsh.banana.model.PicUrl;
 import com.chijsh.banana.model.Post;
 import com.chijsh.banana.model.Posts;
 
+import java.util.List;
 import java.util.Vector;
 
 
@@ -38,7 +40,6 @@ public class WeiboSyncAdapter extends AbstractThreadedSyncAdapter {
         super(context, autoInitialize);
     }
 
-
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
 
@@ -55,7 +56,7 @@ public class WeiboSyncAdapter extends AbstractThreadedSyncAdapter {
             values.put(PostEntry.COLUMN_POST_SOURCE, post.source);
             values.put(PostEntry.COLUMN_POST_FAVORITED, post.favorited);
             if (!post.picUrls.isEmpty())
-                values.put(PostEntry.COLUMN_POST_PICURLS, post.picUrls.get(0).toString());//TODO
+                values.put(PostEntry.COLUMN_POST_PICURLS, Utility.urlsToString(post.picUrls));//TODO
             if (post.geo != null)
                 values.put(PostEntry.COLUMN_POST_GEO, post.geo.toString());
             values.put(PostEntry.COLUMN_USER_ID, post.user.idstr);

@@ -20,4 +20,11 @@ public class Post {
     public int repostsCount;
     public int commentsCount;
     public int attitudesCount;
+
+    public boolean isMultiPics() {
+        if(picUrls.size() > 1) {
+            return true;
+        }
+        return false;
+    }
 }

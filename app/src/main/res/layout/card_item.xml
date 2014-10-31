@@ -55,12 +55,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <com.chijsh.banana.widget.LinkEnabledTextView
+                android:id="@+id/user_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/user_text"
                 android:lineSpacingExtra="@dimen/text_line_spacing"
                 android:textAppearance="@style/CardBodyStyle"
                 />
+            <ImageView
+                android:id="@+id/thumbnail_pic"
+                android:layout_below="@id/user_text"
+                android:scaleType="fitCenter"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:visibility="gone"/>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/pic_grid"
+                android:visibility="gone"
+                android:layout_below="@id/user_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+            />
         </RelativeLayout>
         <LinearLayout
             android:paddingTop="20dp"

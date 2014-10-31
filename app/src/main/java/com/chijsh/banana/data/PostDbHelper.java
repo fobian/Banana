@@ -62,9 +62,9 @@ public class PostDbHelper extends SQLiteOpenHelper {
                 PostEntry.COLUMN_RETWEETED_TEXT + " TEXT, " +
                 PostEntry.COLUMN_REPOST_COUNT + " INTEGER NOT NULL, " +
                 PostEntry.COLUMN_COMMENT_COUNT + " INTEGER NOT NULL, " +
-                PostEntry.COLUMN_ATTITUDE_COUNT + " INTEGER NOT NULL" +
+                PostEntry.COLUMN_ATTITUDE_COUNT + " INTEGER NOT NULL, " +
                 " FOREIGN KEY (" + PostEntry.COLUMN_USER_ID + ") REFERENCES " +
-                    UserEntry.TABLE_NAME + " (" + UserEntry.COLUMN_USER_ID + ");";
+                UserEntry.TABLE_NAME + " (" + UserEntry.COLUMN_USER_ID + "));";
 
         db.execSQL(SQL_CREATE_USER_TABLE);
         db.execSQL(SQL_CREATE_POST_TABLE);

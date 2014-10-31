@@ -2,11 +2,12 @@ package com.chijsh.banana.ui;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Color;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.text.method.MovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -23,7 +24,7 @@ import com.squareup.picasso.Picasso;
  * Created by chijsh on 10/28/14.
  */
 
-public class MyAdapter extends CursorRecyclerViewAdapter<MyAdapter.ViewHolder> implements LinkEnabledTextView.TextLinkClickListener {
+public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.ViewHolder> implements LinkEnabledTextView.TextLinkClickListener {
 
     public static final int COL_CREATED_AT = 1;
     public static final int COL_POST_ID = 2;
@@ -48,27 +49,39 @@ public class MyAdapter extends CursorRecyclerViewAdapter<MyAdapter.ViewHolder> i
         public TextView mNameView;
         public TextView mSubHeadView;
         public LinkEnabledTextView mTextView;
-        public ViewHolder(View itemView) {
+        public ImageView mThumbImageView;
+
+        public RecyclerView mPicGridView;
+        private GridLayoutManager mLayoutManager;
+        public PicGridAdapter mGridAdapter;
+
+        public ViewHolder(View itemView, Context context) {
             super(itemView);
             mAvatarView = (ImageView)itemView.findViewById(R.id.user_avatar);
             mNameView = (TextView)itemView.findViewById(R.id.user_name);
             mSubHeadView = (TextView)itemView.findViewById(R.id.user_subhead);
             mTextView = (LinkEnabledTextView)itemView.findViewById(R.id.user_text);
+            mThumbImageView = (ImageView)itemView.findViewById(R.id.thumbnail_pic);
+
+            mPicGridView = (RecyclerView)itemView.findViewById(R.id.pic_grid);
+            mLayoutManager = new GridLayoutManager(context, 3);
+            mPicGridView.setLayoutManager(mLayoutManager);
+            mGridAdapter = new PicGridAdapter(context, null);
+            mPicGridView.setAdapter(mGridAdapter);
         }
 
     }
 
-    private Context mContext;
-    public MyAdapter(Context context, Cursor cursor) {
+
+    public TimeLineAdapter(Context context, Cursor cursor) {
         super(context, cursor);
-        mContext = context;
     }
 
     @Override
     public ViewHolder newView(Context context, Cursor cursor) {
         View v = LayoutInflater.from(context)
                 .inflate(R.layout.card_item, null, false);
-        ViewHolder vh = new ViewHolder(v);
+        ViewHolder vh = new ViewHolder(v, context);
         return vh;
     }
 
@@ -88,6 +101,29 @@ public class MyAdapter extends CursorRecyclerViewAdapter<MyAdapter.ViewHolder> i
             if (viewHolder.mTextView.getLinksClickable()) {
                 viewHolder.mTextView.setMovementMethod(LinkMovementMethod.getInstance());
             }
+        }
+
+        String pics = cursor.getString(COL_POST_PICURLS);
+
+        if (pics != null) {
+            if(Utility.strToArray(pics).length > 1) {
+                viewHolder.mGridAdapter.setDataset(Utility.strToArray(pics));
+                viewHolder.mGridAdapter.notifyDataSetChanged();
+                viewHolder.mPicGridView.setVisibility(View.VISIBLE);
+
+                viewHolder.mThumbImageView.setVisibility(View.GONE);
+            } else {
+                viewHolder.mThumbImageView.setVisibility(View.VISIBLE);
+                Picasso.with(context)
+                        .load(pics)
+                        .into(viewHolder.mThumbImageView);
+
+                viewHolder.mPicGridView.setVisibility(View.GONE);
+            }
+
+        } else {
+            viewHolder.mThumbImageView.setVisibility(View.GONE);
+            viewHolder.mPicGridView.setVisibility(View.GONE);
         }
 
     }

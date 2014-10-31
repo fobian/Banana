@@ -103,7 +103,7 @@ public class HomeTimeLineFragment extends Fragment implements LoaderManager.Load
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        mAdapter = new MyAdapter(getActivity(), null);
+        mAdapter = new TimeLineAdapter(getActivity(), null);
         mRecyclerView.setAdapter(mAdapter);
 
 
