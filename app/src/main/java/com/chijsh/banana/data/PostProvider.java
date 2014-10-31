@@ -1,7 +1,6 @@
 package com.chijsh.banana.data;
 
 import android.content.ContentProvider;
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
@@ -61,7 +60,7 @@ public class PostProvider extends ContentProvider {
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
-        getContext().getContentResolver().notifyChange(uri, null);
+        notifyChange(uri);
         return returnUri;
     }
 
@@ -80,7 +79,7 @@ public class PostProvider extends ContentProvider {
         }
         // Because a null deletes all rows
         if (selection == null || rowsDeleted != 0) {
-            getContext().getContentResolver().notifyChange(uri, null);
+            notifyChange(uri);
         }
         return rowsDeleted;
     }
@@ -100,7 +99,7 @@ public class PostProvider extends ContentProvider {
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
         if (rowsUpdated != 0) {
-            getContext().getContentResolver().notifyChange(uri, null);
+            notifyChange(uri);
         }
         return rowsUpdated;
     }
@@ -148,10 +147,14 @@ public class PostProvider extends ContentProvider {
                 } finally {
                     db.endTransaction();
                 }
-                getContext().getContentResolver().notifyChange(uri, null);
+                notifyChange(uri);
                 return returnCount;
             default:
                 return super.bulkInsert(uri, values);
         }
+    }
+
+    private void notifyChange(Uri uri) {
+        getContext().getContentResolver().notifyChange(uri, null);
     }
 }

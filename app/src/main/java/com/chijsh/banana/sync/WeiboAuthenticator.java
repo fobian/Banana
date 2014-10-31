@@ -3,6 +3,7 @@ package com.chijsh.banana.sync;
 import android.accounts.AbstractAccountAuthenticator;
 import android.accounts.Account;
 import android.accounts.AccountAuthenticatorResponse;
+import android.accounts.AccountManager;
 import android.accounts.NetworkErrorException;
 import android.content.Context;
 import android.os.Bundle;
@@ -74,4 +75,8 @@ public class WeiboAuthenticator extends AbstractAccountAuthenticator {
             Account account, String[] strings) throws NetworkErrorException {
         throw new UnsupportedOperationException();
     }
+
+//    private void initAccountAuthenticator() {
+//        final AccountManager accountManager = AccountManager.get(this);
+//    }
 }

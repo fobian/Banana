@@ -39,7 +39,6 @@ public class WeiboSyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
 
-
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
 
@@ -47,7 +46,7 @@ public class WeiboSyncAdapter extends AbstractThreadedSyncAdapter {
         Posts posts = WeiboAPI.getInstance().getHomeLine(token);
         Vector<ContentValues> cVVector = new Vector<ContentValues>(posts.size());
         Post post;
-        for (int i = 0; i < posts.size(); ++i) {
+        for (int i = posts.size() - 1; i >= 0; --i) {
             ContentValues values = new ContentValues();
             post = posts.get(i);
             values.put(PostEntry.COLUMN_CREATED_AT, post.createdAt);
@@ -94,7 +93,7 @@ public class WeiboSyncAdapter extends AbstractThreadedSyncAdapter {
      * Helper method to have the sync adapter sync immediately
      * @param context The context used to access the account service
      */
-    public static void syncImmediately(Context context) {
+    public static void triggerSyncAdapter(Context context) {
         Bundle bundle = new Bundle();
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
@@ -174,7 +173,7 @@ public class WeiboSyncAdapter extends AbstractThreadedSyncAdapter {
         /*
          * Finally, let's do a sync to get things started
          */
-        syncImmediately(context);
+        triggerSyncAdapter(context);
     }
 
     public static void initializeSyncAdapter(Context context) {

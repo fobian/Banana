@@ -116,7 +116,7 @@ public class HomeTimeLineFragment extends Fragment implements LoaderManager.Load
     }
 
     private void refreshTimeLine() {
-        WeiboSyncAdapter.syncImmediately(getActivity());
+        WeiboSyncAdapter.triggerSyncAdapter(getActivity());
     }
 
     @Override
@@ -130,7 +130,7 @@ public class HomeTimeLineFragment extends Fragment implements LoaderManager.Load
 
 
         Uri uri = PostEntry.CONTENT_URI;
-        String sortOrder = PostEntry._ID + " ASC";
+        String sortOrder = PostEntry._ID + " DESC";
 
         // Now create and return a CursorLoader that will take care of
         // creating a Cursor for the data being displayed.
