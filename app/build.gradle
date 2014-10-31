@@ -22,18 +22,18 @@ android {
     signingConfigs {
 
         debug {
-            storeFile file('../../release.keystore')
-            storePassword "banana"
-            keyAlias "Banana"
-            keyPassword "banana"
+            storeFile file(debugkey_storefile)
+            storePassword debugkey_storePassword
+            keyAlias debugkey_keyAlias
+            keyPassword debugkey_keyPassword
         }
 
 
         release {
-            storeFile file('../../release.keystore')
-            storePassword "banana"
-            keyAlias "Banana"
-            keyPassword "banana"
+            storeFile file(releasekey_storefile)
+            storePassword releasekey_storePassword
+            keyAlias releasekey_keyAlias
+            keyPassword releasekey_keyPassword
         }
     }
 
