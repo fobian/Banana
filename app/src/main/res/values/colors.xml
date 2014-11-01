@@ -10,4 +10,12 @@
 
     <color name="fab_blue_normal">#5677fc</color>
     <color name="fab_blue_pressed">#4e6cef</color>
+
+    <color name="theme_accent_1">#00b0ff</color>
+    <color name="theme_accent_2">#e91e63</color>
+
+    <color name="refresh_progress_1">@color/theme_accent_2</color>
+    <color name="refresh_progress_2">@color/theme_accent_1</color>
+    <color name="refresh_progress_3">@color/theme_primary</color>
+
 </resources>

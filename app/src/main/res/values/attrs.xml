@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <declare-styleable name="BezelImageView">
         <attr name="maskDrawable" format="reference" />
         <attr name="borderDrawable" format="reference" />
         <attr name="desaturateOnPress" format="boolean" />
     </declare-styleable>
+
     <declare-styleable name="SatelliteMenu">
         <attr name="expandDuration" format="integer" />
         <attr name="closeOnClick" format="boolean" />
@@ -12,6 +14,7 @@
         <attr name="satelliteDistance" format="dimension" />
         <attr name="mainImage" format="reference" />
     </declare-styleable>
+
     <declare-styleable name="FloatingActionButton">
         <attr name="fab_colorPressed" format="color" />
         <attr name="fab_colorNormal" format="color" />
@@ -21,5 +24,9 @@
             <enum name="normal" value="0" />
             <enum name="mini" value="1" />
         </attr>
+    </declare-styleable>
+
+    <declare-styleable name="MultiSwipeRefreshLayout">
+        <attr name="foreground" format="reference" />
     </declare-styleable>
 </resources>

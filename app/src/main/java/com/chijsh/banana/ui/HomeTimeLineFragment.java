@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,20 +19,14 @@ import com.chijsh.banana.R;
 import com.chijsh.banana.data.PostContract.PostEntry;
 import com.chijsh.banana.sync.WeiboSyncAdapter;
 import com.chijsh.banana.widget.fab.FloatingActionButton;
-import com.chijsh.banana.widget.satellitemenu.SatelliteMenu;
-import com.chijsh.banana.widget.satellitemenu.SatelliteMenuItem;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by chijsh on 10/20/14.
  */
-public class HomeTimeLineFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
-                                                                SwipeRefreshLayout.OnRefreshListener {
+public class HomeTimeLineFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, SwipeRefreshLayout.OnRefreshListener {
     private static final int POST_LOADER = 0;
 
-    private SwipeRefreshLayout mSwipeLayout;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
     private CursorRecyclerViewAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -68,9 +61,13 @@ public class HomeTimeLineFragment extends Fragment implements LoaderManager.Load
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_timeline, container, false);
 
-        mSwipeLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.swipe_container);
-        mSwipeLayout.setColorSchemeColors(getResources().getColor(R.color.theme_accent));
-        mSwipeLayout.setOnRefreshListener(this);
+        mSwipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.swip_refresh_layout);
+        mSwipeRefreshLayout.setColorSchemeColors(
+                getResources().getColor(R.color.refresh_progress_1),
+                getResources().getColor(R.color.refresh_progress_2),
+                getResources().getColor(R.color.refresh_progress_3)
+                );
+        mSwipeRefreshLayout.setOnRefreshListener(this);
 
         mRecyclerView = (RecyclerView)rootView.findViewById(R.id.time_line);
 
@@ -82,7 +79,6 @@ public class HomeTimeLineFragment extends Fragment implements LoaderManager.Load
 
         mAdapter = new TimeLineAdapter(getActivity(), null);
         mRecyclerView.setAdapter(mAdapter);
-
 
         return rootView;
     }
@@ -124,12 +120,13 @@ public class HomeTimeLineFragment extends Fragment implements LoaderManager.Load
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mAdapter.swapCursor(data);
-        mSwipeLayout.setRefreshing(false);
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mAdapter.swapCursor(null);
     }
+
 
 }

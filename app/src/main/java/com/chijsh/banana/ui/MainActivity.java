@@ -1,10 +1,12 @@
 package com.chijsh.banana.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.chijsh.banana.AccessTokenKeeper;
 import com.chijsh.banana.R;
 import com.chijsh.banana.sync.WeiboSyncAdapter;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
@@ -18,6 +20,11 @@ public class MainActivity extends ActionBarActivity {
 
         //Toolbar toolbar = (Toolbar)findViewById(R.id.main_toolbar);
         //setSupportActionBar(toolbar);
+        if(!AccessTokenKeeper.readAccessToken(this).isSessionValid()) {
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+            return;
+        }
 
         SystemBarTintManager tintManager = new SystemBarTintManager(this);
         tintManager.setStatusBarTintEnabled(true);
@@ -28,6 +35,7 @@ public class MainActivity extends ActionBarActivity {
                     .add(R.id.container, new HomeTimeLineFragment())
                     .commit();
         }
+
         WeiboSyncAdapter.initializeSyncAdapter(this);
 
     }
