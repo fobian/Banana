@@ -29,7 +29,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_margin="16dp"
-        android:src="@drawable/ic_add_white_36dp"
+        android:src="@drawable/ic_mode_edit_white_24dp"
         fab:fab_colorNormal="@color/theme_accent"
         fab:fab_colorPressed="@color/theme_accent_pressed"
         fab:fab_colorRipple="@color/ripple" />
