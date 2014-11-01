@@ -14,10 +14,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.chijsh.banana.R;
 import com.chijsh.banana.Utility;
 import com.chijsh.banana.widget.LinkEnabledTextView;
-import com.squareup.picasso.Picasso;
 
 
 /**
@@ -87,7 +87,7 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
 
     @Override
     public void bindView(ViewHolder viewHolder, Context context, Cursor cursor) {
-        Picasso.with(context).
+        Glide.with(context).
                 load(cursor.getString(COL_USER_AVATAR))
                 .into(viewHolder.mAvatarView);
         viewHolder.mNameView.setText(cursor.getString(COL_USER_SCREENNAME));
@@ -114,7 +114,7 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
                 viewHolder.mThumbImageView.setVisibility(View.GONE);
             } else {
                 viewHolder.mThumbImageView.setVisibility(View.VISIBLE);
-                Picasso.with(context)
+                Glide.with(context)
                         .load(pics)
                         .into(viewHolder.mThumbImageView);
 

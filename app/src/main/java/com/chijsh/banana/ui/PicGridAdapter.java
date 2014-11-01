@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.chijsh.banana.R;
-import com.squareup.picasso.Picasso;
 
 /**
  * Created by chijsh on 10/31/14.
@@ -45,7 +45,7 @@ public class PicGridAdapter extends RecyclerView.Adapter<PicGridAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Picasso.with(mContext).load(mPicUrls[position]).into(holder.mImageView);
+        Glide.with(mContext).load(mPicUrls[position]).into(holder.mImageView);
 
     }
 
