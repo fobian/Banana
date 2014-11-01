@@ -2,34 +2,44 @@ package com.chijsh.banana.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.chijsh.banana.AccessTokenKeeper;
 import com.chijsh.banana.R;
 import com.chijsh.banana.sync.WeiboSyncAdapter;
-import com.readystatesoftware.systembartint.SystemBarTintManager;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Toolbar toolbar = (Toolbar)findViewById(R.id.main_toolbar);
-        //setSupportActionBar(toolbar);
+        Toolbar toolbar = getActionBarToolbar();
+        toolbar.setTitle(R.string.app_name);
+//        toolbar.inflateMenu(R.menu.main);
+//        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+//            @Override
+//            public boolean onMenuItemClick(MenuItem menuItem) {
+//                int id = menuItem.getItemId();
+//                switch (id) {
+//                    case R.id.action_settings:
+//                        startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+//                        break;
+//                    case R.id.action_me:
+//                        break;
+//                }
+//                return false;
+//            }
+//        });
+
         if(!AccessTokenKeeper.readAccessToken(this).isSessionValid()) {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
             return;
         }
-
-        SystemBarTintManager tintManager = new SystemBarTintManager(this);
-        tintManager.setStatusBarTintEnabled(true);
-        tintManager.setTintColor(getResources().getColor(R.color.theme_primary_dark));
 
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
@@ -57,9 +67,9 @@ public class MainActivity extends ActionBarActivity {
         int id = item.getItemId();
         switch (id) {
             case R.id.action_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
                 break;
             case R.id.action_me:
-                Log.d("sssssssssss", AccessTokenKeeper.readAccessToken(this).getUid());
                 break;
         }
 

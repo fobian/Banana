@@ -1,10 +1,10 @@
 <resources>
-    <dimen name="main_top_margin">80dp</dimen>
+    <!--<dimen name="main_top_margin">80dp</dimen>-->
     <dimen name="card_screen_padding">8dp</dimen>
     <dimen name="card_content_padding">16dp</dimen>
     <dimen name="card_between_padding">8dp</dimen>
 
     <dimen name="user_avatar_size">40dp</dimen>
     <dimen name="text_line_spacing">5dp</dimen>
-    <dimen name="login_logo_padding_top">120dp</dimen>
+    <!--<dimen name="login_logo_padding_top">120dp</dimen>-->
 </resources>

@@ -3,10 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/darker_gray"
     android:paddingLeft="@dimen/card_screen_padding"
     android:paddingRight="@dimen/card_screen_padding"
-    android:paddingTop="@dimen/main_top_margin"
     tools:context=".HomeTimeLineFragment">
 
     <android.support.v4.widget.SwipeRefreshLayout
@@ -28,7 +26,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_margin="16dp"
         android:src="@drawable/ic_mode_edit_white_24dp"
         fab:fab_colorNormal="@color/theme_accent"
         fab:fab_colorPressed="@color/theme_accent_pressed"

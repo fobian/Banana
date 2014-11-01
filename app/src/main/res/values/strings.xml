@@ -4,7 +4,6 @@
     <string name="app_name">Banana</string>
     <string name="app_author">by Xiaosi</string>
     <string name="app_intro">It\'s better to burn out than to fade away</string>
-
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="action_me">Me</string>
@@ -12,12 +11,11 @@
     <!-- SyncAdapter related -->
     <string name="sync_account_type">www.banana.com</string>
     <string name="content_authority">com.chijsh.banana.app</string>
-
     <string name="title_activity_login">Login</string>
     <string name="login_with_weibo">LOGIN WITH WEIBO</string>
     <string name="weibo_auth_cancel">Auth cancelled</string>
     <string name="weibo_auth_failed">Auth failed</string>
     <string name="weibo_auth_success">Auth success</string>
-
     <string name="weibo_source">From</string>
+    <string name="title_activity_settings">Settings</string>
 </resources>

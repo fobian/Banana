@@ -1,25 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <dimen name="main_top_margin">0dp</dimen>
     <dimen name="card_screen_padding">8dp</dimen>
     <dimen name="card_content_padding">16dp</dimen>
     <dimen name="card_between_padding">8dp</dimen>
-
     <dimen name="user_avatar_size">40dp</dimen>
     <dimen name="text_line_spacing">5dp</dimen>
     <dimen name="login_logo_padding_top">60dp</dimen>
-
     <dimen name="fab_size_normal">56dp</dimen>
     <dimen name="fab_size_mini">40dp</dimen>
     <dimen name="fab_shadow_size">8dp</dimen>
     <dimen name="fab_mini_shadow_size">6dp</dimen>
-
     <dimen name="fab_min_significant_scroll">4dp</dimen>
     <dimen name="fab_elevation_lollipop">8dp</dimen>
 
     <!-- Action Bar auto-hide-on-scroll behavior parameters -->
     <dimen name="action_bar_auto_hide_min_y">152dp</dimen>
     <dimen name="action_bar_auto_hide_sensivity">48dp</dimen>
-
     <dimen name="swipe_refresh_progress_bar_start_margin">-40dp</dimen>
     <dimen name="swipe_refresh_progress_bar_end_margin">16dp</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="headerbar_elevation">4dp</dimen>
 </resources>
