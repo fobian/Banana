@@ -74,35 +74,12 @@ public class HomeTimeLineFragment extends Fragment implements LoaderManager.Load
 
         mRecyclerView = (RecyclerView)rootView.findViewById(R.id.time_line);
 
-        //mFloatingButton = (FloatingActionButton)rootView.findViewById(R.id.fab);
-        //mFloatingButton.attachToRecyclerView(mRecyclerView);
+        mFloatingButton = (FloatingActionButton)rootView.findViewById(R.id.fab);
+        mFloatingButton.attachToRecyclerView(mRecyclerView);
 
-
-        SatelliteMenu menu = (SatelliteMenu) rootView.findViewById(R.id.sat);
-        //menu.setRotation(270);
-
-        List<SatelliteMenuItem> items = new ArrayList<SatelliteMenuItem>();
-        items.add(new SatelliteMenuItem(4, R.drawable.ic_camera_alt_black_24dp));
-        items.add(new SatelliteMenuItem(3, R.drawable.ic_image_black_24dp));
-        items.add(new SatelliteMenuItem(2, R.drawable.ic_format_quote_black_24dp));
-        items.add(new SatelliteMenuItem(1, R.drawable.ic_room_black_24dp));
-//        items.add(new SatelliteMenuItem(5, R.drawable.sat_item));
-        menu.addItems(items);
-
-        menu.setOnItemClickedListener(new SatelliteMenu.SateliteClickedListener() {
-
-            public void eventOccured(int id) {
-                Log.i("sat", "Clicked on " + id);
-            }
-        });
-
-        menu.attachToRecyclerView(mRecyclerView);
-
-        // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        // specify an adapter (see also next example)
         mAdapter = new TimeLineAdapter(getActivity(), null);
         mRecyclerView.setAdapter(mAdapter);
 
