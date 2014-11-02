@@ -18,4 +18,6 @@
     <color name="refresh_progress_2">@color/theme_accent_1</color>
     <color name="refresh_progress_3">@color/theme_primary</color>
 
+    <color name="tab_background">@color/theme_primary</color>
+
 </resources>

@@ -71,6 +71,9 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.action_me:
                 break;
+            case R.id.notif:
+                startActivity(new Intent(this, NotificationActivity.class));
+                break;
         }
 
         return super.onOptionsItemSelected(item);

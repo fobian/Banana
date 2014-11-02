@@ -3,6 +3,7 @@ package com.chijsh.banana.ui;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -37,11 +38,14 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
     public static final int COL_USER_SCREENNAME = 9;
     public static final int COL_USER_AVATAR = 10;
     public static final int COL_RETWEETED_ID = 11;
-    public static final int COL_RETWEETED_USER_S = 12;
+    public static final int COL_RETWEETED_USER_SCREENNAME = 12;
     public static final int COL_RETWEETED_TEXT = 13;
-    public static final int COL_REPOST_COUNT = 14;
-    public static final int COL_COMMENT_COUNT = 15;
-    public static final int COL_ATTITUDE_COUNT = 16;
+    public static final int COL_RETWEETED_PICURLS = 14;
+    public static final int COL_REPOST_COUNT = 15;
+    public static final int COL_COMMENT_COUNT = 16;
+    public static final int COL_ATTITUDE_COUNT = 17;
+
+    public static PicGridAdapter mGridAdapter;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -53,7 +57,7 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
 
         public RecyclerView mPicGridView;
         private GridLayoutManager mLayoutManager;
-        public PicGridAdapter mGridAdapter;
+
 
         public ViewHolder(View itemView, Context context) {
             super(itemView);
@@ -64,9 +68,8 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
             mThumbImageView = (ImageView)itemView.findViewById(R.id.thumbnail_pic);
 
             mPicGridView = (RecyclerView)itemView.findViewById(R.id.pic_grid);
-            mLayoutManager = new GridLayoutManager(context, 3);
+            mLayoutManager = new GridLayoutManager(context, 3, LinearLayoutManager.HORIZONTAL, false);
             mPicGridView.setLayoutManager(mLayoutManager);
-            mGridAdapter = new PicGridAdapter(context, null);
             mPicGridView.setAdapter(mGridAdapter);
         }
 
@@ -75,6 +78,7 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
 
     public TimeLineAdapter(Context context, Cursor cursor) {
         super(context, cursor);
+        mGridAdapter = new PicGridAdapter(context, null);
     }
 
     @Override
@@ -107,9 +111,9 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
 
         if (pics != null) {
             if(Utility.strToArray(pics).length > 1) {
-                viewHolder.mGridAdapter.setDataset(Utility.strToArray(pics));
-                viewHolder.mGridAdapter.notifyDataSetChanged();
                 viewHolder.mPicGridView.setVisibility(View.VISIBLE);
+                mGridAdapter.setDataset(Utility.strToArray(pics));
+                mGridAdapter.notifyDataSetChanged();
 
                 viewHolder.mThumbImageView.setVisibility(View.GONE);
             } else {

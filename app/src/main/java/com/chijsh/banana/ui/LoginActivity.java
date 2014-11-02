@@ -28,7 +28,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
-public class LoginActivity extends ActionBarActivity implements WeiboAuthListener {
+public class LoginActivity extends BaseActivity implements WeiboAuthListener {
 
     @InjectView(R.id.login)
     TextView loginButton;
@@ -42,10 +42,6 @@ public class LoginActivity extends ActionBarActivity implements WeiboAuthListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.inject(this);
-
-        SystemBarTintManager tintManager = new SystemBarTintManager(this);
-        tintManager.setStatusBarTintEnabled(true);
-        tintManager.setTintColor(getResources().getColor(R.color.theme_primary_dark));
 
         mWeiboAuth = new WeiboAuth(this, Config.APP_KEY, Config.REDIRECT_URL, Config.SCOPE);
 

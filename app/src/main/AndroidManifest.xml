@@ -61,6 +61,11 @@
         <activity
             android:name=".ui.SettingsActivity"
             android:label="@string/title_activity_settings"
+            android:parentActivityName=".ui.MainActivity" >
+        </activity>
+        <activity
+            android:name=".ui.NotificationActivity"
+            android:label="@string/title_activity_notification"
             android:parentActivityName=".ui.MainActivity">
         </activity>
     </application>

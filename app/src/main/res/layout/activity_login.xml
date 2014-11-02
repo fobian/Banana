@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/white"
     tools:context="com.chijsh.banana.ui.LoginActivity">
+
     <ImageView
         android:layout_marginTop="@dimen/login_logo_padding_top"
         android:id="@+id/login_logo"
@@ -56,5 +57,14 @@
         android:textColor="@color/theme_light"
         android:layout_width="match_parent"
         android:layout_height="90dp" />
+    <LinearLayout style="@style/HeaderBar"
+        android:id="@+id/headerbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:orientation="vertical">
 
+        <include layout="@layout/toolbar_actionbar" /> <!-- placeholder, empty except on L -->
+
+    </LinearLayout>
 </RelativeLayout>

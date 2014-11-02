@@ -61,6 +61,7 @@ public class PostDbHelper extends SQLiteOpenHelper {
                 PostEntry.COLUMN_RETWEETED_ID + " TEXT, " +
                 PostEntry.COLUMN_RETWEETED_USER_SCREENNAME + " TEXT, " +
                 PostEntry.COLUMN_RETWEETED_TEXT + " TEXT, " +
+                PostEntry.COLUMN_RETWEETED_PICURLS + " TEXT, " +
                 PostEntry.COLUMN_REPOST_COUNT + " INTEGER NOT NULL, " +
                 PostEntry.COLUMN_COMMENT_COUNT + " INTEGER NOT NULL, " +
                 PostEntry.COLUMN_ATTITUDE_COUNT + " INTEGER NOT NULL, " +
