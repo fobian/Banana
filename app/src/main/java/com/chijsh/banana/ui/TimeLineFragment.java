@@ -48,6 +48,7 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
             PostEntry.COLUMN_RETWEETED_ID,
             PostEntry.COLUMN_RETWEETED_USER_SCREENNAME,
             PostEntry.COLUMN_RETWEETED_TEXT,
+            PostEntry.COLUMN_RETWEETED_PICURLS,
             PostEntry.COLUMN_REPOST_COUNT,
             PostEntry.COLUMN_COMMENT_COUNT,
             PostEntry.COLUMN_ATTITUDE_COUNT,
