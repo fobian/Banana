@@ -1,8 +1,12 @@
 package com.chijsh.banana.ui;
 
 import android.app.Fragment;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.app.FragmentManager;
+import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,17 +15,50 @@ import android.view.ViewGroup;
 
 
 import com.chijsh.banana.R;
+import com.chijsh.banana.widget.MultiSwipeRefreshLayout;
+import com.chijsh.banana.widget.tab.SlidingTabLayout;
 
 public class NotificationActivity extends BaseActivity {
 
     ViewPager mViewPager;
+    MyPagerAdapter mPagerAdapter;
     SlidingTabLayout mSlidingTabLayout;
+    MultiSwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
+
+        Toolbar toolbar = getActionBarToolbar();
+        toolbar.setTitle(R.string.title_activity_settings);
+        toolbar.setNavigationIcon(R.drawable.ic_up);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
         mViewPager = (ViewPager) findViewById(R.id.view_pager);
+        mPagerAdapter = new MyPagerAdapter(getFragmentManager());
+        mViewPager.setAdapter(mPagerAdapter);
+
+        // it's PagerAdapter set.
+        mSlidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
+        mSlidingTabLayout.setCustomTabView(R.layout.tab_indicator, android.R.id.text1);
+
+        Resources res = getResources();
+        mSlidingTabLayout.setSelectedIndicatorColors(res.getColor(R.color.tab_selected_strip));
+        mSlidingTabLayout.setDistributeEvenly(true);
+        mSlidingTabLayout.setViewPager(mViewPager);
+
+        mSwipeRefreshLayout = (MultiSwipeRefreshLayout)findViewById(R.id.swipe_refresh_layout);
+        mSwipeRefreshLayout.setColorSchemeColors(
+                getResources().getColor(R.color.refresh_progress_1),
+                getResources().getColor(R.color.refresh_progress_2),
+                getResources().getColor(R.color.refresh_progress_3)
+        );
     }
 
 
@@ -42,6 +79,30 @@ public class NotificationActivity extends BaseActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private class MyPagerAdapter extends FragmentPagerAdapter {
+
+        private final int[] mTitles = {R.string.notif_mention, R.string.notif_comment};
+
+        private MyPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int i) {
+            return new PlaceholderFragment();
+        }
+
+        @Override
+        public int getCount() {
+            return mTitles.length;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return getResources().getString(mTitles[position]);
+        }
     }
 
     /**

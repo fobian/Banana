@@ -19,6 +19,8 @@
     <string name="weibo_auth_success">Auth success</string>
     <string name="weibo_source">From</string>
     <string name="title_activity_settings">Settings</string>
-    <string name="title_activity_notification">Notification</string>
+    <string name="title_activity_notification">Notifications</string>
+    <string name="notif_mention">Mention</string>
+    <string name="notif_comment">Comment</string>
 
 </resources>

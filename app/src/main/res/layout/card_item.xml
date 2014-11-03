@@ -74,7 +74,7 @@
                 android:orientation="horizontal"
                 android:columnCount="3"
                 android:layout_below="@id/user_text"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <ImageView
                     android:layout_margin="2dp"
@@ -127,7 +127,8 @@
                 android:layout_below="@id/thumbnail_pic"
                 android:layout_width="match_parent"
                 android:padding="10dp"
-                android:background="@color/retwitted_background"
+                android:visibility="gone"
+                android:background="@color/background_material_light"
                 android:layout_height="wrap_content">
                 <com.chijsh.banana.widget.LinkEnabledTextView
                     android:id="@+id/retwitt_content"
@@ -148,7 +149,7 @@
                     android:visibility="gone"
                     android:columnCount="3"
                     android:layout_below="@id/retwitt_content"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
                     <ImageView
                         android:scaleType="centerCrop"

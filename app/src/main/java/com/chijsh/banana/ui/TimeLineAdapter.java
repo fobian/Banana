@@ -122,6 +122,8 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
         String retweetPics = cursor.getString(COL_RETWEETED_PICURLS);
 
         if(retwittUserName != null && retwittText != null) {
+            viewHolder.mRetwittLayout.setVisibility(View.VISIBLE);
+            viewHolder.mRetwittTextView.setVisibility(View.VISIBLE);
             retwittUserName  = "@" + retwittUserName;
             viewHolder.mRetwittTextView.setOnTextLinkClickListener(this);
             viewHolder.mRetwittTextView.gatherLinksForText(retwittUserName + ":" + retwittText);
@@ -133,12 +135,13 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
             }
 
 
-            Log.d("lalallaalaalla", retweetPics);
             handlePics(context, viewHolder, true, retweetPics);
 
-            viewHolder.mRetwittLayout.setVisibility(View.VISIBLE);
         } else {
             viewHolder.mRetwittLayout.setVisibility(View.GONE);
+            viewHolder.mRetwittTextView.setVisibility(View.GONE);
+            viewHolder.mRetwittThumbImageView.setVisibility(View.GONE);
+            viewHolder.mRetwittPicsGrid.setVisibility(View.GONE);
         }
 
 
@@ -242,6 +245,7 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
             } else {
                 viewHolder.mRetwittThumbImageView.setVisibility(View.GONE);
                 viewHolder.mRetwittPicsGrid.setVisibility(View.GONE);
+
             }
         } else {
             if (pics != null) {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.chijsh.banana.ui;
+package com.chijsh.banana.widget.tab;
 
 import android.content.Context;
 import android.graphics.Typeface;
