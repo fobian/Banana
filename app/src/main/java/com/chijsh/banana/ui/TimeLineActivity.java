@@ -10,7 +10,7 @@ import com.chijsh.banana.AccessTokenKeeper;
 import com.chijsh.banana.R;
 import com.chijsh.banana.sync.WeiboSyncAdapter;
 
-public class MainActivity extends BaseActivity {
+public class TimeLineActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +43,7 @@ public class MainActivity extends BaseActivity {
 
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
-                    .add(R.id.container, new HomeTimeLineFragment())
+                    .add(R.id.container, new TimeLineFragment())
                     .commit();
         }
 

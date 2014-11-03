@@ -19,5 +19,6 @@
     <color name="refresh_progress_3">@color/theme_primary</color>
 
     <color name="tab_background">@color/theme_primary</color>
+    <color name="retwitted_background">#eeeeee</color>
 
 </resources>

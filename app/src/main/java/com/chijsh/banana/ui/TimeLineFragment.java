@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -23,7 +24,7 @@ import com.chijsh.banana.widget.fab.FloatingActionButton;
 /**
  * Created by chijsh on 10/20/14.
  */
-public class HomeTimeLineFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, SwipeRefreshLayout.OnRefreshListener {
+public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, SwipeRefreshLayout.OnRefreshListener {
     private static final int POST_LOADER = 0;
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -53,7 +54,7 @@ public class HomeTimeLineFragment extends Fragment implements LoaderManager.Load
 
     };
 
-    public HomeTimeLineFragment() {
+    public TimeLineFragment() {
     }
 
     @Override
@@ -79,6 +80,7 @@ public class HomeTimeLineFragment extends Fragment implements LoaderManager.Load
 
         mAdapter = new TimeLineAdapter(getActivity(), null);
         mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
         return rootView;
     }

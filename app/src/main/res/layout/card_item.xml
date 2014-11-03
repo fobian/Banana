@@ -65,8 +65,8 @@
                 android:id="@+id/thumbnail_pic"
                 android:layout_below="@id/user_text"
                 android:scaleType="fitCenter"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
                 android:visibility="gone"/>
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/pic_grid"
@@ -75,6 +75,35 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
             />
+            <RelativeLayout
+                android:id="@+id/retwitt_layout"
+                android:layout_below="@id/thumbnail_pic"
+                android:layout_width="match_parent"
+                android:padding="10dp"
+                android:background="@color/retwitted_background"
+                android:layout_height="wrap_content">
+                <com.chijsh.banana.widget.LinkEnabledTextView
+                    android:id="@+id/retwitt_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="@dimen/text_line_spacing"
+                    android:textAppearance="@style/CardBodyStyle"
+                    />
+                <ImageView
+                    android:id="@+id/retwitt_thumbnail_pic"
+                    android:layout_below="@id/retwitt_content"
+                    android:scaleType="fitCenter"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:visibility="gone"/>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/retwitt_pic_grid"
+                    android:visibility="gone"
+                    android:layout_below="@id/retwitt_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+            </RelativeLayout>
         </RelativeLayout>
         <LinearLayout
             android:paddingTop="20dp"

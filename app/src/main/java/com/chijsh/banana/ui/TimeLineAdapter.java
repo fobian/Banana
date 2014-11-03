@@ -45,8 +45,6 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
     public static final int COL_COMMENT_COUNT = 16;
     public static final int COL_ATTITUDE_COUNT = 17;
 
-    public static PicGridAdapter mGridAdapter;
-
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView mAvatarView;
@@ -56,8 +54,11 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
         public ImageView mThumbImageView;
 
         public RecyclerView mPicGridView;
-        private GridLayoutManager mLayoutManager;
 
+        public View mRetwittView;
+
+        private GridLayoutManager mLayoutManager;
+        public PicGridAdapter mGridAdapter;
 
         public ViewHolder(View itemView, Context context) {
             super(itemView);
@@ -70,7 +71,10 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
             mPicGridView = (RecyclerView)itemView.findViewById(R.id.pic_grid);
             mLayoutManager = new GridLayoutManager(context, 3, LinearLayoutManager.HORIZONTAL, false);
             mPicGridView.setLayoutManager(mLayoutManager);
+            mGridAdapter = new PicGridAdapter(context, null);
             mPicGridView.setAdapter(mGridAdapter);
+
+            mRetwittView = itemView.findViewById(R.id.retwitt_layout);
         }
 
     }
@@ -78,7 +82,7 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
 
     public TimeLineAdapter(Context context, Cursor cursor) {
         super(context, cursor);
-        mGridAdapter = new PicGridAdapter(context, null);
+
     }
 
     @Override
@@ -112,8 +116,8 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
         if (pics != null) {
             if(Utility.strToArray(pics).length > 1) {
                 viewHolder.mPicGridView.setVisibility(View.VISIBLE);
-                mGridAdapter.setDataset(Utility.strToArray(pics));
-                mGridAdapter.notifyDataSetChanged();
+                viewHolder.mGridAdapter.setDataset(Utility.strToArray(pics));
+                viewHolder.mGridAdapter.notifyDataSetChanged();
 
                 viewHolder.mThumbImageView.setVisibility(View.GONE);
             } else {
@@ -129,6 +133,25 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
             viewHolder.mThumbImageView.setVisibility(View.GONE);
             viewHolder.mPicGridView.setVisibility(View.GONE);
         }
+
+        String retwittUserName =  cursor.getString(COL_RETWEETED_USER_SCREENNAME);
+        String retwittText =  cursor.getString(COL_RETWEETED_TEXT);
+
+        if(retwittUserName != null && retwittText != null) {
+            retwittUserName  = "@" + retwittUserName;
+            ((LinkEnabledTextView)viewHolder.mRetwittView.findViewById(R.id.retwitt_content)).setOnTextLinkClickListener(this);
+            ((LinkEnabledTextView)viewHolder.mRetwittView.findViewById(R.id.retwitt_content)).gatherLinksForText(retwittUserName + ":" + retwittText);
+            MovementMethod mm = ((LinkEnabledTextView)viewHolder.mRetwittView.findViewById(R.id.retwitt_content)).getMovementMethod();
+            if ((mm == null) || !(mm instanceof LinkMovementMethod)) {
+                if (((LinkEnabledTextView)viewHolder.mRetwittView.findViewById(R.id.retwitt_content)).getLinksClickable()) {
+                    ((LinkEnabledTextView)viewHolder.mRetwittView.findViewById(R.id.retwitt_content)).setMovementMethod(LinkMovementMethod.getInstance());
+                }
+            }
+            viewHolder.mRetwittView.setVisibility(View.VISIBLE);
+        } else {
+            viewHolder.mRetwittView.setVisibility(View.GONE);
+        }
+
 
     }
 
