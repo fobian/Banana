@@ -19,21 +19,6 @@ public class TimeLineActivity extends BaseActivity {
 
         Toolbar toolbar = getActionBarToolbar();
         toolbar.setTitle(R.string.app_name);
-//        toolbar.inflateMenu(R.menu.main);
-//        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-//            @Override
-//            public boolean onMenuItemClick(MenuItem menuItem) {
-//                int id = menuItem.getItemId();
-//                switch (id) {
-//                    case R.id.action_settings:
-//                        startActivity(new Intent(MainActivity.this, SettingsActivity.class));
-//                        break;
-//                    case R.id.action_me:
-//                        break;
-//                }
-//                return false;
-//            }
-//        });
 
         if(!AccessTokenKeeper.readAccessToken(this).isSessionValid()) {
             startActivity(new Intent(this, LoginActivity.class));

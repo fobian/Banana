@@ -1,4 +1,4 @@
-package com.chijsh.banana;
+package com.chijsh.banana.utils;
 
 import android.os.Build;
 import android.text.format.DateFormat;

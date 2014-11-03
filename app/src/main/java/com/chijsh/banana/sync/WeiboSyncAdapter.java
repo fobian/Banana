@@ -12,18 +12,15 @@ import android.content.SyncRequest;
 import android.content.SyncResult;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.chijsh.banana.AccessTokenKeeper;
 import com.chijsh.banana.R;
-import com.chijsh.banana.Utility;
+import com.chijsh.banana.utils.Utility;
 import com.chijsh.banana.api.WeiboAPI;
 import com.chijsh.banana.data.PostContract.PostEntry;
-import com.chijsh.banana.model.PicUrl;
 import com.chijsh.banana.model.Post;
 import com.chijsh.banana.model.Posts;
 
-import java.util.List;
 import java.util.Vector;
 
 
