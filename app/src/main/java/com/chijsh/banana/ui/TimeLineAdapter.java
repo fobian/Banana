@@ -57,9 +57,6 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
 
         public View mRetwittView;
 
-        private GridLayoutManager mLayoutManager;
-        public PicGridAdapter mGridAdapter;
-
         public ViewHolder(View itemView, Context context) {
             super(itemView);
             mAvatarView = (ImageView)itemView.findViewById(R.id.user_avatar);
@@ -67,12 +64,6 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
             mSubHeadView = (TextView)itemView.findViewById(R.id.user_subhead);
             mTextView = (LinkEnabledTextView)itemView.findViewById(R.id.user_text);
             mThumbImageView = (ImageView)itemView.findViewById(R.id.thumbnail_pic);
-
-            mPicGridView = (RecyclerView)itemView.findViewById(R.id.pic_grid);
-            mLayoutManager = new GridLayoutManager(context, 3, LinearLayoutManager.HORIZONTAL, false);
-            mPicGridView.setLayoutManager(mLayoutManager);
-            mGridAdapter = new PicGridAdapter(context, null);
-            mPicGridView.setAdapter(mGridAdapter);
 
             mRetwittView = itemView.findViewById(R.id.retwitt_layout);
         }
@@ -115,9 +106,6 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
 
         if (pics != null) {
             if(Utility.strToArray(pics).length > 1) {
-                viewHolder.mPicGridView.setVisibility(View.VISIBLE);
-                viewHolder.mGridAdapter.setDataset(Utility.strToArray(pics));
-                viewHolder.mGridAdapter.notifyDataSetChanged();
 
                 viewHolder.mThumbImageView.setVisibility(View.GONE);
             } else {
@@ -126,12 +114,10 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
                         .load(pics)
                         .into(viewHolder.mThumbImageView);
 
-                viewHolder.mPicGridView.setVisibility(View.GONE);
             }
 
         } else {
             viewHolder.mThumbImageView.setVisibility(View.GONE);
-            viewHolder.mPicGridView.setVisibility(View.GONE);
         }
 
         String retwittUserName =  cursor.getString(COL_RETWEETED_USER_SCREENNAME);
