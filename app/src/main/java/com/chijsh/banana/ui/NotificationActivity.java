@@ -18,12 +18,14 @@ import com.chijsh.banana.R;
 import com.chijsh.banana.widget.MultiSwipeRefreshLayout;
 import com.chijsh.banana.widget.tab.SlidingTabLayout;
 
+import butterknife.InjectView;
+
 public class NotificationActivity extends BaseActivity {
 
-    ViewPager mViewPager;
+    @InjectView(R.id.view_pager) ViewPager mViewPager;
     MyPagerAdapter mPagerAdapter;
-    SlidingTabLayout mSlidingTabLayout;
-    MultiSwipeRefreshLayout mSwipeRefreshLayout;
+    @InjectView(R.id.sliding_tabs) SlidingTabLayout mSlidingTabLayout;
+    @InjectView(R.id.swipe_refresh_layout) MultiSwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +42,10 @@ public class NotificationActivity extends BaseActivity {
             }
         });
 
-        mViewPager = (ViewPager) findViewById(R.id.view_pager);
         mPagerAdapter = new MyPagerAdapter(getFragmentManager());
         mViewPager.setAdapter(mPagerAdapter);
 
         // it's PagerAdapter set.
-        mSlidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
         mSlidingTabLayout.setCustomTabView(R.layout.tab_indicator, android.R.id.text1);
 
         Resources res = getResources();
@@ -53,7 +53,6 @@ public class NotificationActivity extends BaseActivity {
         mSlidingTabLayout.setDistributeEvenly(true);
         mSlidingTabLayout.setViewPager(mViewPager);
 
-        mSwipeRefreshLayout = (MultiSwipeRefreshLayout)findViewById(R.id.swipe_refresh_layout);
         mSwipeRefreshLayout.setColorSchemeColors(
                 getResources().getColor(R.color.refresh_progress_1),
                 getResources().getColor(R.color.refresh_progress_2),

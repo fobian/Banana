@@ -18,6 +18,9 @@ import com.chijsh.banana.R;
 import com.chijsh.banana.utils.Utility;
 import com.chijsh.banana.widget.LinkEnabledTextView;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 
 /**
  * Created by chijsh on 10/28/14.
@@ -45,31 +48,21 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public ImageView mAvatarView;
-        public TextView mNameView;
-        public TextView mSubHeadView;
-        public LinkEnabledTextView mTextView;
-        public ImageView mThumbImageView;
-        public GridLayout mPicsGrid;
+        @InjectView(R.id.user_avatar) ImageView mAvatarView;
+        @InjectView(R.id.user_name) TextView mNameView;
+        @InjectView(R.id.user_subhead) TextView mSubHeadView;
+        @InjectView(R.id.user_text) LinkEnabledTextView mTextView;
+        @InjectView(R.id.thumbnail_pic) ImageView mThumbImageView;
+        @InjectView(R.id.pic_grid) GridLayout mPicsGrid;
 
-        public View mRetwittLayout;
-        public LinkEnabledTextView mRetwittTextView;
-        public ImageView mRetwittThumbImageView;
-        public GridLayout mRetwittPicsGrid;
+        @InjectView(R.id.retwitt_layout) View mRetwittLayout;
+        @InjectView(R.id.retwitt_content) LinkEnabledTextView mRetwittTextView;
+        @InjectView(R.id.retwitt_thumbnail_pic) ImageView mRetwittThumbImageView;
+        @InjectView(R.id.retwitt_pic_grid) GridLayout mRetwittPicsGrid;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            mAvatarView = (ImageView)itemView.findViewById(R.id.user_avatar);
-            mNameView = (TextView)itemView.findViewById(R.id.user_name);
-            mSubHeadView = (TextView)itemView.findViewById(R.id.user_subhead);
-            mTextView = (LinkEnabledTextView)itemView.findViewById(R.id.user_text);
-            mThumbImageView = (ImageView)itemView.findViewById(R.id.thumbnail_pic);
-            mPicsGrid = (GridLayout)itemView.findViewById(R.id.pic_grid);
-
-            mRetwittLayout = itemView.findViewById(R.id.retwitt_layout);
-            mRetwittTextView = (LinkEnabledTextView)itemView.findViewById(R.id.retwitt_content);
-            mRetwittThumbImageView = (ImageView)itemView.findViewById(R.id.retwitt_thumbnail_pic);
-            mRetwittPicsGrid = (GridLayout)itemView.findViewById(R.id.retwitt_pic_grid);
+            ButterKnife.inject(this, itemView);
         }
 
     }

@@ -21,17 +21,24 @@ import com.chijsh.banana.data.PostContract.PostEntry;
 import com.chijsh.banana.sync.WeiboSyncAdapter;
 import com.chijsh.banana.widget.fab.FloatingActionButton;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 /**
  * Created by chijsh on 10/20/14.
  */
 public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, SwipeRefreshLayout.OnRefreshListener {
     private static final int POST_LOADER = 0;
 
-    private SwipeRefreshLayout mSwipeRefreshLayout;
-    private RecyclerView mRecyclerView;
     private CursorRecyclerViewAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private FloatingActionButton mFloatingButton;
+
+    @InjectView(R.id.swip_refresh_layout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
+    @InjectView(R.id.time_line)
+    RecyclerView mRecyclerView;
+    @InjectView(R.id.fab)
+    FloatingActionButton mFloatingButton;
 
     private static final String[] POST_COLUMNS = {
             PostEntry.TABLE_NAME + "." + PostEntry._ID,
@@ -63,7 +70,8 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_timeline, container, false);
 
-        mSwipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.swip_refresh_layout);
+        ButterKnife.inject(this, rootView);
+
         mSwipeRefreshLayout.setColorSchemeColors(
                 getResources().getColor(R.color.refresh_progress_1),
                 getResources().getColor(R.color.refresh_progress_2),
@@ -71,9 +79,6 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
                 );
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
-        mRecyclerView = (RecyclerView)rootView.findViewById(R.id.time_line);
-
-        mFloatingButton = (FloatingActionButton)rootView.findViewById(R.id.fab);
         mFloatingButton.attachToRecyclerView(mRecyclerView);
 
         mLayoutManager = new LinearLayoutManager(getActivity());
@@ -90,6 +95,12 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
     public void onRefresh() {
         refreshTimeLine();
     }
+
+//    @Override
+//    public void onDestroyView() {
+//        super.onDestroyView();
+//        ButterKnife.reset(this);
+//    }
 
     private void refreshTimeLine() {
         WeiboSyncAdapter.triggerSyncAdapter(getActivity());

@@ -1,10 +1,8 @@
 package com.chijsh.banana.ui;
 
-import android.content.ComponentName;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
-import android.support.v4.content.IntentCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
