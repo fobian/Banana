@@ -52,7 +52,7 @@ public class SettingsActivity extends BaseActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setupPreferencesScreen();
-            Preference pref = findPreference(PrefUtil.PREF_LOGOUT);
+            Preference pref = findPreference(PrefUtil.PREF_SIGNOUT);
             pref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
