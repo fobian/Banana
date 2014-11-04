@@ -18,6 +18,7 @@ import com.chijsh.banana.R;
 import com.chijsh.banana.widget.MultiSwipeRefreshLayout;
 import com.chijsh.banana.widget.tab.SlidingTabLayout;
 
+import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public class NotificationActivity extends BaseActivity {
@@ -31,6 +32,8 @@ public class NotificationActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
+
+        ButterKnife.inject(this);
 
         Toolbar toolbar = getActionBarToolbar();
         toolbar.setTitle(R.string.title_activity_settings);

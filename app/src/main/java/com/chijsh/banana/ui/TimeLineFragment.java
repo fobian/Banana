@@ -116,8 +116,6 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
         Uri uri = PostEntry.CONTENT_URI;
         String sortOrder = PostEntry._ID + " DESC";
 
-        // Now create and return a CursorLoader that will take care of
-        // creating a Cursor for the data being displayed.
         return new CursorLoader(
                 getActivity(),
                 uri,

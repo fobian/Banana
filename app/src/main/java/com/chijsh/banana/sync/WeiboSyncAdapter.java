@@ -5,23 +5,13 @@ import android.accounts.AccountManager;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.SyncRequest;
 import android.content.SyncResult;
 import android.os.Build;
 import android.os.Bundle;
 
-import com.chijsh.banana.AccessTokenKeeper;
 import com.chijsh.banana.R;
-import com.chijsh.banana.utils.Utility;
-import com.chijsh.banana.api.WeiboAPI;
-import com.chijsh.banana.data.PostContract.PostEntry;
-import com.chijsh.banana.model.Post;
-import com.chijsh.banana.model.Posts;
-
-import java.util.Vector;
 
 
 /**
@@ -34,8 +24,6 @@ public class WeiboSyncAdapter extends AbstractThreadedSyncAdapter {
     public static final int SYNC_INTERVAL = 60 * 180;
     public static final int SYNC_FLEXTIME = SYNC_INTERVAL/3;
 
-    public static final String SINCE_ID_PREF = "since_id_pref";
-
     public WeiboSyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
     }
@@ -43,57 +31,7 @@ public class WeiboSyncAdapter extends AbstractThreadedSyncAdapter {
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
 
-        String token = AccessTokenKeeper.readAccessToken(getContext()).getToken();
-        Posts posts = WeiboAPI.getInstance().getHomeLine(token, readSinceId());
-        Vector<ContentValues> cVVector = new Vector<ContentValues>(posts.size());
-        Post post;
-        for (int i = posts.size() - 1; i >= 0; --i) {
-            ContentValues values = new ContentValues();
-            post = posts.get(i);
-            values.put(PostEntry.COLUMN_CREATED_AT, post.createdAt);
-            values.put(PostEntry.COLUMN_POST_ID, post.idstr);
-            values.put(PostEntry.COLUMN_POST_TEXT, post.text);
-            values.put(PostEntry.COLUMN_POST_SOURCE, post.source);
-            values.put(PostEntry.COLUMN_POST_FAVORITED, post.favorited);
-            if (!post.picUrls.isEmpty())
-                values.put(PostEntry.COLUMN_POST_PICURLS, Utility.urlsToString(post.picUrls));//TODO
-            if (post.geo != null)
-                values.put(PostEntry.COLUMN_POST_GEO, post.geo.toString());
-            values.put(PostEntry.COLUMN_USER_ID, post.user.idstr);
-            values.put(PostEntry.COLUMN_USER_SCREENNAME, post.user.screenName);
-            values.put(PostEntry.COLUMN_USER_AVATAR, post.user.avatarLarge);
-            if (post.retweetedStatus != null) {
-                values.put(PostEntry.COLUMN_RETWEETED_ID, post.retweetedStatus.idstr);
-                if(post.retweetedStatus.user != null)
-                    values.put(PostEntry.COLUMN_RETWEETED_USER_SCREENNAME, post.retweetedStatus.user.screenName);
-                values.put(PostEntry.COLUMN_RETWEETED_TEXT, post.retweetedStatus.text);
-                values.put(PostEntry.COLUMN_RETWEETED_PICURLS, Utility.urlsToString(post.retweetedStatus.picUrls));
-            }
-            values.put(PostEntry.COLUMN_REPOST_COUNT, post.repostsCount);
-            values.put(PostEntry.COLUMN_COMMENT_COUNT, post.commentsCount);
-            values.put(PostEntry.COLUMN_ATTITUDE_COUNT, post.attitudesCount);
-            cVVector.add(values);
-
-            if(i == posts.size() - 1) {
-                writeSinceId(post.idstr);
-            }
-
-        }
-        if (cVVector.size() > 0) {
-            ContentValues[] cvArray = new ContentValues[cVVector.size()];
-            cVVector.toArray(cvArray);
-            getContext().getContentResolver()
-                    .bulkInsert(PostEntry.CONTENT_URI, cvArray);
-
-        }
-
-//        for (int i = 0; i < posts.size(); ++i) {
-//            post = posts.get(i);
-//            if(post.retweetedStatus != null)
-//                Log.d("ssssssssss", post.user.screenName+":"+post.text+"\n"+post.retweetedStatus.user.screenName + ":" + post.retweetedStatus.text + "\n");
-//            else
-//                Log.d("zzzzzzzzzz", post.user.screenName+":"+post.text+"\n"+ "picurls:" + post.picUrls.size() + "\n");
-//        }
+        new SyncHelper(getContext()).timeLineSync();
     }
 
     /**
@@ -187,15 +125,4 @@ public class WeiboSyncAdapter extends AbstractThreadedSyncAdapter {
         getSyncAccount(context);
     }
 
-    private void writeSinceId(String sinceId) {
-        SharedPreferences pref = getContext().getSharedPreferences(SINCE_ID_PREF, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putLong(SINCE_ID_PREF, Long.parseLong(sinceId));
-        editor.commit();
-    }
-
-    private long readSinceId() {
-        SharedPreferences pref = getContext().getSharedPreferences(SINCE_ID_PREF, Context.MODE_PRIVATE);
-        return pref.getLong(SINCE_ID_PREF, 0);
-    }
 }
