@@ -3,6 +3,7 @@ package com.chijsh.banana.ui;
 import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
@@ -23,6 +24,7 @@ import com.chijsh.banana.widget.fab.FloatingActionButton;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 
 /**
  * Created by chijsh on 10/20/14.
@@ -101,6 +103,11 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
 
     private void refreshTimeLine() {
         WeiboSyncAdapter.triggerSyncAdapter(getActivity());
+    }
+
+    @OnClick(R.id.fab)
+    public void popPostDialog() {
+        startActivity(new Intent(getActivity(), PostDialogActivity.class));
     }
 
     @Override

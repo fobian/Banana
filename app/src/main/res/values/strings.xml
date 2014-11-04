@@ -22,8 +22,8 @@
     <string name="title_activity_notification">Notifications</string>
     <string name="notif_mention">Mention</string>
     <string name="notif_comment">Comment</string>
-
     <string name="pref_signout">Sign out</string>
     <string name="pref_account">Account</string>
+    <string name="title_activity_post_dialog">PostDialog</string>
 
 </resources>
