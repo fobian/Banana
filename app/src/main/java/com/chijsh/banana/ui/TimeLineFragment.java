@@ -33,12 +33,9 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
     private CursorRecyclerViewAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    @InjectView(R.id.swip_refresh_layout)
-    SwipeRefreshLayout mSwipeRefreshLayout;
-    @InjectView(R.id.time_line)
-    RecyclerView mRecyclerView;
-    @InjectView(R.id.fab)
-    FloatingActionButton mFloatingButton;
+    @InjectView(R.id.swip_refresh_layout) SwipeRefreshLayout mSwipeRefreshLayout;
+    @InjectView(R.id.time_line) RecyclerView mRecyclerView;
+    @InjectView(R.id.fab) FloatingActionButton mFloatingButton;
 
     private static final String[] POST_COLUMNS = {
             PostEntry.TABLE_NAME + "." + PostEntry._ID,
