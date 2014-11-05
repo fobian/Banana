@@ -69,9 +69,9 @@
             android:parentActivityName=".ui.TimeLineActivity" >
         </activity>
         <activity
-            android:name=".ui.PostDialogActivity"
-            android:theme="@android:style/Theme.Holo.Light.Dialog"
-            android:label="@string/title_activity_post_dialog" >
+            android:name=".ui.PostActivity"
+            android:label="@string/title_activity_post"
+            android:windowSoftInputMode="stateVisible|adjustResize">
         </activity>
     </application>
 

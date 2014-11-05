@@ -24,6 +24,6 @@
     <string name="notif_comment">Comment</string>
     <string name="pref_signout">Sign out</string>
     <string name="pref_account">Account</string>
-    <string name="title_activity_post_dialog">PostDialog</string>
+    <string name="title_activity_post">New Weibo</string>
 
 </resources>

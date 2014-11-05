@@ -25,6 +25,4 @@
 
     <dimen name="headerbar_elevation">4dp</dimen>
 
-    <dimen name="post_dialog_footer_margin">20dp</dimen>
-    <dimen name="post_dialog_avatar_size">45dp</dimen>
 </resources>

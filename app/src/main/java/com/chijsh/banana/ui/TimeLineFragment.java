@@ -107,7 +107,7 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
 
     @OnClick(R.id.fab)
     public void popPostDialog() {
-        startActivity(new Intent(getActivity(), PostDialogActivity.class));
+        startActivity(new Intent(getActivity(), PostActivity.class));
     }
 
     @Override
