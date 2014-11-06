@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/background_material_light"
+    android:padding="10dp">
+    <com.chijsh.banana.widget.LinkEnabledTextView
+        android:id="@+id/retwitt_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="@dimen/text_line_spacing"
+        android:textAppearance="@style/CardBodyStyle" />
+
+    <ViewStub
+        android:id="@+id/retweet_pics_stub"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/retwitt_content"
+        android:layout="@layout/tweet_pics_layout"
+        android:inflatedId="@+id/tweet_pics_layout"
+        />
+
+</RelativeLayout>

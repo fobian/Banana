@@ -71,27 +71,27 @@ public class SyncHelper {
         }
     }
 
-    public void userInfoSync() {
+    public void syncUserInfo() {
 
     }
 
-    public void myProfileSync() {
+    public void syncProfile() {
 
     }
 
-    public void mentionSync() {
+    public void syncMention() {
 
     }
 
-    public void commentSync() {
+    public void syncComment() {
 
     }
 
-    public void postWeiboSync() {
+    public void syncPost() {
 
     }
 
-    public void likePostSync() {
+    public void syncLike() {
 
     }
 

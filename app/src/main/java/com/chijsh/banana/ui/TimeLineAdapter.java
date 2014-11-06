@@ -8,6 +8,7 @@ import android.text.method.LinkMovementMethod;
 import android.text.method.MovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewStub;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -52,17 +53,36 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
         @InjectView(R.id.user_name) TextView mNameView;
         @InjectView(R.id.user_subhead) TextView mSubHeadView;
         @InjectView(R.id.user_text) LinkEnabledTextView mTextView;
-        @InjectView(R.id.thumbnail_pic) ImageView mThumbImageView;
-        @InjectView(R.id.pic_grid) GridLayout mPicsGrid;
 
-        @InjectView(R.id.retwitt_layout) View mRetwittLayout;
-        @InjectView(R.id.retwitt_content) LinkEnabledTextView mRetwittTextView;
-        @InjectView(R.id.retwitt_thumbnail_pic) ImageView mRetwittThumbImageView;
-        @InjectView(R.id.retwitt_pic_grid) GridLayout mRetwittPicsGrid;
+        @InjectView(R.id.tweet_pics_stub) ViewStub mTweetPicsStub;
+        View mTweetPics;
+        ImageView mThumbImageView;
+        GridLayout mPicsGrid;
+
+        @InjectView(R.id.retweet_stub) ViewStub mRetweetStub;
+        View mRetweetLayout;
+        LinkEnabledTextView mRetwittTextView;
+        ViewStub mRetweetPicsStub;
+        View mRetweetPics;
+        ImageView mRetwittThumbImageView;
+        GridLayout mRetwittPicsGrid;
 
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.inject(this, itemView);
+            mRetweetLayout = mRetweetStub.inflate();
+            mRetwittTextView = (LinkEnabledTextView)mRetweetLayout.findViewById(R.id.retwitt_content);
+
+            mRetweetPicsStub = (ViewStub)mRetweetLayout.findViewById(R.id.retweet_pics_stub);
+            mRetweetPics = mRetweetPicsStub.inflate();
+            mRetwittThumbImageView = (ImageView)mRetweetPics.findViewById(R.id.thumbnail_pic);
+            mRetwittPicsGrid = (GridLayout)mRetweetPics.findViewById(R.id.pic_grid);
+
+
+            mTweetPics = mTweetPicsStub.inflate();
+            mThumbImageView = (ImageView)mTweetPics.findViewById(R.id.thumbnail_pic);
+            mPicsGrid = (GridLayout)mTweetPics.findViewById(R.id.pic_grid);
+
         }
 
     }
@@ -109,7 +129,7 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
         String retweetPics = cursor.getString(COL_RETWEETED_PICURLS);
 
         if(retwittUserName != null && retwittText != null) {
-            viewHolder.mRetwittLayout.setVisibility(View.VISIBLE);
+            viewHolder.mRetweetStub.setVisibility(View.VISIBLE);
             viewHolder.mRetwittTextView.setVisibility(View.VISIBLE);
             retwittUserName  = "@" + retwittUserName;
             viewHolder.mRetwittTextView.setOnTextLinkClickListener(this);
@@ -125,10 +145,10 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
             handlePics(context, viewHolder, true, retweetPics);
 
         } else {
-            viewHolder.mRetwittLayout.setVisibility(View.GONE);
-            viewHolder.mRetwittTextView.setVisibility(View.GONE);
-            viewHolder.mRetwittThumbImageView.setVisibility(View.GONE);
-            viewHolder.mRetwittPicsGrid.setVisibility(View.GONE);
+            viewHolder.mRetweetStub.setVisibility(View.GONE);
+//            viewHolder.mRetwittTextView.setVisibility(View.GONE);
+//            viewHolder.mRetwittThumbImageView.setVisibility(View.GONE);
+//            viewHolder.mRetwittPicsGrid.setVisibility(View.GONE);
         }
 
 
@@ -205,6 +225,7 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
 
         if(isRetwitt) {
             if (pics != null) {
+                viewHolder.mRetweetPicsStub.setVisibility(View.VISIBLE);
                 String[] picArray = Utility.strToArray(pics);
                 int size = picArray.length;
                 if(size > 1) {
@@ -230,12 +251,14 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
                 }
 
             } else {
-                viewHolder.mRetwittThumbImageView.setVisibility(View.GONE);
-                viewHolder.mRetwittPicsGrid.setVisibility(View.GONE);
+                viewHolder.mRetweetPicsStub.setVisibility(View.GONE);
+//                viewHolder.mRetwittThumbImageView.setVisibility(View.GONE);
+//                viewHolder.mRetwittPicsGrid.setVisibility(View.GONE);
 
             }
         } else {
             if (pics != null) {
+                viewHolder.mTweetPicsStub.setVisibility(View.VISIBLE);
                 String[] picArray = Utility.strToArray(pics);
                 int size = picArray.length;
                 if(size > 1) {
@@ -261,8 +284,9 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
                 }
 
             } else {
-                viewHolder.mThumbImageView.setVisibility(View.GONE);
-                viewHolder.mPicsGrid.setVisibility(View.GONE);
+                viewHolder.mTweetPicsStub.setVisibility(View.GONE);
+//                viewHolder.mThumbImageView.setVisibility(View.GONE);
+//                viewHolder.mPicsGrid.setVisibility(View.GONE);
             }
         }
     }
