@@ -74,7 +74,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout="@layout/retweet_layout"
-                android:layout_below="@id/tweet_pics_stub"
+                android:layout_below="@id/user_text"
                 android:inflatedId="@+id/retweet_layout"/>
         </RelativeLayout>
         <LinearLayout
