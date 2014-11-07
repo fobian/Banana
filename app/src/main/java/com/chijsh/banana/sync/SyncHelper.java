@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SyncResult;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.chijsh.banana.AccessTokenKeeper;
 import com.chijsh.banana.api.WeiboAPI;
@@ -22,6 +23,8 @@ import java.util.Vector;
  */
 public class SyncHelper {
 
+    private static final String TAG = SyncHelper.class.getSimpleName();
+
     private Context mContext;
 
     public SyncHelper(Context context) {
@@ -29,7 +32,28 @@ public class SyncHelper {
     }
 
     public void performSync(SyncResult syncResult, Account account, Bundle extras) {
-        syncTimeLine();
+
+        try {
+            syncTimeLine();
+            syncAccountInfo();
+        } catch (AuthException ex) {
+            syncResult.stats.numAuthExceptions++;
+
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+            Log.d(TAG, "Error performing remote sync.");
+            increaseIoExceptions(syncResult);
+        }
+
+    }
+
+    private void increaseIoExceptions(SyncResult syncResult) {
+        if (syncResult != null && syncResult.stats != null) {
+            ++syncResult.stats.numIoExceptions;
+        }
+    }
+
+    public static class AuthException extends RuntimeException {
     }
 
     private void syncTimeLine() {
@@ -69,6 +93,13 @@ public class SyncHelper {
             mContext.getContentResolver()
                     .bulkInsert(PostContract.UserEntry.CONTENT_URI, userArray);
         }
+    }
+
+    private void syncAccountInfo() {
+        String token = AccessTokenKeeper.readAccessToken(mContext).getToken();
+        String uid = AccessTokenKeeper.readAccessToken(mContext).getUid();
+        User account = WeiboAPI.getInstance().getUserInfo(token, Long.parseLong(uid));
+        mContext.getContentResolver().insert(PostContract.AccountEntry.CONTENT_URI, createUserValues(account));
     }
 
     private ContentValues createPostValues(Post post) {

@@ -21,6 +21,9 @@ public class PostProvider extends ContentProvider {
     private static final int USER = 200;
     private static final int USER_ID = 201;
 
+    private static final int ACCOUNT = 300;
+    private static final int ACCOUNT_ID = 301;
+
     private static final SQLiteQueryBuilder sPostByUserIdQueryBuilder;
 
     static {
@@ -70,6 +73,9 @@ public class PostProvider extends ContentProvider {
 
         matcher.addURI(authority, PostContract.PATH_USER, USER);
         matcher.addURI(authority, PostContract.PATH_USER + "/#", USER_ID);
+
+        matcher.addURI(authority, PostContract.PATH_ACCOUNT, ACCOUNT);
+        matcher.addURI(authority, PostContract.PATH_ACCOUNT + "/#", ACCOUNT_ID);
         return matcher;
     }
 
@@ -94,6 +100,10 @@ public class PostProvider extends ContentProvider {
             case USER:
                 return PostContract.UserEntry.CONTENT_TYPE;
             case USER_ID:
+                return PostContract.UserEntry.CONTENT_ITEM_TYPE;
+            case ACCOUNT:
+                return PostContract.UserEntry.CONTENT_TYPE;
+            case ACCOUNT_ID:
                 return PostContract.UserEntry.CONTENT_ITEM_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -123,6 +133,14 @@ public class PostProvider extends ContentProvider {
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 break;
             }
+            case ACCOUNT: {
+                long _id = db.insert(PostContract.AccountEntry.TABLE_NAME, null, values);
+                if ( _id > 0 )
+                    returnUri = PostContract.AccountEntry.buildAccountUri(_id);
+                else
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                break;
+            }
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -143,6 +161,10 @@ public class PostProvider extends ContentProvider {
             case USER:
                 rowsDeleted = db.delete(
                         PostContract.UserEntry.TABLE_NAME, selection, selectionArgs);
+                break;
+            case ACCOUNT:
+                rowsDeleted = db.delete(
+                        PostContract.AccountEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -167,6 +189,10 @@ public class PostProvider extends ContentProvider {
                 break;
             case USER:
                 rowsUpdated = db.update(PostContract.UserEntry.TABLE_NAME, values, selection,
+                        selectionArgs);
+                break;
+            case ACCOUNT:
+                rowsUpdated = db.update(PostContract.AccountEntry.TABLE_NAME, values, selection,
                         selectionArgs);
                 break;
             default:
@@ -227,6 +253,30 @@ public class PostProvider extends ContentProvider {
                         PostContract.UserEntry.TABLE_NAME,
                         projection,
                         PostContract.UserEntry._ID + " = '" + ContentUris.parseId(uri) + "'",
+                        null,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            }
+            case ACCOUNT: {
+                retCursor = mDbHelper.getReadableDatabase().query(
+                        PostContract.AccountEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            }
+            case ACCOUNT_ID: {
+                retCursor = mDbHelper.getReadableDatabase().query(
+                        PostContract.AccountEntry.TABLE_NAME,
+                        projection,
+                        PostContract.AccountEntry._ID + " = '" + ContentUris.parseId(uri) + "'",
                         null,
                         null,
                         null,

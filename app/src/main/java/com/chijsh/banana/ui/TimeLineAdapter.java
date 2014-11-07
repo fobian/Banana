@@ -105,6 +105,7 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
     public void bindView(ViewHolder viewHolder, Context context, Cursor cursor) {
         Glide.with(context)
                 .load(cursor.getString(COL_USER_AVATAR))
+                .thumbnail(0.5f)
                 .placeholder(R.drawable.user_avatar_empty)
                 .into(viewHolder.mAvatarView);
         viewHolder.mNameView.setText(cursor.getString(COL_USER_SCREENNAME));

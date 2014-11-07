@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import com.chijsh.banana.data.PostContract.PostEntry;
 import com.chijsh.banana.data.PostContract.UserEntry;
-
+import com.chijsh.banana.data.PostContract.AccountEntry;
 /**
  * Created by chijsh on 10/22/14.
  */
@@ -72,14 +72,40 @@ public class PostDbHelper extends SQLiteOpenHelper {
 
                 "UNIQUE (" + PostEntry.COLUMN_POST_ID + ") ON CONFLICT REPLACE);";
 
+        final String SQL_CREATE_ACCOUNT_TABLE = "CREATE TABLE " + AccountEntry.TABLE_NAME + " (" +
+
+                AccountEntry._ID + " INTEGER PRIMARY KEY," +
+                AccountEntry.COLUMN_USER_ID + " TEXT UNIQUE NOT NULL, " +
+                AccountEntry.COLUMN_SCREEN_NAME + " TEXT NOT NULL, " +
+                AccountEntry.COLUMN_PROVINCE + " TEXT, " +
+                AccountEntry.COLUMN_CITY + " TEXT, " +
+                AccountEntry.COLUMN_LOCATION + " TEXT, " +
+                AccountEntry.COLUMN_DESCRIPTION + " TEXT, " +
+                AccountEntry.COLUMN_URL + " TEXT, " +
+                AccountEntry.COLUMN_PROFILE_URL + " TEXT, " +
+                AccountEntry.COLUMN_GENDER + " TEXT, " +
+                AccountEntry.COLUMN_FOLLOWERS_COUNT + " INTEGER NOT NULL, " +
+                AccountEntry.COLUMN_FRIENDS_COUNT + " INTEGER NOT NULL, " +
+                AccountEntry.COLUMN_STATUSES_COUNT + " INTEGER NOT NULL, " +
+                AccountEntry.COLUMN_FAVOURITES_COUNT + " INTEGER NOT NULL, " +
+                AccountEntry.COLUMN_CREATED_AT + " TEXT NOT NULL, " +
+                AccountEntry.COLUMN_FOLLOWING + " INTEGER NOT NULL, " +
+                AccountEntry.COLUMN_AVATAR_LARGE + " TEXT, " +
+                AccountEntry.COLUMN_FOLLOW_ME + " INTEGER NOT NULL, " +
+
+                "UNIQUE (" + AccountEntry.COLUMN_USER_ID +") ON CONFLICT IGNORE"+
+                " );";
+
         db.execSQL(SQL_CREATE_USER_TABLE);
         db.execSQL(SQL_CREATE_POST_TABLE);
+        db.execSQL(SQL_CREATE_ACCOUNT_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + PostEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + UserEntry.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + AccountEntry.TABLE_NAME);
         onCreate(db);
     }
 }

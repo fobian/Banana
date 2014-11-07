@@ -13,6 +13,7 @@ public class PostContract {
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
     public static final String PATH_POST = "post";
     public static final String PATH_USER = "user";
+    public static final String PATH_ACCOUNT = "account";
 
     public static final class PostEntry implements BaseColumns {
 
@@ -62,17 +63,7 @@ public class PostContract {
 
     }
 
-    public static final class UserEntry implements BaseColumns {
-
-        public static final Uri CONTENT_URI =
-                BASE_CONTENT_URI.buildUpon().appendPath(PATH_USER).build();
-
-        public static final String CONTENT_TYPE =
-                "vnd.android.cursor.dir/" + CONTENT_AUTHORITY + "/" + PATH_USER;
-        public static final String CONTENT_ITEM_TYPE =
-                "vnd.android.cursor.item/" + CONTENT_AUTHORITY + "/" + PATH_USER;
-
-        public static final String TABLE_NAME = "user";
+    interface BaseUserColumns extends BaseColumns {
 
         public static final String COLUMN_USER_ID = "idstr";
         public static final String COLUMN_SCREEN_NAME = "screen_name";
@@ -96,8 +87,40 @@ public class PostContract {
         public static final String COLUMN_AVATAR_LARGE = "avatar_large";
         public static final String COLUMN_FOLLOW_ME = "follow_me";
 
+    }
+
+    public static final class UserEntry implements BaseUserColumns {
+
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_USER).build();
+
+        public static final String CONTENT_TYPE =
+                "vnd.android.cursor.dir/" + CONTENT_AUTHORITY + "/" + PATH_USER;
+        public static final String CONTENT_ITEM_TYPE =
+                "vnd.android.cursor.item/" + CONTENT_AUTHORITY + "/" + PATH_USER;
+
+        public static final String TABLE_NAME = "user";
+
         public static Uri buildUserUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
     }
+
+    public static final class AccountEntry implements BaseUserColumns {
+
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_ACCOUNT).build();
+
+        public static final String CONTENT_TYPE =
+                "vnd.android.cursor.dir/" + CONTENT_AUTHORITY + "/" + PATH_ACCOUNT;
+        public static final String CONTENT_ITEM_TYPE =
+                "vnd.android.cursor.item/" + CONTENT_AUTHORITY + "/" + PATH_ACCOUNT;
+
+        public static final String TABLE_NAME = "account";
+
+        public static Uri buildAccountUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+    }
+
 }

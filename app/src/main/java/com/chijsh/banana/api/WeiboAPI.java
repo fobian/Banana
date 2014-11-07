@@ -2,6 +2,7 @@ package com.chijsh.banana.api;
 
 import com.chijsh.banana.Config;
 import com.chijsh.banana.model.Posts;
+import com.chijsh.banana.model.User;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -24,7 +25,11 @@ public class WeiboAPI {
         @GET("/statuses/friends_timeline.json")
         Posts getHomeTimeLine(@Query("access_token") String token, @Query("since_id") long sinceId);
 
+        @GET("/users/show.json")
+        User getUserInfo(@Query("access_token") String token, @Query("screen_name") String screenName);
 
+        @GET("/users/show.json")
+        User getUserInfo(@Query("access_token") String token, @Query("uid") long uid);
     }
     private WeiboAPI() {
         Gson gson = new GsonBuilder()
@@ -39,6 +44,7 @@ public class WeiboAPI {
 
         weibo = restAdapter.create(Weibo.class);
     }
+
     public static WeiboAPI getInstance() {
         if(sAPI == null) {
             sAPI = new WeiboAPI();
@@ -50,6 +56,14 @@ public class WeiboAPI {
     public Posts getHomeLine(String token, long sinceId) {
         return weibo.getHomeTimeLine(token, sinceId);
 
+    }
+
+    public User getUserInfo(String token, String screenName) {
+        return weibo.getUserInfo(token, screenName);
+    }
+
+    public User getUserInfo(String token, long uid) {
+        return weibo.getUserInfo(token, uid);
     }
 
 
