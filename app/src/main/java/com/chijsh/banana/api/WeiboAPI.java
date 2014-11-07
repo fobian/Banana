@@ -1,18 +1,10 @@
 package com.chijsh.banana.api;
 
-
-
 import com.chijsh.banana.Config;
-import com.chijsh.banana.model.MyDeserializer;
-import com.chijsh.banana.model.Post;
 import com.chijsh.banana.model.Posts;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-
-import java.util.ArrayList;
-import java.util.List;
 
 import retrofit.RestAdapter;
 import retrofit.converter.GsonConverter;

@@ -3,7 +3,6 @@ package com.chijsh.banana.sync;
 import android.accounts.Account;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.SyncResult;
 import android.os.Bundle;
 
@@ -12,6 +11,7 @@ import com.chijsh.banana.api.WeiboAPI;
 import com.chijsh.banana.data.PostContract;
 import com.chijsh.banana.model.Post;
 import com.chijsh.banana.model.Posts;
+import com.chijsh.banana.utils.PrefUtil;
 import com.chijsh.banana.utils.Utility;
 
 import java.util.Vector;
@@ -21,7 +21,6 @@ import java.util.Vector;
  */
 public class SyncHelper {
 
-    public static final String SINCE_ID_PREF = "since_id_pref";
     private Context mContext;
 
     public SyncHelper(Context context) {
@@ -34,7 +33,7 @@ public class SyncHelper {
 
     private void timeLineSync() {
         String token = AccessTokenKeeper.readAccessToken(mContext).getToken();
-        Posts posts = WeiboAPI.getInstance().getHomeLine(token, readSinceId());
+        Posts posts = WeiboAPI.getInstance().getHomeLine(token, PrefUtil.readSinceId(mContext));
         Vector<ContentValues> cVVector = new Vector<ContentValues>(posts.size());
         Post post;
         for (int i = posts.size() - 1; i >= 0; --i) {
@@ -65,7 +64,7 @@ public class SyncHelper {
             cVVector.add(values);
 
             if(i == posts.size() - 1) {
-                writeSinceId(post.idstr);
+                PrefUtil.writeSinceId(mContext, post.idstr);
             }
 
         }
@@ -78,39 +77,4 @@ public class SyncHelper {
         }
     }
 
-    public void syncUserInfo() {
-
-    }
-
-    public void syncProfile() {
-
-    }
-
-    public void syncMention() {
-
-    }
-
-    public void syncComment() {
-
-    }
-
-    public void syncPost() {
-
-    }
-
-    public void syncLike() {
-
-    }
-
-    private void writeSinceId(String sinceId) {
-        SharedPreferences pref = mContext.getSharedPreferences(SINCE_ID_PREF, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putLong(SINCE_ID_PREF, Long.parseLong(sinceId));
-        editor.commit();
-    }
-
-    private long readSinceId() {
-        SharedPreferences pref = mContext.getSharedPreferences(SINCE_ID_PREF, Context.MODE_PRIVATE);
-        return pref.getLong(SINCE_ID_PREF, 0);
-    }
 }
