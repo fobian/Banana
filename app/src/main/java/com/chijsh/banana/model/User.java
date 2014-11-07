@@ -6,14 +6,12 @@ package com.chijsh.banana.model;
 public class User {
     public String idstr;
     public String screenName;
-    public String name;
     public String province;
     public String city;
     public String location;
     public String description;
     public String url;
     public String profileImageUrl;
-    public String domain;
     public String gender;
     public int followersCount;
     public int friendsCount;
@@ -21,14 +19,19 @@ public class User {
     public int favouritesCount;
     public String createdAt;
     public boolean following;
-    public boolean allowAllActMsg;
-    public String remark;
-    public boolean geoEnabled;
-    public boolean verified;
-    public boolean allowAllComment;
     public String avatarLarge;
-    public String verifiedReason;
     public boolean followMe;
-    public int onlineStatus;
-    public int biFollowersCount;
+
+    @Override
+    public boolean equals(Object object) {
+        if(object instanceof User) {
+            User other = (User)object;
+            if(idstr.equals(other.idstr)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
+    }
 }

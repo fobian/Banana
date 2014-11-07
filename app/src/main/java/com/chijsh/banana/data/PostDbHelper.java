@@ -32,14 +32,15 @@ public class PostDbHelper extends SQLiteOpenHelper {
                 UserEntry.COLUMN_DESCRIPTION + " TEXT, " +
                 UserEntry.COLUMN_URL + " TEXT, " +
                 UserEntry.COLUMN_PROFILE_URL + " TEXT, " +
-                UserEntry.COLUMN_DOMAIN + " TEXT, " +
                 UserEntry.COLUMN_GENDER + " TEXT, " +
                 UserEntry.COLUMN_FOLLOWERS_COUNT + " INTEGER NOT NULL, " +
                 UserEntry.COLUMN_FRIENDS_COUNT + " INTEGER NOT NULL, " +
                 UserEntry.COLUMN_STATUSES_COUNT + " INTEGER NOT NULL, " +
                 UserEntry.COLUMN_FAVOURITES_COUNT + " INTEGER NOT NULL, " +
                 UserEntry.COLUMN_CREATED_AT + " TEXT NOT NULL, " +
+                UserEntry.COLUMN_FOLLOWING + " INTEGER NOT NULL, " +
                 UserEntry.COLUMN_AVATAR_LARGE + " TEXT, " +
+                UserEntry.COLUMN_FOLLOW_ME + " INTEGER NOT NULL, " +
 
                 "UNIQUE (" + UserEntry.COLUMN_USER_ID +") ON CONFLICT IGNORE"+
                 " );";

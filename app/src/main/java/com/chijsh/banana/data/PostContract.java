@@ -84,7 +84,6 @@ public class PostContract {
         public static final String COLUMN_DESCRIPTION = "description";
         public static final String COLUMN_URL = "url";
         public static final String COLUMN_PROFILE_URL = "profile_url";
-        public static final String COLUMN_DOMAIN = "domain";
         public static final String COLUMN_GENDER = "gender";
 
         public static final String COLUMN_FOLLOWERS_COUNT= "followers_count";
@@ -93,7 +92,9 @@ public class PostContract {
         public static final String COLUMN_FAVOURITES_COUNT= "favourites_count";
 
         public static final String COLUMN_CREATED_AT = "created_at";
+        public static final String COLUMN_FOLLOWING = "following";
         public static final String COLUMN_AVATAR_LARGE = "avatar_large";
+        public static final String COLUMN_FOLLOW_ME = "follow_me";
 
         public static Uri buildUserUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
