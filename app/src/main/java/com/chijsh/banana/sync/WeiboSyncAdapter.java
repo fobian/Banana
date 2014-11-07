@@ -30,8 +30,7 @@ public class WeiboSyncAdapter extends AbstractThreadedSyncAdapter {
 
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
-
-        new SyncHelper(getContext()).timeLineSync();
+        new SyncHelper(getContext()).performSync(syncResult, account, extras);
     }
 
     /**

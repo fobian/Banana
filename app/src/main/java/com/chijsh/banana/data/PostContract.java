@@ -52,6 +52,14 @@ public class PostContract {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
 
+        public static Uri buildPostByUserIdUri(String userId) {
+            return CONTENT_URI.buildUpon().appendPath(userId).build();
+        }
+
+        public static String getUserIdFromUri(Uri uri) {
+            return uri.getPathSegments().get(1);
+        }
+
     }
 
     public static final class UserEntry implements BaseColumns {

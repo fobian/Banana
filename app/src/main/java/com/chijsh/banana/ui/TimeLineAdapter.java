@@ -235,6 +235,7 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
                         view = (ImageView)viewHolder.mRetwittPicsGrid.getChildAt(i);
                         Glide.with(context)
                                 .load(picArray[i])
+                                .thumbnail(0.1f)
                                 .into(view);
                     }
 
@@ -246,6 +247,7 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
                     viewHolder.mRetwittPicsGrid.setVisibility(View.GONE);
                     Glide.with(context)
                             .load(pics)
+                            .thumbnail(0.1f)
                             .into(viewHolder.mRetwittThumbImageView);
 
                 }
@@ -268,6 +270,7 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
                         view = (ImageView)viewHolder.mPicsGrid.getChildAt(i);
                         Glide.with(context)
                                 .load(picArray[i])
+                                .thumbnail(0.1f)
                                 .into(view);
                     }
 
@@ -279,6 +282,7 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
                     viewHolder.mPicsGrid.setVisibility(View.GONE);
                     Glide.with(context)
                             .load(pics)
+                            .thumbnail(0.1f)
                             .into(viewHolder.mThumbImageView);
 
                 }

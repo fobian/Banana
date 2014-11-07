@@ -1,8 +1,11 @@
 package com.chijsh.banana.sync;
 
+import android.accounts.Account;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.SyncResult;
+import android.os.Bundle;
 
 import com.chijsh.banana.AccessTokenKeeper;
 import com.chijsh.banana.api.WeiboAPI;
@@ -25,7 +28,11 @@ public class SyncHelper {
         mContext = context;
     }
 
-    public void timeLineSync() {
+    public void performSync(SyncResult syncResult, Account account, Bundle extras) {
+        timeLineSync();
+    }
+
+    private void timeLineSync() {
         String token = AccessTokenKeeper.readAccessToken(mContext).getToken();
         Posts posts = WeiboAPI.getInstance().getHomeLine(token, readSinceId());
         Vector<ContentValues> cVVector = new Vector<ContentValues>(posts.size());
