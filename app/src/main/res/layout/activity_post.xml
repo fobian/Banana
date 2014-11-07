@@ -47,6 +47,7 @@
         android:gravity="left|top"
         android:layout_below="@id/headerbar"
         android:textCursorDrawable="@drawable/edit_cursor"
+        android:hint="@string/weibo_edit_hint"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
     <RelativeLayout

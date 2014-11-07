@@ -19,6 +19,11 @@
 -dontwarn butterknife.internal.**
 -keep class **$$ViewInjector { *; }
 -keepnames class * { @butterknife.InjectView *;}
+
 -assumenosideeffects class android.util.Log {
     public static *** d(...);
+}
+
+-keepclassmembers class ** {
+    public void onEvent*(**);
 }

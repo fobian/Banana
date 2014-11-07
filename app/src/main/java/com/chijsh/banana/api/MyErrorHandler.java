@@ -1,7 +1,6 @@
 package com.chijsh.banana.api;
 
 import android.util.Log;
-import android.view.KeyCharacterMap;
 
 import retrofit.ErrorHandler;
 import retrofit.RetrofitError;

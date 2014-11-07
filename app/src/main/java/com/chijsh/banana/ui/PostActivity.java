@@ -14,17 +14,20 @@ import android.support.v7.widget.Toolbar;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.chijsh.banana.AccessTokenKeeper;
 import com.chijsh.banana.R;
 import com.chijsh.banana.data.PostContract.AccountEntry;
+import com.chijsh.banana.event.MessageEvent;
 import com.chijsh.banana.service.PostWeiboService;
 import com.chijsh.banana.widget.BezelImageView;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 
 public class PostActivity extends ActionBarActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -74,6 +77,22 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
         ButterKnife.inject(this);
 
         getLoaderManager().initLoader(USER_LOADER, null, this);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    public void onEventMainThread(MessageEvent event){
+        Toast.makeText(this, event.getMessage().toString(), Toast.LENGTH_SHORT).show();
     }
 
     @OnClick(R.id.post_camera)

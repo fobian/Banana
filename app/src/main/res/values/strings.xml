@@ -24,8 +24,10 @@
     <string name="notif_comment">Comment</string>
     <string name="pref_signout">Sign out</string>
     <string name="pref_account">Account</string>
+    <!-- Post Weibo Activity-->
     <string name="title_activity_post">New Weibo</string>
-
     <string name="title_add_picture">Add Picture</string>
+    <string name="weibo_edit_hint">What\'s on your mind?</string>
+    <string name="weibo_sent_success">Weibo sent successfully</string>
 
 </resources>
