@@ -106,7 +106,7 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     @OnClick(R.id.fab)
-    public void popPostDialog() {
+    public void postNewWeibo() {
         startActivity(new Intent(getActivity(), PostActivity.class));
     }
 

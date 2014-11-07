@@ -102,9 +102,9 @@ public class PostProvider extends ContentProvider {
             case USER_ID:
                 return PostContract.UserEntry.CONTENT_ITEM_TYPE;
             case ACCOUNT:
-                return PostContract.UserEntry.CONTENT_TYPE;
+                return PostContract.AccountEntry.CONTENT_TYPE;
             case ACCOUNT_ID:
-                return PostContract.UserEntry.CONTENT_ITEM_TYPE;
+                return PostContract.AccountEntry.CONTENT_ITEM_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
