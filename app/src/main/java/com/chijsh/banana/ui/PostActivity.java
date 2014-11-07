@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.chijsh.banana.AccessTokenKeeper;
 import com.chijsh.banana.R;
 import com.chijsh.banana.data.PostContract.AccountEntry;
+import com.chijsh.banana.service.PostWeiboService;
 import com.chijsh.banana.widget.BezelImageView;
 
 import butterknife.ButterKnife;
@@ -28,7 +29,9 @@ import butterknife.OnClick;
 public class PostActivity extends ActionBarActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int USER_LOADER = 0;
+
     public static final int PICK_OR_TAKE_PICTURE = 42;
+    public static final String POST_WEIBO_EXTRA = "post_weibo_extra";
 
     @InjectView(R.id.toolbar_actionbar) Toolbar toolbar;
     @InjectView(R.id.my_avatar) BezelImageView mAvatar;
@@ -100,7 +103,9 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
 
     @OnClick(R.id.post_send)
     public void postWeibo() {
-
+        Intent intent = new Intent(this, PostWeiboService.class);
+        intent.putExtra(POST_WEIBO_EXTRA, mPostEdit.getText().toString());
+        startService(intent);
     }
 
     @Override

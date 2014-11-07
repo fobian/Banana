@@ -73,6 +73,7 @@
             android:label="@string/title_activity_post"
             android:windowSoftInputMode="stateVisible|adjustResize">
         </activity>
+        <service android:name=".service.PostWeiboService"/>
     </application>
 
 </manifest>

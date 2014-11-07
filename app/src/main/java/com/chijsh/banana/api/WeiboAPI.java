@@ -10,6 +10,7 @@ import com.google.gson.GsonBuilder;
 import retrofit.RestAdapter;
 import retrofit.converter.GsonConverter;
 import retrofit.http.GET;
+import retrofit.http.POST;
 import retrofit.http.Query;
 
 /**
@@ -30,6 +31,9 @@ public class WeiboAPI {
 
         @GET("/users/show.json")
         User getUserInfo(@Query("access_token") String token, @Query("uid") long uid);
+
+        @POST("/statuses/update.json")
+        Response postWeibo(@Query("access_token") String token, @Query("status") String content);
     }
     private WeiboAPI() {
         Gson gson = new GsonBuilder()
@@ -66,5 +70,8 @@ public class WeiboAPI {
         return weibo.getUserInfo(token, uid);
     }
 
+    public Response postWeibo(String token, String content) {
+        return weibo.postWeibo(token, content);
+    }
 
 }
