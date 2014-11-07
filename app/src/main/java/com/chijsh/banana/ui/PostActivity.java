@@ -3,10 +3,12 @@ package com.chijsh.banana.ui;
 import android.app.LoaderManager;
 import android.content.ContentUris;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.AutoCompleteTextView;
@@ -21,10 +23,12 @@ import com.chijsh.banana.widget.BezelImageView;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 
 public class PostActivity extends ActionBarActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int USER_LOADER = 0;
+    public static final int PICK_OR_TAKE_PICTURE = 42;
 
     @InjectView(R.id.toolbar_actionbar) Toolbar toolbar;
     @InjectView(R.id.my_avatar) BezelImageView mAvatar;
@@ -67,6 +71,41 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
         ButterKnife.inject(this);
 
         getLoaderManager().initLoader(USER_LOADER, null, this);
+    }
+
+    @OnClick(R.id.post_camera)
+    public void addPicture() {
+        Intent pickIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        pickIntent.setType("image/*");
+
+        Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        Intent chooserIntent = Intent.createChooser(pickIntent,
+                getString(R.string.title_add_picture));
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS,
+                new Intent[] { takePhotoIntent });
+
+        startActivityForResult(chooserIntent, PICK_OR_TAKE_PICTURE);
+    }
+
+    @OnClick(R.id.post_at)
+    public void atSomebody() {
+
+    }
+
+    @OnClick(R.id.post_emotion)
+    public void addEmotion() {
+
+    }
+
+    @OnClick(R.id.post_send)
+    public void postWeibo() {
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override

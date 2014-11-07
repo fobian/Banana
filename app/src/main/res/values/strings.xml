@@ -26,4 +26,6 @@
     <string name="pref_account">Account</string>
     <string name="title_activity_post">New Weibo</string>
 
+    <string name="title_add_picture">Add Picture</string>
+
 </resources>
