@@ -19,11 +19,13 @@
 -dontwarn butterknife.internal.**
 -keep class **$$ViewInjector { *; }
 -keepnames class * { @butterknife.InjectView *;}
-
+# For Log
 -assumenosideeffects class android.util.Log {
     public static *** d(...);
 }
-
+# For EventBus
 -keepclassmembers class ** {
     public void onEvent*(**);
 }
+# For retrofit
+-dontwarn rx.**
