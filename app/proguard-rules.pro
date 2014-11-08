@@ -30,7 +30,7 @@
 # For retrofit
 -dontwarn rx.**
 
--keepattributes *Annotation*
+-keepattributes *Annotation*,Signature
 -keep class retrofit.** { *; }
 -keepclasseswithmembers class * {
     @retrofit.http.* <methods>;
@@ -38,5 +38,3 @@
 
 # For okio
 -dontwarn okio.**
-
--keepattributes Signature
