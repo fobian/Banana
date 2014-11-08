@@ -38,3 +38,5 @@
 
 # For okio
 -dontwarn okio.**
+
+-keepattributes Signature
