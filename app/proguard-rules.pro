@@ -29,3 +29,12 @@
 }
 # For retrofit
 -dontwarn rx.**
+
+-keepattributes *Annotation*
+-keep class retrofit.** { *; }
+-keepclasseswithmembers class * {
+    @retrofit.http.* <methods>;
+}
+
+# For okio
+-dontwarn okio.**
