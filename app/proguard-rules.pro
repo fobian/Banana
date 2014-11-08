@@ -36,5 +36,7 @@
     @retrofit.http.* <methods>;
 }
 
+-dontwarn com.google.appengine.api.urlfetch.*
+
 # For okio
 -dontwarn okio.**
