@@ -7,7 +7,7 @@ import com.chijsh.banana.AccessTokenKeeper;
 import com.chijsh.banana.R;
 import com.chijsh.banana.api.WeiboAPI;
 import com.chijsh.banana.event.MessageEvent;
-import com.chijsh.banana.ui.PostActivity;
+import com.chijsh.banana.ui.post.PostActivity;
 
 import de.greenrobot.event.EventBus;
 import retrofit.client.Response;

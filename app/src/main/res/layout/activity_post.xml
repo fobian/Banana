@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.chijsh.banana.ui.PostActivity">
+    tools:context="com.chijsh.banana.ui.post.PostActivity">
     <LinearLayout
         style="@style/HeaderBar"
         android:id="@+id/headerbar"
@@ -49,7 +49,8 @@
         android:textCursorDrawable="@drawable/edit_cursor"
         android:hint="@string/weibo_edit_hint"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:completionThreshold="5"/>
     <RelativeLayout
         android:layout_alignParentBottom="true"
         android:background="@android:color/darker_gray"

@@ -1,7 +1,7 @@
-package com.chijsh.banana.ui;
+package com.chijsh.banana.ui.post;
 
 import android.app.LoaderManager;
-import android.content.ContentUris;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -11,7 +11,14 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
+import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,10 +26,15 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.chijsh.banana.AccessTokenKeeper;
 import com.chijsh.banana.R;
+import com.chijsh.banana.data.PostContract;
 import com.chijsh.banana.data.PostContract.AccountEntry;
 import com.chijsh.banana.event.MessageEvent;
+import com.chijsh.banana.model.User;
 import com.chijsh.banana.service.PostWeiboService;
 import com.chijsh.banana.widget.BezelImageView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -76,6 +88,9 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
         setContentView(R.layout.activity_post);
         ButterKnife.inject(this);
 
+        MyAdapter adapter = new MyAdapter(this);
+        mPostEdit.setAdapter(adapter);
+
         getLoaderManager().initLoader(USER_LOADER, null, this);
     }
 
@@ -113,7 +128,7 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
 
     @OnClick(R.id.post_at)
     public void atSomebody() {
-
+        mPostEdit.getText().append("@");
     }
 
     @OnClick(R.id.post_emotion)
@@ -167,5 +182,128 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         //TODO
+    }
+
+
+    public class MyAdapter extends BaseAdapter
+            implements Filterable {
+
+        Context mContext;
+        List<User> mUserList;
+
+        class ViewHolder {
+
+            @InjectView(R.id.at_user_avatar)
+            BezelImageView mAvatar;
+            @InjectView(R.id.at_user_name)
+            TextView mName;
+
+            ViewHolder(View itemView) {
+                ButterKnife.inject(this, itemView);
+            }
+        }
+
+        public MyAdapter(Context context) {
+            super();
+            mContext = context;
+        }
+
+        public void setUserList(List<User> userList) {
+            mUserList = userList;
+        }
+
+        @Override
+        public User getItem(int position) {
+            return mUserList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mUserList.size();
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHolder holder;
+            User user = mUserList.get(position);
+            if (convertView == null) {
+                convertView = LayoutInflater.from(mContext)
+                        .inflate(R.layout.sugesstion_item, parent, false);
+                holder = new ViewHolder(convertView);
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder)convertView.getTag();
+            }
+            if ( user != null) {
+                Glide.with(mContext)
+                        .load(user.avatarLarge)
+                        .thumbnail(0.1f)
+                        .placeholder(R.drawable.user_avatar_empty)
+                        .into(holder.mAvatar);
+                holder.mName.setText(user.screenName);
+            }
+            return convertView;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public Filter getFilter() {
+            Filter filter = new Filter() {
+                @Override
+                protected FilterResults performFiltering(CharSequence constraint) {
+                    FilterResults filterResults = new FilterResults();
+                    if (constraint != null) {
+
+                        mUserList = findUser(mContext, constraint.toString());
+
+                        filterResults.values = mUserList;
+                        filterResults.count = mUserList.size();
+                        for(User user : mUserList) {
+                            Log.d("ssssssssss", user.screenName);
+                        }
+
+                    }
+                    return filterResults;
+                }
+
+                @Override
+                protected void publishResults(CharSequence constraint, FilterResults results) {
+                    if (results != null && results.count > 0) {
+                        notifyDataSetChanged();
+                    }
+                    else {
+                        notifyDataSetInvalidated();
+                    }
+                }};
+            return filter;
+        }
+
+        private List<User> findUser(Context context, String n) {
+            Cursor cursor = context.getContentResolver().query(
+                    PostContract.UserEntry.CONTENT_URI,
+                    null,
+                    null,
+                    null,
+                    null
+            );
+
+            List<User> users = new ArrayList<User>();
+            User user = new User();
+            if(cursor != null) {
+                while (cursor.moveToFirst()) {
+                    user.avatarLarge = cursor.getString(cursor.getColumnIndex(PostContract.UserEntry.COLUMN_AVATAR_LARGE));
+                    user.screenName = cursor.getString(cursor.getColumnIndex(PostContract.UserEntry.COLUMN_SCREEN_NAME));
+                    if (user.screenName.contains(n)) {
+                        users.add(user);
+                    }
+                }
+                cursor.close();
+            }
+            return users;
+        }
     }
 }

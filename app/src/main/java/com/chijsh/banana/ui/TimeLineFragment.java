@@ -20,6 +20,7 @@ import com.chijsh.banana.R;
 
 import com.chijsh.banana.data.PostContract.PostEntry;
 import com.chijsh.banana.sync.WeiboSyncAdapter;
+import com.chijsh.banana.ui.post.PostActivity;
 import com.chijsh.banana.widget.fab.FloatingActionButton;
 
 import butterknife.ButterKnife;

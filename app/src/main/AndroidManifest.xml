@@ -69,7 +69,7 @@
             android:parentActivityName=".ui.TimeLineActivity" >
         </activity>
         <activity
-            android:name=".ui.PostActivity"
+            android:name=".ui.post.PostActivity"
             android:label="@string/title_activity_post"
             android:windowSoftInputMode="stateVisible|adjustResize">
         </activity>
