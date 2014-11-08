@@ -37,6 +37,7 @@
 }
 
 -dontwarn com.google.appengine.api.urlfetch.*
+-dontwarn com.squareup.okhttp.**
 
 # For okio
 -dontwarn okio.**
