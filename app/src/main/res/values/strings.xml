@@ -30,4 +30,6 @@
     <string name="weibo_edit_hint">What\'s on your mind?</string>
     <string name="weibo_sent_success">Weibo sent successfully</string>
 
+    <string name="no_recent">No recent</string>
+
 </resources>

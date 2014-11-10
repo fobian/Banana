@@ -1,25 +1,31 @@
 package com.chijsh.banana.ui.post;
 
+
+import android.app.Activity;
 import android.app.LoaderManager;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageButton;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,7 +37,11 @@ import com.chijsh.banana.data.PostContract.AccountEntry;
 import com.chijsh.banana.event.MessageEvent;
 import com.chijsh.banana.model.User;
 import com.chijsh.banana.service.PostWeiboService;
+import com.chijsh.banana.utils.ScreenUtil;
 import com.chijsh.banana.widget.BezelImageView;
+import com.chijsh.banana.widget.SizeNotifierRelativeLayout;
+import com.chijsh.banana.widget.emoji.Emoji;
+import com.chijsh.banana.widget.emoji.EmojiView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +51,7 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
-public class PostActivity extends ActionBarActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class PostActivity extends ActionBarActivity implements LoaderManager.LoaderCallbacks<Cursor>, SizeNotifierRelativeLayout.SizeNotifierRelativeLayoutListener{
 
     private static final int USER_LOADER = 0;
 
@@ -59,6 +69,13 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
     @InjectView(R.id.post_emotion) ImageButton mEmotionAction;
 
     @InjectView(R.id.post_send) ImageButton mSendAction;
+
+    @InjectView(R.id.container) SizeNotifierRelativeLayout mSizeRelativeLayout;
+    private PopupWindow mEmojiPopup;
+    private EmojiView mEmojiView;
+    private int keyboardHeight = 0;
+    private boolean keyboardVisible;
+    private View contentView;
 
     private static final String[] USER_COLUMNS = {
             AccountEntry.TABLE_NAME + "." + AccountEntry._ID,
@@ -87,6 +104,9 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
         ButterKnife.inject(this);
+
+        mSizeRelativeLayout.listener = this;
+        contentView = mSizeRelativeLayout;
 
         MyAdapter adapter = new MyAdapter(this);
         mPostEdit.setAdapter(adapter);
@@ -133,7 +153,11 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
 
     @OnClick(R.id.post_emotion)
     public void addEmotion() {
-
+        if (mEmojiPopup == null) {
+            showEmojiPopup(true);
+        } else {
+            showEmojiPopup(!mEmojiPopup.isShowing());
+        }
     }
 
     @OnClick(R.id.post_send)
@@ -141,6 +165,51 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
         Intent intent = new Intent(this, PostWeiboService.class);
         intent.putExtra(POST_WEIBO_EXTRA, mPostEdit.getText().toString());
         startService(intent);
+    }
+
+    @Override
+    public void onSizeChanged(int height) {
+        Rect localRect = new Rect();
+        getWindow().getDecorView().getWindowVisibleDisplayFrame(localRect);
+
+        WindowManager manager = (WindowManager)getSystemService(Activity.WINDOW_SERVICE);
+        if (manager == null || manager.getDefaultDisplay() == null) {
+            return;
+        }
+        //int rotation = manager.getDefaultDisplay().getRotation();
+
+        height -= ScreenUtil.getStatusBarHeight(this);
+        if (height > Emoji.scale(50)) {
+            keyboardHeight = height;
+            getSharedPreferences("emoji", 0).edit().putInt("kbd_height", keyboardHeight).commit();
+        }
+
+        if (mEmojiPopup != null && mEmojiPopup.isShowing()) {
+            WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+            final WindowManager.LayoutParams layoutParams = (WindowManager.LayoutParams)mEmojiPopup.getContentView().getLayoutParams();
+            layoutParams.width = contentView.getWidth();
+
+            layoutParams.height = keyboardHeight;
+
+            wm.updateViewLayout(mEmojiPopup.getContentView(), layoutParams);
+            if (!keyboardVisible) {
+                contentView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        contentView.setPadding(0, 0, 0, layoutParams.height);
+                        contentView.requestLayout();
+                    }
+                });
+            }
+        }
+
+        boolean oldValue = keyboardVisible;
+        keyboardVisible = height > 0;
+        if (keyboardVisible && contentView.getPaddingBottom() > 0) {
+            showEmojiPopup(false);
+        } else if (!keyboardVisible && keyboardVisible != oldValue && mEmojiPopup != null && mEmojiPopup.isShowing()) {
+            showEmojiPopup(false);
+        }
     }
 
     @Override
@@ -184,6 +253,70 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
         //TODO
     }
 
+
+    private void createEmojiPopup() {
+        mEmojiView = new EmojiView(this);
+        mEmojiView.setListener(new EmojiView.Listener() {
+            public void onBackspace() {
+                mPostEdit.dispatchKeyEvent(new KeyEvent(0, 67));
+            }
+
+            public void onEmojiSelected(String paramAnonymousString) {
+                int i = mPostEdit.getSelectionEnd();
+                CharSequence localCharSequence = Emoji.replaceEmoji(paramAnonymousString);
+                mPostEdit.setText(mPostEdit.getText().insert(i, localCharSequence));
+                int j = i + localCharSequence.length();
+                mPostEdit.setSelection(j, j);
+            }
+        });
+        mEmojiPopup = new PopupWindow(mEmojiView);
+    }
+
+    public void hideEmojiPopup() {
+        if (mEmojiPopup != null && mEmojiPopup.isShowing()) {
+            showEmojiPopup(false);
+        }
+    }
+
+    private void showEmojiPopup(boolean show) {
+
+        if (show) {
+            if (mEmojiPopup == null) {
+                createEmojiPopup();
+            }
+            int currentHeight;
+            if (keyboardHeight <= 0) {
+                keyboardHeight = getSharedPreferences("emoji", 0).getInt("kbd_height", Emoji.scale(200.0f));
+            }
+            currentHeight = keyboardHeight;
+            mEmojiPopup.setHeight(View.MeasureSpec.makeMeasureSpec(currentHeight, View.MeasureSpec.EXACTLY));
+            mEmojiPopup.setWidth(View.MeasureSpec.makeMeasureSpec(contentView.getWidth(), View.MeasureSpec.EXACTLY));
+
+            mEmojiPopup.showAtLocation(getWindow().getDecorView(), 83, 0, 0);
+            if (!keyboardVisible) {
+                contentView.setPadding(0, 0, 0, currentHeight);
+                //emojiButton.setImageResource(R.drawable.ic_msg_panel_hide);
+                return;
+            }
+            //emojiButton.setImageResource(R.drawable.ic_msg_panel_kb);
+            return;
+        }
+        //if (emojiButton != null) {
+        //    emojiButton.setImageResource(R.drawable.ic_msg_panel_smiles);
+        //}
+        if (mEmojiPopup != null) {
+            mEmojiPopup.dismiss();
+        }
+        if (contentView != null) {
+            contentView.post(new Runnable() {
+                public void run() {
+                    if (contentView != null) {
+                        contentView.setPadding(0, 0, 0, 0);
+                    }
+                }
+            });
+        }
+    }
 
     public class MyAdapter extends BaseAdapter
             implements Filterable {
