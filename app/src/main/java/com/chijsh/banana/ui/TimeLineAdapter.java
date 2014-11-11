@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.chijsh.banana.R;
+import com.chijsh.banana.utils.StringUtil;
 import com.chijsh.banana.utils.Utility;
 import com.chijsh.banana.widget.LinkEnabledTextView;
 
@@ -227,7 +228,7 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
         if(isRetwitt) {
             if (pics != null) {
                 viewHolder.mRetweetPicsStub.setVisibility(View.VISIBLE);
-                String[] picArray = Utility.strToArray(pics);
+                String[] picArray = StringUtil.fastSplit(pics, ',');
                 int size = picArray.length;
                 if(size > 1) {
                     viewHolder.mRetwittPicsGrid.setVisibility(View.VISIBLE);
@@ -262,7 +263,7 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
         } else {
             if (pics != null) {
                 viewHolder.mTweetPicsStub.setVisibility(View.VISIBLE);
-                String[] picArray = Utility.strToArray(pics);
+                String[] picArray = StringUtil.fastSplit(pics, ',');
                 int size = picArray.length;
                 if(size > 1) {
                     viewHolder.mPicsGrid.setVisibility(View.VISIBLE);

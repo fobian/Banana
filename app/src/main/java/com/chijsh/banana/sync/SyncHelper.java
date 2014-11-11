@@ -14,6 +14,7 @@ import com.chijsh.banana.model.Post;
 import com.chijsh.banana.model.Posts;
 import com.chijsh.banana.model.User;
 import com.chijsh.banana.utils.PrefUtil;
+import com.chijsh.banana.utils.StringUtil;
 import com.chijsh.banana.utils.Utility;
 
 import java.util.Vector;
@@ -111,7 +112,7 @@ public class SyncHelper {
         values.put(PostContract.PostEntry.COLUMN_POST_SOURCE, post.source);
         values.put(PostContract.PostEntry.COLUMN_POST_FAVORITED, post.favorited);
         if (!post.picUrls.isEmpty())
-            values.put(PostContract.PostEntry.COLUMN_POST_PICURLS, Utility.urlsToString(post.picUrls));//TODO
+            values.put(PostContract.PostEntry.COLUMN_POST_PICURLS, StringUtil.urlsToString(post.picUrls));//TODO
         if (post.geo != null)
             values.put(PostContract.PostEntry.COLUMN_POST_GEO, post.geo.toString());
         values.put(PostContract.PostEntry.COLUMN_USER_ID, post.user.idstr);
@@ -122,7 +123,7 @@ public class SyncHelper {
             if(post.retweetedStatus.user != null)
                 values.put(PostContract.PostEntry.COLUMN_RETWEETED_USER_SCREENNAME, post.retweetedStatus.user.screenName);
             values.put(PostContract.PostEntry.COLUMN_RETWEETED_TEXT, post.retweetedStatus.text);
-            values.put(PostContract.PostEntry.COLUMN_RETWEETED_PICURLS, Utility.urlsToString(post.retweetedStatus.picUrls));
+            values.put(PostContract.PostEntry.COLUMN_RETWEETED_PICURLS, StringUtil.urlsToString(post.retweetedStatus.picUrls));
         }
         values.put(PostContract.PostEntry.COLUMN_REPOST_COUNT, post.repostsCount);
         values.put(PostContract.PostEntry.COLUMN_COMMENT_COUNT, post.commentsCount);
