@@ -48,26 +48,22 @@ public class LinkEnabledTextView extends TextView {
     public LinkEnabledTextView(Context context) {
         super(context);
         this.context = context;
-        setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     public LinkEnabledTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
-        setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     public LinkEnabledTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.context = context;
-        setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public LinkEnabledTextView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         this.context = context;
-        setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     public void gatherLinksForText(String text) {

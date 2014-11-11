@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewStub;
@@ -112,6 +113,7 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
 
         viewHolder.mTextView.setOnTextLinkClickListener(this);
         viewHolder.mTextView.gatherLinksForText(cursor.getString(COL_POST_TEXT));
+        viewHolder.mTextView.setMovementMethod(LinkMovementMethod.getInstance());
 
         String pics = cursor.getString(COL_POST_PICURLS);
 
@@ -127,6 +129,7 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
             retwittUserName  = "@" + retwittUserName;
             viewHolder.mRetwittTextView.setOnTextLinkClickListener(this);
             viewHolder.mRetwittTextView.gatherLinksForText(retwittUserName + ":" + retwittText);
+            viewHolder.mRetwittTextView.setMovementMethod(LinkMovementMethod.getInstance());
 
             handlePics(context, viewHolder, true, retweetPics);
 
