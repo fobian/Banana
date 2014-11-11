@@ -1,10 +1,13 @@
 package com.chijsh.banana.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewStub;
@@ -46,6 +49,16 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
     public static final int COL_REPOST_COUNT = 15;
     public static final int COL_COMMENT_COUNT = 16;
     public static final int COL_ATTITUDE_COUNT = 17;
+
+    public interface PostItemClickListener {
+        public void onItemClicked(String postId);
+    }
+
+    private PostItemClickListener mListener;
+
+    public void setPostItemClickListener(PostItemClickListener listener) {
+        mListener = listener;
+    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -102,7 +115,7 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
     }
 
     @Override
-    public void bindView(ViewHolder viewHolder, Context context, Cursor cursor) {
+    public void bindView(ViewHolder viewHolder, Context context, final Cursor cursor) {
         Glide.with(context)
                 .load(cursor.getString(COL_USER_AVATAR))
                 .thumbnail(0.5f)
@@ -137,6 +150,12 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
             viewHolder.mRetweetStub.setVisibility(View.GONE);
         }
 
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onItemClicked(cursor.getString(COL_POST_ID));
+            }
+        });
 
     }
 

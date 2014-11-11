@@ -30,10 +30,14 @@ import butterknife.OnClick;
 /**
  * Created by chijsh on 10/20/14.
  */
-public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, SwipeRefreshLayout.OnRefreshListener {
+public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>
+        , SwipeRefreshLayout.OnRefreshListener
+        , TimeLineAdapter.PostItemClickListener {
     private static final int POST_LOADER = 0;
 
-    private CursorRecyclerViewAdapter mAdapter;
+    public static final String POST_ID = "post_id";
+
+    private TimeLineAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
     @InjectView(R.id.swip_refresh_layout) SwipeRefreshLayout mSwipeRefreshLayout;
@@ -85,10 +89,18 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         mAdapter = new TimeLineAdapter(getActivity(), null);
+        mAdapter.setPostItemClickListener(this);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
         return rootView;
+    }
+
+    @Override
+    public void onItemClicked(String postId) {
+        Intent intent = new Intent(getActivity(), PostContentActivity.class);
+        intent.putExtra(POST_ID, postId);
+        startActivity(intent);
     }
 
     @Override

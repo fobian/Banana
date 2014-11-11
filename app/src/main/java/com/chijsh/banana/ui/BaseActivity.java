@@ -6,7 +6,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.chijsh.banana.R;
-import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 public abstract class BaseActivity extends ActionBarActivity {
 

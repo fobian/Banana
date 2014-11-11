@@ -20,6 +20,7 @@
             android:layout_height="?actionBarSize"
             >
             <LinearLayout
+                android:id="@+id/avatar_name"
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent">
@@ -34,7 +35,6 @@
                     app:maskDrawable="@drawable/circle_mask"/>
                 <TextView
                     android:id="@+id/my_name"
-                    android:text="Jason"
                     android:textAppearance="@style/TitleTextStyle"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="20dp"

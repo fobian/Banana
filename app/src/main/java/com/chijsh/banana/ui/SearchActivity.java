@@ -1,21 +1,27 @@
 package com.chijsh.banana.ui;
 
+import android.app.Fragment;
+import android.content.ComponentName;
 import android.os.Bundle;
+import android.support.v4.content.IntentCompat;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.chijsh.banana.R;
 
-public class ProfileActivity extends BaseActivity {
+public class SearchActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        setContentView(R.layout.activity_search);
+
         Toolbar toolbar = getActionBarToolbar();
-        toolbar.setTitle(R.string.title_activity_settings);
+        toolbar.setTitle(R.string.title_activity_search);
         toolbar.setNavigationIcon(R.drawable.ic_up);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -23,13 +29,19 @@ public class ProfileActivity extends BaseActivity {
                 finish();
             }
         });
+
+        if (savedInstanceState == null) {
+            getFragmentManager().beginTransaction()
+                    .add(R.id.container, new PlaceholderFragment())
+                    .commit();
+        }
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.profile, menu);
+        getMenuInflater().inflate(R.menu.search, menu);
         return true;
     }
 
@@ -43,5 +55,21 @@ public class ProfileActivity extends BaseActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * A placeholder fragment containing a simple view.
+     */
+    public static class PlaceholderFragment extends Fragment {
+
+        public PlaceholderFragment() {
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.fragment_search, container, false);
+            return rootView;
+        }
     }
 }

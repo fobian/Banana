@@ -59,6 +59,9 @@ public class TimeLineActivity extends BaseActivity {
             case R.id.notif:
                 startActivity(new Intent(this, NotificationActivity.class));
                 break;
+            case R.id.search:
+                startActivity(new Intent(this, SearchActivity.class));
+                break;
         }
 
         return super.onOptionsItemSelected(item);

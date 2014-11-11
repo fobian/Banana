@@ -37,6 +37,7 @@ import com.chijsh.banana.data.PostContract.AccountEntry;
 import com.chijsh.banana.event.MessageEvent;
 import com.chijsh.banana.model.User;
 import com.chijsh.banana.service.PostWeiboService;
+import com.chijsh.banana.ui.ProfileActivity;
 import com.chijsh.banana.utils.ScreenUtil;
 import com.chijsh.banana.widget.BezelImageView;
 import com.chijsh.banana.widget.SizeNotifierRelativeLayout;
@@ -58,7 +59,8 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
     public static final int PICK_OR_TAKE_PICTURE = 42;
     public static final String POST_WEIBO_EXTRA = "post_weibo_extra";
 
-    @InjectView(R.id.toolbar_actionbar) Toolbar toolbar;
+    @InjectView(R.id.toolbar_actionbar) Toolbar mToolbar;
+    @InjectView(R.id.avatar_name) View mAvatarName;
     @InjectView(R.id.my_avatar) BezelImageView mAvatar;
     @InjectView(R.id.my_name) TextView mNameTextView;
 
@@ -129,6 +131,11 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
     public void onEventMainThread(MessageEvent event){
         Toast.makeText(this, event.getMessage().toString(), Toast.LENGTH_SHORT).show();
         finish();
+    }
+
+    @OnClick(R.id.avatar_name)
+    public void viewProfile() {
+        startActivity(new Intent(this, ProfileActivity.class));
     }
 
     @OnClick(R.id.post_camera)
