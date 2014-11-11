@@ -6,6 +6,7 @@ import android.os.Build;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.URLSpan;
 import android.text.util.Linkify;
@@ -40,44 +41,44 @@ public class LinkEnabledTextView extends TextView {
     public static final String HASH_TAGS_SCHEME = "com.chijsh.banana://";
     // Pattern for gathering http:// links from the Text
     public static final Pattern HYPER_LINK_PATTERN = Pattern.compile("http://[a-zA-Z0-9+&@#/%?=~_\\-|!:,\\.;]*[a-zA-Z0-9+&@#/%=~_|]");
-    public static final String HYPER_LINK_SCHEME = "com.chijsh.banana://";
+    public static final String HYPER_LINK_SCHEME = "";
 
     public static final Pattern EMOTION_PATTERN = Pattern.compile("\\[(\\S+?)\\]");
 
     public LinkEnabledTextView(Context context) {
         super(context);
         this.context = context;
+        setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     public LinkEnabledTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
-
+        setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     public LinkEnabledTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.context = context;
+        setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public LinkEnabledTextView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         this.context = context;
+        setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     public void gatherLinksForText(String text) {
         SpannableString value = SpannableString.valueOf(text);
-        /*
-         *  gatherLinks basically collects the Links depending upon the Pattern that we supply
-         *  and add the links to the ArrayList of the links
-         */
+
         Linkify.addLinks(value, SCREEN_NAME_PATTERN, SCREEN_NAME_SCHEME);
         Linkify.addLinks(value, HYPER_LINK_PATTERN, HYPER_LINK_SCHEME);
         Linkify.addLinks(value, HASH_TAGS_PATTERN, HASH_TAGS_SCHEME);
 
         URLSpan[] urlSpans = value.getSpans(0, value.length(), URLSpan.class);
-        InternalURLSpan weiboSpan = null;
+        InternalURLSpan weiboSpan;
         for (URLSpan urlSpan : urlSpans) {
             weiboSpan = new InternalURLSpan(urlSpan.getURL());
             int start = value.getSpanStart(urlSpan);

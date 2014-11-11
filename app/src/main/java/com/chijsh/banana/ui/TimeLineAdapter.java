@@ -4,8 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
-import android.text.method.LinkMovementMethod;
-import android.text.method.MovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewStub;
@@ -115,13 +113,6 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
         viewHolder.mTextView.setOnTextLinkClickListener(this);
         viewHolder.mTextView.gatherLinksForText(cursor.getString(COL_POST_TEXT));
 
-        MovementMethod m = viewHolder.mTextView.getMovementMethod();
-        if ((m == null) || !(m instanceof LinkMovementMethod)) {
-            if (viewHolder.mTextView.getLinksClickable()) {
-                viewHolder.mTextView.setMovementMethod(LinkMovementMethod.getInstance());
-            }
-        }
-
         String pics = cursor.getString(COL_POST_PICURLS);
 
         handlePics(context, viewHolder, false, pics);
@@ -136,21 +127,11 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
             retwittUserName  = "@" + retwittUserName;
             viewHolder.mRetwittTextView.setOnTextLinkClickListener(this);
             viewHolder.mRetwittTextView.gatherLinksForText(retwittUserName + ":" + retwittText);
-            MovementMethod mm = viewHolder.mRetwittTextView.getMovementMethod();
-            if ((mm == null) || !(mm instanceof LinkMovementMethod)) {
-                if (viewHolder.mRetwittTextView.getLinksClickable()) {
-                    (viewHolder.mRetwittTextView).setMovementMethod(LinkMovementMethod.getInstance());
-                }
-            }
-
 
             handlePics(context, viewHolder, true, retweetPics);
 
         } else {
             viewHolder.mRetweetStub.setVisibility(View.GONE);
-//            viewHolder.mRetwittTextView.setVisibility(View.GONE);
-//            viewHolder.mRetwittThumbImageView.setVisibility(View.GONE);
-//            viewHolder.mRetwittPicsGrid.setVisibility(View.GONE);
         }
 
 
@@ -256,8 +237,6 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
 
             } else {
                 viewHolder.mRetweetPicsStub.setVisibility(View.GONE);
-//                viewHolder.mRetwittThumbImageView.setVisibility(View.GONE);
-//                viewHolder.mRetwittPicsGrid.setVisibility(View.GONE);
 
             }
         } else {
@@ -291,8 +270,7 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
 
             } else {
                 viewHolder.mTweetPicsStub.setVisibility(View.GONE);
-//                viewHolder.mThumbImageView.setVisibility(View.GONE);
-//                viewHolder.mPicsGrid.setVisibility(View.GONE);
+
             }
         }
     }

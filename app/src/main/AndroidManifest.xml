@@ -72,9 +72,15 @@
         <activity
             android:name=".ui.post.PostActivity"
             android:label="@string/title_activity_post"
-            android:windowSoftInputMode="stateVisible|adjustResize">
+            android:windowSoftInputMode="stateVisible|adjustResize" >
         </activity>
-        <service android:name=".service.PostWeiboService"/>
+
+        <service android:name=".service.PostWeiboService" />
+
+        <activity
+            android:name=".ui.ProfileActivity"
+            android:label="@string/title_activity_profile" >
+        </activity>
     </application>
 
 </manifest>

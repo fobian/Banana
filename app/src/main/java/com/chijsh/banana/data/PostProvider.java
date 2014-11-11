@@ -134,7 +134,7 @@ public class PostProvider extends ContentProvider {
                 break;
             }
             case ACCOUNT: {
-                long _id = db.insert(PostContract.AccountEntry.TABLE_NAME, null, values);
+                long _id = db.insertWithOnConflict(PostContract.AccountEntry.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
                 if ( _id > 0 )
                     returnUri = PostContract.AccountEntry.buildAccountUri(_id);
                 else
