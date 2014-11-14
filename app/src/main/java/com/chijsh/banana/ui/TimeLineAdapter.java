@@ -51,7 +51,7 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
     public static final int COL_ATTITUDE_COUNT = 17;
 
     public interface PostItemClickListener {
-        public void onItemClicked(String postId);
+        public void onItemClicked(View itemView, String postId);
     }
 
     private PostItemClickListener mListener;
@@ -115,7 +115,7 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
     }
 
     @Override
-    public void bindView(ViewHolder viewHolder, Context context, final Cursor cursor) {
+    public void bindView(final ViewHolder viewHolder, Context context, final Cursor cursor) {
         Glide.with(context)
                 .load(cursor.getString(COL_USER_AVATAR))
                 .thumbnail(0.5f)
@@ -153,7 +153,7 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.onItemClicked(cursor.getString(COL_POST_ID));
+                mListener.onItemClicked(viewHolder.itemView, cursor.getString(COL_POST_ID));
             }
         });
 

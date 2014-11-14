@@ -1,5 +1,6 @@
 package com.chijsh.banana.ui;
 
+import android.animation.ObjectAnimator;
 import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
@@ -15,7 +16,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.chijsh.banana.R;
 
 import com.chijsh.banana.data.PostContract.PostEntry;
@@ -97,7 +97,7 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     @Override
-    public void onItemClicked(String postId) {
+    public void onItemClicked(View itemView, String postId) {
         Intent intent = new Intent(getActivity(), PostContentActivity.class);
         intent.putExtra(POST_ID, postId);
         startActivity(intent);

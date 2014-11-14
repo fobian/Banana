@@ -24,6 +24,9 @@ public class User {
 
     @Override
     public boolean equals(Object object) {
+        if (object == this) {
+            return true;
+        }
         if(object instanceof User) {
             User other = (User)object;
             if(idstr.equals(other.idstr)) {
@@ -33,5 +36,10 @@ public class User {
             }
         }
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return idstr.hashCode();
     }
 }
