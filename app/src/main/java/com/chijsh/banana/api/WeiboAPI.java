@@ -10,32 +10,15 @@ import com.google.gson.GsonBuilder;
 import retrofit.RestAdapter;
 import retrofit.client.Response;
 import retrofit.converter.GsonConverter;
-import retrofit.http.GET;
-import retrofit.http.POST;
-import retrofit.http.Query;
 
 /**
  * Created by chijsh on 10/20/14.
  */
 public class WeiboAPI {
 
-    private static Weibo weibo;
+    private static WeiboService sWeiboService;
     private static WeiboAPI sAPI;
 
-    interface Weibo {
-
-        @GET("/statuses/friends_timeline.json")
-        Posts getHomeTimeLine(@Query("access_token") String token, @Query("since_id") long sinceId);
-
-        @GET("/users/show.json")
-        User getUserInfo(@Query("access_token") String token, @Query("screen_name") String screenName);
-
-        @GET("/users/show.json")
-        User getUserInfo(@Query("access_token") String token, @Query("uid") long uid);
-
-        @POST("/statuses/update.json")
-        Response postWeibo(@Query("access_token") String token, @Query("status") String content);
-    }
     private WeiboAPI() {
         Gson gson = new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
@@ -47,7 +30,7 @@ public class WeiboAPI {
                 .setErrorHandler(new MyErrorHandler())
                 .build();
 
-        weibo = restAdapter.create(Weibo.class);
+        sWeiboService = restAdapter.create(WeiboService.class);
     }
 
     public static WeiboAPI getInstance() {
@@ -59,20 +42,20 @@ public class WeiboAPI {
 
 
     public Posts getHomeLine(String token, long sinceId) {
-        return weibo.getHomeTimeLine(token, sinceId);
+        return sWeiboService.getHomeTimeLine(token, sinceId);
 
     }
 
     public User getUserInfo(String token, String screenName) {
-        return weibo.getUserInfo(token, screenName);
+        return sWeiboService.getUserInfo(token, screenName);
     }
 
     public User getUserInfo(String token, long uid) {
-        return weibo.getUserInfo(token, uid);
+        return sWeiboService.getUserInfo(token, uid);
     }
 
     public Response postWeibo(String token, String content) {
-        return weibo.postWeibo(token, content);
+        return sWeiboService.postWeibo(token, content);
     }
 
 }
