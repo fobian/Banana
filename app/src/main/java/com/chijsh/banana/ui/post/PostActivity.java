@@ -134,6 +134,15 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
         EventBus.getDefault().unregister(this);
     }
 
+    @Override
+    public void onBackPressed() {
+        if (mEmojiPopup != null && mEmojiPopup.isShowing()) {
+            hideEmojiPopup();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
     public void onEventMainThread(MessageEvent event){
         Toast.makeText(this, event.getMessage().toString(), Toast.LENGTH_SHORT).show();
         finish();
