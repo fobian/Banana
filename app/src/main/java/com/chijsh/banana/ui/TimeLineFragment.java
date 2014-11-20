@@ -1,6 +1,5 @@
 package com.chijsh.banana.ui;
 
-import android.animation.ObjectAnimator;
 import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
@@ -21,6 +20,7 @@ import com.chijsh.banana.R;
 import com.chijsh.banana.data.PostContract.PostEntry;
 import com.chijsh.banana.sync.WeiboSyncAdapter;
 import com.chijsh.banana.ui.post.PostActivity;
+import com.chijsh.banana.utils.PrefUtil;
 import com.chijsh.banana.widget.fab.FloatingActionButton;
 
 import butterknife.ButterKnife;
@@ -105,6 +105,7 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public void onRefresh() {
+        PrefUtil.markManuallySync(getActivity(), true);
         refreshTimeLine();
     }
 

@@ -33,13 +33,16 @@ public class StringUtil {
     }
 
     public static String urlsToString(List<PicUrl> urls) {
-        String s = "";
-        for (int i = 0; i < urls.size(); ++i) {
-            s += urls.get(i).toString();
-            if(i != urls.size() - 1) {
-                s += ",";
+        if (urls != null) {
+            String s = "";
+            for (int i = 0; i < urls.size(); ++i) {
+                s += urls.get(i).toString();
+                if(i != urls.size() - 1) {
+                    s += ",";
+                }
             }
+            return s;
         }
-        return s;
+        return null;
     }
 }

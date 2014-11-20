@@ -8,7 +8,9 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -30,6 +32,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.chijsh.banana.AccessTokenKeeper;
 import com.chijsh.banana.R;
 import com.chijsh.banana.data.PostContract;
@@ -58,6 +62,7 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
 
     public static final int PICK_OR_TAKE_PICTURE = 42;
     public static final String POST_WEIBO_EXTRA = "post_weibo_extra";
+    public static final String MY_AVATAR = "my_avatar";
 
     @InjectView(R.id.toolbar_actionbar) Toolbar mToolbar;
     @InjectView(R.id.avatar_name) View mAvatarName;
@@ -78,6 +83,7 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
     private int keyboardHeight = 0;
     private boolean keyboardVisible;
     private View contentView;
+    private Bitmap mAvatarBitmap;
 
     private static final String[] USER_COLUMNS = {
             AccountEntry.TABLE_NAME + "." + AccountEntry._ID,
@@ -135,7 +141,9 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
 
     @OnClick(R.id.avatar_name)
     public void viewProfile() {
-        startActivity(new Intent(this, ProfileActivity.class));
+        Intent intent = new Intent(this, ProfileActivity.class);
+        intent.putExtra(MY_AVATAR, mAvatarBitmap);
+        startActivity(intent);
     }
 
     @OnClick(R.id.post_camera)
@@ -247,9 +255,16 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
             String name = cursor.getString(cursor.getColumnIndex(AccountEntry.COLUMN_SCREEN_NAME));
             Glide.with(this)
                     .load(avatarUrl)
+                    .asBitmap()
                     .thumbnail(0.1f)
                     .placeholder(R.drawable.user_avatar_empty)
-                    .into(mAvatar);
+                    .into(new SimpleTarget<Bitmap>(144, 144) {
+                        @Override
+                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                            mAvatar.setImageBitmap(resource);
+                            mAvatarBitmap = resource;
+                        }
+                    });
             mNameTextView.setText(name);
         }
 

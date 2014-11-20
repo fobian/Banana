@@ -4,6 +4,7 @@ import android.accounts.Account;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SyncResult;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -35,8 +36,15 @@ public class SyncHelper {
     public void performSync(SyncResult syncResult, Account account, Bundle extras) {
 
         try {
+
             syncTimeLine();
-            syncAccountInfo();
+
+            if (PrefUtil.isFirstLaunch(mContext) || !PrefUtil.isManuallySync(mContext)) {
+                syncAccountInfo();
+                PrefUtil.markFirstLaunch(mContext, false);
+                PrefUtil.markManuallySync(mContext, false);
+            }
+
         } catch (AuthException ex) {
             syncResult.stats.numAuthExceptions++;
 
@@ -58,6 +66,11 @@ public class SyncHelper {
     }
 
     private void syncTimeLine() {
+
+        if (!isOnline()) {
+            return;
+        }
+
         String token = AccessTokenKeeper.readAccessToken(mContext).getToken();
         Posts posts = WeiboAPI.getInstance().getHomeLine(token, PrefUtil.readSinceId(mContext));
         Vector<ContentValues> postVector = new Vector<ContentValues>(posts.size());
@@ -97,10 +110,22 @@ public class SyncHelper {
     }
 
     private void syncAccountInfo() {
+
+        if (!isOnline()) {
+            return;
+        }
+
         String token = AccessTokenKeeper.readAccessToken(mContext).getToken();
         String uid = AccessTokenKeeper.readAccessToken(mContext).getUid();
         User account = WeiboAPI.getInstance().getUserInfo(token, Long.parseLong(uid));
         mContext.getContentResolver().insert(PostContract.AccountEntry.CONTENT_URI, createUserValues(account));
+    }
+
+    private boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(
+                Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null &&
+                cm.getActiveNetworkInfo().isConnectedOrConnecting();
     }
 
     private ContentValues createPostValues(Post post) {
