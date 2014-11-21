@@ -58,4 +58,12 @@ public class WeiboAPI {
         return sWeiboService.postWeibo(token, content);
     }
 
+    public Response addFavorites(String token, long postId) {
+        return sWeiboService.addFavorites(token, postId);
+    }
+
+    public Response deleteFavorites(String token, long postId) {
+        return sWeiboService.deleteFavorites(token, postId);
+    }
+
 }
