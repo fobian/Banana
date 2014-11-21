@@ -8,6 +8,7 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,13 +16,18 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.chijsh.banana.R;
 
 import com.chijsh.banana.data.PostContract.PostEntry;
 import com.chijsh.banana.sync.WeiboSyncAdapter;
 import com.chijsh.banana.ui.post.PostActivity;
 import com.chijsh.banana.utils.PrefUtil;
+import com.chijsh.banana.widget.MultiSwipeRefreshLayout;
 import com.chijsh.banana.widget.fab.FloatingActionButton;
+import com.chijsh.banana.widget.observablerecyclerview.ObservableRecyclerView;
+import com.chijsh.banana.widget.observablerecyclerview.ObservableScrollViewCallbacks;
+import com.chijsh.banana.widget.observablerecyclerview.ScrollState;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -32,7 +38,9 @@ import butterknife.OnClick;
  */
 public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>
         , SwipeRefreshLayout.OnRefreshListener
-        , TimeLineAdapter.PostItemClickListener {
+        , TimeLineAdapter.PostItemClickListener
+        , ObservableScrollViewCallbacks
+        , MultiSwipeRefreshLayout.CanChildScrollUpCallback {
     private static final int POST_LOADER = 0;
 
     public static final String POST_ID = "post_id";
@@ -40,9 +48,12 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
     private TimeLineAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    @InjectView(R.id.swip_refresh_layout) SwipeRefreshLayout mSwipeRefreshLayout;
-    @InjectView(R.id.time_line) RecyclerView mRecyclerView;
+    @InjectView(R.id.swip_refresh_layout) MultiSwipeRefreshLayout mSwipeRefreshLayout;
+    @InjectView(R.id.time_line) ObservableRecyclerView mRecyclerView;
     @InjectView(R.id.fab) FloatingActionButton mFloatingButton;
+
+    private View mHeaderView;
+    private int mBaseTranslationY;
 
     private static final String[] POST_COLUMNS = {
             PostEntry.TABLE_NAME + "." + PostEntry._ID,
@@ -82,6 +93,7 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
                 getResources().getColor(R.color.refresh_progress_3)
                 );
         mSwipeRefreshLayout.setOnRefreshListener(this);
+        mSwipeRefreshLayout.setCanChildScrollUpCallback(this);
 
         mFloatingButton.attachToRecyclerView(mRecyclerView);
 
@@ -92,8 +104,54 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
         mAdapter.setPostItemClickListener(this);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.setScrollViewCallbacks(this);
 
+        mHeaderView = ((TimeLineActivity)getActivity()).getHeaderView();
         return rootView;
+    }
+
+    @Override
+    public void onUpOrCancelMotionEvent(ScrollState scrollState) {
+        mBaseTranslationY = 0;
+
+        float headerTranslationY = mHeaderView.getTranslationY();
+        int toolbarHeight = mHeaderView.getHeight();
+        if (scrollState == ScrollState.UP) {
+            if (toolbarHeight < mRecyclerView.getCurrentScrollY()) {
+                if (headerTranslationY != -toolbarHeight) {
+                    mHeaderView.animate().cancel();
+                    mHeaderView.animate().translationY(-toolbarHeight).setDuration(200).start();
+                }
+            }
+        } else if (scrollState == ScrollState.DOWN) {
+            if (toolbarHeight < mRecyclerView.getCurrentScrollY()) {
+                if (headerTranslationY != 0) {
+                    mHeaderView.animate().cancel();
+                    mHeaderView.animate().translationY(0).setDuration(200).start();
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onDownMotionEvent() {
+
+    }
+
+    @Override
+    public void onScrollChanged(int scrollY, boolean firstScroll, boolean dragging) {
+        if (dragging) {
+            int toolbarHeight = mHeaderView.getHeight();
+            if (firstScroll) {
+                float currentHeaderTranslationY = mHeaderView.getTranslationY();
+                if (-toolbarHeight < currentHeaderTranslationY && toolbarHeight < scrollY) {
+                    mBaseTranslationY = scrollY;
+                }
+            }
+            int headerTranslationY = Math.min(0, Math.max(-toolbarHeight, -(scrollY - mBaseTranslationY)));
+            mHeaderView.animate().cancel();
+            mHeaderView.setTranslationY(headerTranslationY);
+        }
     }
 
     @Override
@@ -101,6 +159,11 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
         Intent intent = new Intent(getActivity(), PostContentActivity.class);
         intent.putExtra(POST_ID, postId);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean canSwipeRefreshChildScrollUp() {
+        return canRecyclerViewScrollUp();
     }
 
     @Override
@@ -122,6 +185,10 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
     @OnClick(R.id.fab)
     public void postNewWeibo() {
         startActivity(new Intent(getActivity(), PostActivity.class));
+    }
+
+    public boolean canRecyclerViewScrollUp() {
+        return ViewCompat.canScrollVertically(mRecyclerView, -1);
     }
 
     @Override
