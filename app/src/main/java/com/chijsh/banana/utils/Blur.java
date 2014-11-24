@@ -22,18 +22,36 @@ public class Blur {
     public static Bitmap fastblur(Context context, Bitmap sentBitmap, int radius) {
 
         if (Build.VERSION.SDK_INT > 16) {
-            Bitmap bitmap = sentBitmap.copy(sentBitmap.getConfig(), true);
+            //Let's create an empty bitmap with the same size of the bitmap we want to blur
+            Bitmap outBitmap = Bitmap.createBitmap(sentBitmap.getWidth(), sentBitmap.getHeight(), Bitmap.Config.ARGB_8888);
 
-            final RenderScript rs = RenderScript.create(context);
-            final Allocation input = Allocation.createFromBitmap(rs, sentBitmap, Allocation.MipmapControl.MIPMAP_NONE,
-                    Allocation.USAGE_SCRIPT);
-            final Allocation output = Allocation.createTyped(rs, input.getType());
-            final ScriptIntrinsicBlur script = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));
-            script.setRadius(radius /* e.g. 3.f */);
-            script.setInput(input);
-            script.forEach(output);
-            output.copyTo(bitmap);
-            return bitmap;
+            //Instantiate a new Renderscript
+            RenderScript rs = RenderScript.create(context);
+
+            //Create an Intrinsic Blur Script using the Renderscript
+            ScriptIntrinsicBlur blurScript = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));
+
+            //Create the Allocations (in/out) with the Renderscript and the in/out bitmaps
+            Allocation allIn = Allocation.createFromBitmap(rs, sentBitmap);
+            Allocation allOut = Allocation.createFromBitmap(rs, outBitmap);
+
+            //Set the radius of the blur
+            blurScript.setRadius(25.f);
+
+            //Perform the Renderscript
+            blurScript.setInput(allIn);
+            blurScript.forEach(allOut);
+
+            //Copy the final bitmap created by the out Allocation to the outBitmap
+            allOut.copyTo(outBitmap);
+
+            //recycle the original bitmap
+            sentBitmap.recycle();
+
+            //After finishing everything, we destroy the Renderscript.
+            rs.destroy();
+
+            return outBitmap;
         }
 
         Bitmap bitmap = sentBitmap.copy(sentBitmap.getConfig(), true);

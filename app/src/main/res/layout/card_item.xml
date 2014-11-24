@@ -83,19 +83,23 @@
             android:layout_below="@id/user_text_layout"
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:weightSum="3"
-            android:layout_height="wrap_content">
+            android:showDividers="middle"
+            android:divider="@drawable/spacer_linear"
+            android:layout_height="?actionBarSize">
             <ImageView
+                style="?android:actionButtonStyle"
                 android:src="@drawable/ic_stars_grey600_24dp"
                 android:layout_width="wrap_content"
                 android:layout_weight="1"
                 android:layout_height="wrap_content" />
             <ImageView
+                style="?android:actionButtonStyle"
                 android:src="@drawable/ic_comment_grey600_24dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"/>
             <ImageView
+                style="?android:actionButtonStyle"
                 android:src="@drawable/ic_launch_grey600_24dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

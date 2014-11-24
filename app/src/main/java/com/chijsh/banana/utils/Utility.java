@@ -1,7 +1,12 @@
 package com.chijsh.banana.utils;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Build;
+import android.renderscript.Allocation;
+import android.renderscript.Element;
+import android.renderscript.RenderScript;
+import android.renderscript.ScriptIntrinsicBlur;
 
 import com.chijsh.banana.app.MyApplication;
 
@@ -46,4 +51,5 @@ public class Utility {
     public static Context getAppContext() {
         return MyApplication.getAppContext();
     }
+
 }

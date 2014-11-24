@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -17,6 +18,8 @@ import android.view.ViewGroup;
 
 import com.chijsh.banana.R;
 import com.chijsh.banana.ui.post.PostActivity;
+import com.chijsh.banana.utils.Blur;
+import com.chijsh.banana.utils.Utility;
 import com.chijsh.banana.widget.BezelImageView;
 import com.chijsh.banana.widget.MultiSwipeRefreshLayout;
 import com.chijsh.banana.widget.tab.SlidingTabLayout;
@@ -27,6 +30,7 @@ import butterknife.InjectView;
 public class ProfileActivity extends BaseActivity {
 
     @InjectView(R.id.profile_avatar) BezelImageView mAvatar;
+    @InjectView(R.id.avatar_bg) View mAvatarBg;
     @InjectView(R.id.profile_tabs) SlidingTabLayout mSlidingTab;
     @InjectView(R.id.view_pager) ViewPager mViewPager;
     @InjectView(R.id.swipe_refresh_layout) MultiSwipeRefreshLayout mSwipeRefreshLayout;
@@ -70,6 +74,24 @@ public class ProfileActivity extends BaseActivity {
         final Bitmap bitmap = intent.getParcelableExtra(PostActivity.MY_AVATAR);
         if (bitmap != null) {
             mAvatar.setImageBitmap(bitmap);
+            new Thread(new Runnable() {
+
+                @Override
+                public void run() {
+
+                    final Bitmap newImg = Blur.fastblur(ProfileActivity.this, bitmap, 12);
+                    runOnUiThread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), newImg);
+                            mAvatarBg.setBackgroundDrawable(bitmapDrawable);
+
+                        }
+                    });
+
+                }
+            }).start();
         }
     }
 
