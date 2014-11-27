@@ -19,7 +19,6 @@ import android.view.ViewGroup;
 import com.chijsh.banana.R;
 import com.chijsh.banana.ui.post.PostActivity;
 import com.chijsh.banana.utils.Blur;
-import com.chijsh.banana.utils.Utility;
 import com.chijsh.banana.widget.BezelImageView;
 import com.chijsh.banana.widget.MultiSwipeRefreshLayout;
 import com.chijsh.banana.widget.tab.SlidingTabLayout;
@@ -70,29 +69,6 @@ public class ProfileActivity extends BaseActivity {
                 getResources().getColor(R.color.refresh_progress_3)
         );
 
-        Intent intent = getIntent();
-        final Bitmap bitmap = intent.getParcelableExtra(PostActivity.MY_AVATAR);
-        if (bitmap != null) {
-            mAvatar.setImageBitmap(bitmap);
-            new Thread(new Runnable() {
-
-                @Override
-                public void run() {
-
-                    final Bitmap newImg = Blur.fastblur(ProfileActivity.this, bitmap, 12);
-                    runOnUiThread(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), newImg);
-                            mAvatarBg.setBackgroundDrawable(bitmapDrawable);
-
-                        }
-                    });
-
-                }
-            }).start();
-        }
     }
 
     @Override

@@ -83,7 +83,6 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
     private int keyboardHeight = 0;
     private boolean keyboardVisible;
     private View contentView;
-    private Bitmap mAvatarBitmap;
 
     private static final String[] USER_COLUMNS = {
             AccountEntry.TABLE_NAME + "." + AccountEntry._ID,
@@ -151,7 +150,6 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
     @OnClick(R.id.avatar_name)
     public void viewProfile() {
         Intent intent = new Intent(this, ProfileActivity.class);
-        intent.putExtra(MY_AVATAR, mAvatarBitmap);
         startActivity(intent);
     }
 
@@ -264,16 +262,9 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
             String name = cursor.getString(cursor.getColumnIndex(AccountEntry.COLUMN_SCREEN_NAME));
             Glide.with(this)
                     .load(avatarUrl)
-                    .asBitmap()
                     .thumbnail(0.1f)
                     .placeholder(R.drawable.user_avatar_empty)
-                    .into(new SimpleTarget<Bitmap>(144, 144) {
-                        @Override
-                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                            mAvatar.setImageBitmap(resource);
-                            mAvatarBitmap = resource;
-                        }
-                    });
+                    .into(mAvatar);
             mNameTextView.setText(name);
         }
 
