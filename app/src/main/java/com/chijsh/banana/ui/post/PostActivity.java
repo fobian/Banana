@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -48,6 +49,7 @@ import com.chijsh.banana.widget.SizeNotifierRelativeLayout;
 import com.chijsh.banana.widget.emoji.Emoji;
 import com.chijsh.banana.widget.emoji.EmojiView;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,7 +64,9 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
 
     public static final int PICK_OR_TAKE_PICTURE = 42;
     public static final String POST_WEIBO_EXTRA = "post_weibo_extra";
-    public static final String MY_AVATAR = "my_avatar";
+    public static final String MY_AVATAR_EXTRA = "my_avatar";
+
+    private Bitmap mAvatarBitmap;
 
     @InjectView(R.id.toolbar_actionbar) Toolbar mToolbar;
     @InjectView(R.id.avatar_name) View mAvatarName;
@@ -88,21 +92,21 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
             AccountEntry.TABLE_NAME + "." + AccountEntry._ID,
             AccountEntry.COLUMN_USER_ID,
             AccountEntry.COLUMN_SCREEN_NAME,
-            AccountEntry.COLUMN_PROVINCE,
-            AccountEntry.COLUMN_CITY,
-            AccountEntry.COLUMN_LOCATION,
-            AccountEntry.COLUMN_DESCRIPTION,
-            AccountEntry.COLUMN_URL,
-            AccountEntry.COLUMN_PROFILE_URL,
-            AccountEntry.COLUMN_GENDER,
-            AccountEntry.COLUMN_FOLLOWERS_COUNT,
-            AccountEntry.COLUMN_FRIENDS_COUNT,
-            AccountEntry.COLUMN_STATUSES_COUNT,
-            AccountEntry.COLUMN_FAVOURITES_COUNT,
-            AccountEntry.COLUMN_CREATED_AT,
-            AccountEntry.COLUMN_FOLLOWING,
+//            AccountEntry.COLUMN_PROVINCE,
+//            AccountEntry.COLUMN_CITY,
+//            AccountEntry.COLUMN_LOCATION,
+//            AccountEntry.COLUMN_DESCRIPTION,
+//            AccountEntry.COLUMN_URL,
+//            AccountEntry.COLUMN_PROFILE_URL,
+//            AccountEntry.COLUMN_GENDER,
+//            AccountEntry.COLUMN_FOLLOWERS_COUNT,
+//            AccountEntry.COLUMN_FRIENDS_COUNT,
+//            AccountEntry.COLUMN_STATUSES_COUNT,
+//            AccountEntry.COLUMN_FAVOURITES_COUNT,
+//            AccountEntry.COLUMN_CREATED_AT,
+//            AccountEntry.COLUMN_FOLLOWING,
             AccountEntry.COLUMN_AVATAR_LARGE,
-            AccountEntry.COLUMN_FOLLOW_ME,
+ //           AccountEntry.COLUMN_FOLLOW_ME,
 
     };
 
@@ -150,6 +154,7 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
     @OnClick(R.id.avatar_name)
     public void viewProfile() {
         Intent intent = new Intent(this, ProfileActivity.class);
+        intent.putExtra(MY_AVATAR_EXTRA, mAvatarBitmap);
         startActivity(intent);
     }
 
@@ -262,9 +267,15 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
             String name = cursor.getString(cursor.getColumnIndex(AccountEntry.COLUMN_SCREEN_NAME));
             Glide.with(this)
                     .load(avatarUrl)
-                    .thumbnail(0.1f)
+                    .asBitmap()
                     .placeholder(R.drawable.user_avatar_empty)
-                    .into(mAvatar);
+                    .into(new SimpleTarget<Bitmap>(120, 120) {
+                        @Override
+                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                            mAvatar.setImageBitmap(resource);
+                            mAvatarBitmap = resource;
+                        }
+                    });
             mNameTextView.setText(name);
         }
 
@@ -379,7 +390,7 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder holder;
+            final ViewHolder holder;
             User user = mUserList.get(position);
             if (convertView == null) {
                 convertView = LayoutInflater.from(mContext)

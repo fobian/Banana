@@ -7,6 +7,7 @@ import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
+import android.widget.Toast;
 
 import com.chijsh.banana.app.MyApplication;
 
@@ -52,4 +53,7 @@ public class Utility {
         return MyApplication.getAppContext();
     }
 
+    public static void toast(Context context, String msg) {
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+    }
 }

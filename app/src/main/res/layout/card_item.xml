@@ -9,7 +9,8 @@
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
     card_view:contentPadding="@dimen/card_content_padding"
-    card_view:cardCornerRadius="2dp">
+    card_view:cardCornerRadius="2dp"
+    card_view:cardElevation="4dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -20,6 +21,7 @@
             android:layout_height="wrap_content"
             >
             <com.chijsh.banana.widget.BezelImageView
+                style="?android:actionButtonStyle"
                 android:id="@+id/user_avatar"
                 android:src="@drawable/user_avatar_empty"
                 android:layout_width="@dimen/user_avatar_size"
@@ -87,18 +89,21 @@
             android:divider="@drawable/spacer_linear"
             android:layout_height="?actionBarSize">
             <ImageView
+                android:id="@+id/favourite_action"
                 style="?android:actionButtonStyle"
                 android:src="@drawable/ic_stars_grey600_24dp"
                 android:layout_width="wrap_content"
                 android:layout_weight="1"
                 android:layout_height="wrap_content" />
             <ImageView
+                android:id="@+id/comment_action"
                 style="?android:actionButtonStyle"
                 android:src="@drawable/ic_comment_grey600_24dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"/>
             <ImageView
+                android:id="@+id/forward_action"
                 style="?android:actionButtonStyle"
                 android:src="@drawable/ic_launch_grey600_24dp"
                 android:layout_width="wrap_content"

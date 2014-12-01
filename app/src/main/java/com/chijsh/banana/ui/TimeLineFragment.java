@@ -23,6 +23,7 @@ import com.chijsh.banana.data.PostContract.PostEntry;
 import com.chijsh.banana.sync.WeiboSyncAdapter;
 import com.chijsh.banana.ui.post.PostActivity;
 import com.chijsh.banana.utils.PrefUtil;
+import com.chijsh.banana.utils.Utility;
 import com.chijsh.banana.widget.MultiSwipeRefreshLayout;
 import com.chijsh.banana.widget.fab.FloatingActionButton;
 import com.chijsh.banana.widget.observablerecyclerview.ObservableRecyclerView;
@@ -106,6 +107,8 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setScrollViewCallbacks(this);
 
+        //mRecyclerView.addItemDecoration(new DividerItemDecoration(getResources().getDrawable(R.drawable.recycler_divider)));
+
         mHeaderView = ((TimeLineActivity)getActivity()).getHeaderView();
         return rootView;
     }
@@ -159,6 +162,26 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
         Intent intent = new Intent(getActivity(), PostContentActivity.class);
         intent.putExtra(POST_ID, postId);
         startActivity(intent);
+    }
+
+    @Override
+    public void onAvatarClicked(String userId) {
+        Utility.toast(getActivity(), userId);
+    }
+
+    @Override
+    public void onFavouriteActionClicked(String postId) {
+        Utility.toast(getActivity(), postId);
+    }
+
+    @Override
+    public void onCommentActionClicked(String postId) {
+        Utility.toast(getActivity(), postId);
+    }
+
+    @Override
+    public void onForwardActionClicked(String postId) {
+        Utility.toast(getActivity(), postId);
     }
 
     @Override

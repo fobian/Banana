@@ -52,6 +52,10 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
 
     public interface PostItemClickListener {
         public void onItemClicked(View itemView, String postId);
+        public void onAvatarClicked(String userId);
+        public void onFavouriteActionClicked(String postId);
+        public void onCommentActionClicked(String postId);
+        public void onForwardActionClicked(String postId);
     }
 
     private PostItemClickListener mListener;
@@ -66,6 +70,9 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
         @InjectView(R.id.user_name) TextView mNameView;
         @InjectView(R.id.user_subhead) TextView mSubHeadView;
         @InjectView(R.id.user_text) LinkEnabledTextView mTextView;
+        @InjectView(R.id.favourite_action) ImageView mFavouriteAction;
+        @InjectView(R.id.comment_action) ImageView mCommentAction;
+        @InjectView(R.id.forward_action) ImageView mForwardAction;
 
         @InjectView(R.id.tweet_pics_stub) ViewStub mTweetPicsStub;
         View mTweetPics;
@@ -118,7 +125,7 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
     public void bindView(final ViewHolder viewHolder, Context context, final Cursor cursor) {
         Glide.with(context)
                 .load(cursor.getString(COL_USER_AVATAR))
-                .thumbnail(0.5f)
+                .thumbnail(0.1f)
                 .placeholder(R.drawable.user_avatar_empty)
                 .into(viewHolder.mAvatarView);
         viewHolder.mNameView.setText(cursor.getString(COL_USER_SCREENNAME));
@@ -154,6 +161,32 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
             @Override
             public void onClick(View v) {
                 mListener.onItemClicked(viewHolder.itemView, cursor.getString(COL_POST_ID));
+            }
+        });
+
+        viewHolder.mAvatarView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onAvatarClicked(cursor.getString(COL_USER_ID));
+            }
+        });
+
+        viewHolder.mFavouriteAction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onFavouriteActionClicked(cursor.getString(COL_POST_ID));
+            }
+        });
+        viewHolder.mCommentAction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onCommentActionClicked(cursor.getString(COL_POST_ID));
+            }
+        });
+        viewHolder.mForwardAction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onForwardActionClicked(cursor.getString(COL_POST_ID));
             }
         });
 

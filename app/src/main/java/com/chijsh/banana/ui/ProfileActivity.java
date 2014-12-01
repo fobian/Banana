@@ -2,9 +2,13 @@ package com.chijsh.banana.ui;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.LoaderManager;
 import android.content.Intent;
+import android.content.Loader;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
@@ -18,15 +22,16 @@ import android.view.ViewGroup;
 
 import com.chijsh.banana.R;
 import com.chijsh.banana.ui.post.PostActivity;
-import com.chijsh.banana.utils.Blur;
+import com.chijsh.banana.utils.Utility;
 import com.chijsh.banana.widget.BezelImageView;
 import com.chijsh.banana.widget.MultiSwipeRefreshLayout;
 import com.chijsh.banana.widget.tab.SlidingTabLayout;
+import com.enrique.stackblur.StackBlurManager;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class ProfileActivity extends BaseActivity {
+public class ProfileActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     @InjectView(R.id.profile_avatar) BezelImageView mAvatar;
     @InjectView(R.id.avatar_bg) View mAvatarBg;
@@ -34,6 +39,8 @@ public class ProfileActivity extends BaseActivity {
     @InjectView(R.id.view_pager) ViewPager mViewPager;
     @InjectView(R.id.swipe_refresh_layout) MultiSwipeRefreshLayout mSwipeRefreshLayout;
     MyPagerAdapter mPagerAdapter;
+
+    StackBlurManager mBlurManager;
 
 
     @Override
@@ -68,6 +75,35 @@ public class ProfileActivity extends BaseActivity {
                 getResources().getColor(R.color.refresh_progress_2),
                 getResources().getColor(R.color.refresh_progress_3)
         );
+
+
+
+        Intent intent = getIntent();
+        if (intent != null) {
+            Bitmap avatar = intent.getParcelableExtra(PostActivity.MY_AVATAR_EXTRA);
+            mAvatar.setImageBitmap(avatar);
+            mBlurManager = new StackBlurManager(avatar);
+            if (Utility.getSDKVersion() >= 16) {
+                mAvatarBg.setBackground(new BitmapDrawable(getResources(), mBlurManager.process(20)));
+            } else {
+                mAvatarBg.setBackgroundDrawable(new BitmapDrawable(getResources(), mBlurManager.process(20)));
+            }
+        }
+
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
 
     }
 
