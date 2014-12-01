@@ -53,7 +53,7 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
     public interface PostItemClickListener {
         public void onItemClicked(View itemView, String postId);
         public void onAvatarClicked(String userId);
-        public void onFavouriteActionClicked(String postId);
+        public void onFavouriteActionClicked(String postId, boolean isFavourited);
         public void onCommentActionClicked(String postId);
         public void onForwardActionClicked(String postId);
     }
@@ -174,7 +174,7 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
         viewHolder.mFavouriteAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.onFavouriteActionClicked(cursor.getString(COL_POST_ID));
+                mListener.onFavouriteActionClicked(cursor.getString(COL_POST_ID), cursor.getInt(COL_POST_FAVORITED) == 0 ? false : true);
             }
         });
         viewHolder.mCommentAction.setOnClickListener(new View.OnClickListener() {

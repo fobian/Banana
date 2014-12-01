@@ -76,8 +76,6 @@ public class ProfileActivity extends BaseActivity implements LoaderManager.Loade
                 getResources().getColor(R.color.refresh_progress_3)
         );
 
-
-
         Intent intent = getIntent();
         if (intent != null) {
             Bitmap avatar = intent.getParcelableExtra(PostActivity.MY_AVATAR_EXTRA);

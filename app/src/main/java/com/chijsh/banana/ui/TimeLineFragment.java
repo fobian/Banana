@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import com.chijsh.banana.R;
 
 import com.chijsh.banana.data.PostContract.PostEntry;
+import com.chijsh.banana.service.FavouriteWeiboService;
 import com.chijsh.banana.sync.WeiboSyncAdapter;
 import com.chijsh.banana.ui.post.PostActivity;
 import com.chijsh.banana.utils.PrefUtil;
@@ -45,6 +46,9 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
     private static final int POST_LOADER = 0;
 
     public static final String POST_ID = "post_id";
+
+    public static final String POST_ID_EXTRA = "post_id_extra";
+    public static final String IS_FAVOURITED_EXTRA = "is_favourited_extra";
 
     private TimeLineAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -170,8 +174,11 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     @Override
-    public void onFavouriteActionClicked(String postId) {
-        Utility.toast(getActivity(), postId);
+    public void onFavouriteActionClicked(String postId, boolean isFavourited) {
+        Intent intent = new Intent(getActivity(), FavouriteWeiboService.class);
+        intent.putExtra(POST_ID_EXTRA, postId);
+        intent.putExtra(IS_FAVOURITED_EXTRA, isFavourited);
+        getActivity().startService(intent);
     }
 
     @Override

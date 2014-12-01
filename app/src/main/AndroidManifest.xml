@@ -76,6 +76,7 @@
         </activity>
 
         <service android:name=".service.PostWeiboService" />
+        <service android:name=".service.FavouriteWeiboService" />
 
         <activity
             android:name=".ui.ProfileActivity"

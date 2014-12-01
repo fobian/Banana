@@ -35,6 +35,8 @@
     <string name="title_add_picture">Add Picture</string>
     <string name="weibo_edit_hint">What\'s on your mind?</string>
     <string name="weibo_sent_success">Weibo sent successfully</string>
+    <string name="added_to_favourited">Added to Favourites</string>
+    <string name="deleted_favourited">Deleted Favourite</string>
     <string name="no_recent">No recent</string>
     <string name="title_activity_profile">Profile</string>
     <string name="title_activity_search">Search</string>

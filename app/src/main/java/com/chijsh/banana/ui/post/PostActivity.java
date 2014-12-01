@@ -9,9 +9,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -30,7 +28,6 @@ import android.widget.Filterable;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
@@ -44,12 +41,12 @@ import com.chijsh.banana.model.User;
 import com.chijsh.banana.service.PostWeiboService;
 import com.chijsh.banana.ui.ProfileActivity;
 import com.chijsh.banana.utils.ScreenUtil;
+import com.chijsh.banana.utils.Utility;
 import com.chijsh.banana.widget.BezelImageView;
 import com.chijsh.banana.widget.SizeNotifierRelativeLayout;
 import com.chijsh.banana.widget.emoji.Emoji;
 import com.chijsh.banana.widget.emoji.EmojiView;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -147,7 +144,7 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
     }
 
     public void onEventMainThread(MessageEvent event){
-        Toast.makeText(this, event.getMessage().toString(), Toast.LENGTH_SHORT).show();
+        Utility.toast(this, event.getMessage());
         finish();
     }
 
