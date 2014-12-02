@@ -23,11 +23,9 @@
     <string name="title_activity_notification">Notifications</string>
     <string name="notif_mention">Mention</string>
     <string name="notif_comment">Comment</string>
-
     <string name="profile_weibo">Weibo</string>
     <string name="profile_follow">Follow</string>
     <string name="profile_followers">Followers</string>
-
     <string name="pref_signout">Sign out</string>
     <string name="pref_account">Account</string>
     <!-- Post Weibo Activity -->

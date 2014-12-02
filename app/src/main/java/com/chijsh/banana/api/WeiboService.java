@@ -1,7 +1,10 @@
 package com.chijsh.banana.api;
 
+import com.chijsh.banana.model.Follows;
 import com.chijsh.banana.model.Posts;
 import com.chijsh.banana.model.User;
+
+import java.util.List;
 
 import retrofit.client.Response;
 import retrofit.http.GET;
@@ -31,4 +34,6 @@ public interface WeiboService {
     @POST("/favorites/destroy.json")
     Response deleteFavorites(@Query("access_token") String token, @Query("id") long postId);
 
+    @GET("/friendships/friends.json")
+    Follows getFollows(@Query("access_token") String token, @Query("uid") long id);
 }

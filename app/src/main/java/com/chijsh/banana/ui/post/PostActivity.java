@@ -61,7 +61,8 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
 
     public static final int PICK_OR_TAKE_PICTURE = 42;
     public static final String POST_WEIBO_EXTRA = "post_weibo_extra";
-    public static final String MY_AVATAR_EXTRA = "my_avatar";
+    public static final String AVATAR_EXTRA = "avatar_extra";
+    public static final String NAME_EXTRA = "name_extra";
 
     private Bitmap mAvatarBitmap;
 
@@ -151,7 +152,8 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
     @OnClick(R.id.avatar_name)
     public void viewProfile() {
         Intent intent = new Intent(this, ProfileActivity.class);
-        intent.putExtra(MY_AVATAR_EXTRA, mAvatarBitmap);
+        intent.putExtra(AVATAR_EXTRA, mAvatarBitmap);
+        intent.putExtra(NAME_EXTRA, mNameTextView.getText());
         startActivity(intent);
     }
 

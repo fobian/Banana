@@ -1,11 +1,14 @@
 package com.chijsh.banana.api;
 
 import com.chijsh.banana.Config;
+import com.chijsh.banana.model.Follows;
 import com.chijsh.banana.model.Posts;
 import com.chijsh.banana.model.User;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import java.util.List;
 
 import retrofit.RestAdapter;
 import retrofit.client.Response;
@@ -64,6 +67,10 @@ public class WeiboAPI {
 
     public Response deleteFavorites(String token, long postId) {
         return sWeiboService.deleteFavorites(token, postId);
+    }
+
+    public Follows getFollows(String token, long uid) {
+        return sWeiboService.getFollows(token, uid);
     }
 
 }

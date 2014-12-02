@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.chijsh.banana.R;
 import com.chijsh.banana.ui.post.PostActivity;
@@ -34,6 +35,8 @@ import butterknife.InjectView;
 public class ProfileActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     @InjectView(R.id.profile_avatar) BezelImageView mAvatar;
+    @InjectView(R.id.profile_name) TextView mName;
+    @InjectView(R.id.profile_description) TextView mDescription;
     @InjectView(R.id.avatar_bg) View mAvatarBg;
     @InjectView(R.id.profile_tabs) SlidingTabLayout mSlidingTab;
     @InjectView(R.id.view_pager) ViewPager mViewPager;
@@ -78,14 +81,18 @@ public class ProfileActivity extends BaseActivity implements LoaderManager.Loade
 
         Intent intent = getIntent();
         if (intent != null) {
-            Bitmap avatar = intent.getParcelableExtra(PostActivity.MY_AVATAR_EXTRA);
-            mAvatar.setImageBitmap(avatar);
-            mBlurManager = new StackBlurManager(avatar);
-            if (Utility.getSDKVersion() >= 16) {
-                mAvatarBg.setBackground(new BitmapDrawable(getResources(), mBlurManager.process(20)));
-            } else {
-                mAvatarBg.setBackgroundDrawable(new BitmapDrawable(getResources(), mBlurManager.process(20)));
+            Bitmap avatar = intent.getParcelableExtra(PostActivity.AVATAR_EXTRA);
+            String name = intent.getStringExtra(PostActivity.NAME_EXTRA);
+            if (avatar != null) {
+                mAvatar.setImageBitmap(avatar);
+                mBlurManager = new StackBlurManager(avatar);
+                if (Utility.getSDKVersion() >= 16) {
+                    mAvatarBg.setBackground(new BitmapDrawable(getResources(), mBlurManager.process(20)));
+                } else {
+                    mAvatarBg.setBackgroundDrawable(new BitmapDrawable(getResources(), mBlurManager.process(20)));
+                }
             }
+            mName.setText(name);
         }
 
     }
@@ -134,7 +141,16 @@ public class ProfileActivity extends BaseActivity implements LoaderManager.Loade
 
         @Override
         public Fragment getItem(int i) {
-            return new PlaceholderFragment();
+            switch (i) {
+                case 0:
+                    return new PlaceholderFragment();
+                case 1:
+                    return new FollowsFragment();
+                case 2:
+                    return new PlaceholderFragment();
+                default:
+                    return null;
+            }
         }
 
         @Override

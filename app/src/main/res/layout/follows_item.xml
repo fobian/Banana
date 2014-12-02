@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/list_item_height">
+    <com.chijsh.banana.widget.BezelImageView
+        android:id="@+id/follows_avatar"
+        android:layout_centerVertical="true"
+        android:src="@drawable/user_avatar_empty"
+        android:layout_width="@dimen/list_image_size"
+        android:layout_height="@dimen/list_image_size"
+        android:scaleType="centerCrop"
+        app:maskDrawable="@drawable/circle_mask"/>
+    <RelativeLayout
+        android:layout_toRightOf="@id/follows_avatar"
+        android:layout_marginLeft="16dp"
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/follows_name"
+            android:textSize="@dimen/list_primary_text_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/follows_description"
+            android:layout_below="@id/follows_name"
+            android:textSize="@dimen/list_secondary_text_size"
+            android:layout_marginTop="5dp"
+            android:singleLine="true"
+            android:textColor="@android:color/darker_gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+</RelativeLayout>

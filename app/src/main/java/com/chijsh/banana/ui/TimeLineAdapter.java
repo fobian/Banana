@@ -167,7 +167,7 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
         viewHolder.mAvatarView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.onAvatarClicked(cursor.getString(COL_USER_ID));
+                mListener.onAvatarClicked(cursor.getString(COL_USER_SCREENNAME));
             }
         });
 

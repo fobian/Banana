@@ -16,7 +16,6 @@ import com.chijsh.banana.model.Posts;
 import com.chijsh.banana.model.User;
 import com.chijsh.banana.utils.PrefUtil;
 import com.chijsh.banana.utils.StringUtil;
-import com.chijsh.banana.utils.Utility;
 
 import java.util.Vector;
 
