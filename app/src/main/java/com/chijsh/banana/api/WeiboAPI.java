@@ -73,4 +73,8 @@ public class WeiboAPI {
         return sWeiboService.getFollows(token, uid);
     }
 
+    public Follows getFollowers(String token, long uid) {
+        return sWeiboService.getFollowers(token, uid);
+    }
+
 }

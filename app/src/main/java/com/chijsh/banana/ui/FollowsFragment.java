@@ -11,10 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.chijsh.banana.R;
-import com.chijsh.banana.event.MessageEvent;
 import com.chijsh.banana.event.UserEvent;
 import com.chijsh.banana.service.FollowsService;
-import com.chijsh.banana.utils.Utility;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -28,7 +26,27 @@ public class FollowsFragment extends Fragment {
     private FollowsAdapter mFollowsAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
+    private static final String ARG_IS_FOLLOWS = "is_follows";
+    public static final String EXTRA_IS_FOLLOWS = "extra_is_follows";
+    private boolean mIsFollows;
+
+    public static FollowsFragment newInstance(boolean isFollows) {
+        FollowsFragment fragment = new FollowsFragment();
+        Bundle args = new Bundle();
+        args.putBoolean(ARG_IS_FOLLOWS, isFollows);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     public FollowsFragment() {
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mIsFollows = getArguments().getBoolean(ARG_IS_FOLLOWS);
+        }
     }
 
     @Override
@@ -56,13 +74,17 @@ public class FollowsFragment extends Fragment {
     }
 
     public void onEventMainThread(UserEvent event){
-        mFollowsAdapter.setFollows(event.getUsers());
-        mFollowsAdapter.notifyDataSetChanged();
+        if (event.isFollows() == mIsFollows) {
+            mFollowsAdapter.setFollows(event.getUsers());
+            mFollowsAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getActivity().startService(new Intent(getActivity(), FollowsService.class));
+        Intent intent = new Intent(getActivity(), FollowsService.class);
+        intent.putExtra(EXTRA_IS_FOLLOWS, mIsFollows);
+        getActivity().startService(intent);
     }
 }

@@ -9,12 +9,18 @@ import java.util.List;
  */
 public class UserEvent {
     private List<User> mUsers;
+    private boolean mIsFollows;
 
-    public UserEvent(List<User> users) {
+    public UserEvent(List<User> users, boolean isFollows) {
         mUsers = users;
+        mIsFollows = isFollows;
     }
 
     public List<User> getUsers() {
         return mUsers;
+    }
+
+    public boolean isFollows() {
+        return mIsFollows;
     }
 }

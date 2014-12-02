@@ -36,4 +36,7 @@ public interface WeiboService {
 
     @GET("/friendships/friends.json")
     Follows getFollows(@Query("access_token") String token, @Query("uid") long id);
+
+    @GET("/friendships/followers.json")
+    Follows getFollowers(@Query("access_token") String token, @Query("uid") long id);
 }

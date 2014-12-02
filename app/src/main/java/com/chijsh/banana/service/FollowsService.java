@@ -4,18 +4,12 @@ import android.app.IntentService;
 import android.content.Intent;
 
 import com.chijsh.banana.AccessTokenKeeper;
-import com.chijsh.banana.R;
 import com.chijsh.banana.api.WeiboAPI;
-import com.chijsh.banana.event.MessageEvent;
 import com.chijsh.banana.event.UserEvent;
 import com.chijsh.banana.model.Follows;
-import com.chijsh.banana.model.User;
-import com.chijsh.banana.ui.post.PostActivity;
-
-import java.util.List;
+import com.chijsh.banana.ui.FollowsFragment;
 
 import de.greenrobot.event.EventBus;
-import retrofit.client.Response;
 
 /**
  * Created by chijsh on 11/7/14.
@@ -28,11 +22,18 @@ public class FollowsService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        boolean isFollows = intent.getBooleanExtra(FollowsFragment.EXTRA_IS_FOLLOWS, true);
         String token = AccessTokenKeeper.readAccessToken(this).getToken();
         String uid = AccessTokenKeeper.readAccessToken(this).getUid();
-        Follows users = WeiboAPI.getInstance().getFollows(token, Long.parseLong(uid));
+        Follows users;
+        if (isFollows) {
+            users = WeiboAPI.getInstance().getFollows(token, Long.parseLong(uid));
+        } else {
+            users = WeiboAPI.getInstance().getFollowers(token, Long.parseLong(uid));
+        }
+
         if (users != null) {
-            EventBus.getDefault().post(new UserEvent(users.users));
+            EventBus.getDefault().post(new UserEvent(users.users, isFollows));
         }
     }
 }

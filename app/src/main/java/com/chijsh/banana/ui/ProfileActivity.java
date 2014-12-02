@@ -145,9 +145,9 @@ public class ProfileActivity extends BaseActivity implements LoaderManager.Loade
                 case 0:
                     return new PlaceholderFragment();
                 case 1:
-                    return new FollowsFragment();
+                    return FollowsFragment.newInstance(true);
                 case 2:
-                    return new PlaceholderFragment();
+                    return FollowsFragment.newInstance(false);
                 default:
                     return null;
             }
