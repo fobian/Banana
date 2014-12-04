@@ -56,4 +56,12 @@ public class Utility {
     public static void toast(Context context, String msg) {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
+
+    public static float getProgress(int value, int min, int max) {
+        if (min == max) {
+            throw new IllegalArgumentException("Max (" + max + ") cannot equal min (" + min + ")");
+        }
+
+        return (value - min) / (float) (max - min);
+    }
 }

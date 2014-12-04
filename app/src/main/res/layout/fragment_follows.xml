@@ -2,13 +2,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="@dimen/list_padding_top"
-    android:paddingLeft="@dimen/list_padding_left"
-    android:paddingRight="@dimen/list_padding_right"
     tools:context="com.chijsh.banana.ui.FollowsFragment">
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list_follows"
         android:scrollbars="vertical"
+        android:paddingTop="@dimen/list_padding_top"
+        android:paddingLeft="@dimen/list_padding_left"
+        android:paddingRight="@dimen/list_padding_right"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </android.support.v7.widget.RecyclerView>

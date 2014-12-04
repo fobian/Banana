@@ -3,7 +3,6 @@ package com.chijsh.banana.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,13 +17,13 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 
-public class FollowsFragment extends Fragment {
+public class FollowsFragment extends ScrollTabHolderFragment {
 
 
     @InjectView(R.id.list_follows) RecyclerView mFollowsRecyclerView;
 
     private FollowsAdapter mFollowsAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
+    private LinearLayoutManager mLayoutManager;
 
     private static final String ARG_IS_FOLLOWS = "is_follows";
     public static final String EXTRA_IS_FOLLOWS = "extra_is_follows";
@@ -39,6 +38,7 @@ public class FollowsFragment extends Fragment {
     }
 
     public FollowsFragment() {
+        super();
     }
 
     @Override
@@ -58,6 +58,24 @@ public class FollowsFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getActivity());
         mFollowsRecyclerView.setLayoutManager(mLayoutManager);
         mFollowsRecyclerView.setAdapter(mFollowsAdapter);
+        mFollowsRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                int firstVisibleItem = mLayoutManager.findFirstVisibleItemPosition();
+                int visibleItemCount = mLayoutManager.findLastVisibleItemPosition() - mLayoutManager.findFirstVisibleItemPosition() + 1;
+                int totalItemCount = mLayoutManager.getItemCount();
+                if (mScrollTabHolderListener != null)
+                    mScrollTabHolderListener.onScroll(recyclerView, firstVisibleItem, visibleItemCount, totalItemCount, 0);
+
+            }
+        });
         return rootView;
     }
 
@@ -86,5 +104,14 @@ public class FollowsFragment extends Fragment {
         Intent intent = new Intent(getActivity(), FollowsService.class);
         intent.putExtra(EXTRA_IS_FOLLOWS, mIsFollows);
         getActivity().startService(intent);
+    }
+
+    @Override
+    public void adjustScroll(int scrollHeight) {
+        if (scrollHeight == 0 && mLayoutManager.findFirstVisibleItemPosition() >= 1) {
+            return;
+        }
+
+        mLayoutManager.scrollToPositionWithOffset(1, scrollHeight);
     }
 }
