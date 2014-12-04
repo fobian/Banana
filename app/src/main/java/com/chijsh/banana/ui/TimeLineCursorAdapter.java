@@ -1,13 +1,10 @@
 package com.chijsh.banana.ui;
 
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewStub;
@@ -18,6 +15,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.chijsh.banana.R;
+import com.chijsh.banana.ui.recycursoradapter.RecyclerViewCursorAdapter;
 import com.chijsh.banana.utils.StringUtil;
 import com.chijsh.banana.utils.Utility;
 import com.chijsh.banana.widget.LinkEnabledTextView;
@@ -30,7 +28,7 @@ import butterknife.InjectView;
  * Created by chijsh on 10/28/14.
  */
 
-public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.ViewHolder> implements LinkEnabledTextView.TextLinkClickListener {
+public class TimeLineCursorAdapter extends RecyclerViewCursorAdapter<TimeLineCursorAdapter.ViewHolder> implements LinkEnabledTextView.TextLinkClickListener {
 
     public static final int COL_CREATED_AT = 1;
     public static final int COL_POST_ID = 2;
@@ -116,7 +114,7 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
     }
 
 
-    public TimeLineAdapter(Context context, Cursor cursor) {
+    public TimeLineCursorAdapter(Context context, Cursor cursor) {
         super(context, cursor);
 
     }

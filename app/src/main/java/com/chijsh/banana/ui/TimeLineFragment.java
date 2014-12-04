@@ -40,7 +40,7 @@ import butterknife.OnClick;
  */
 public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>
         , SwipeRefreshLayout.OnRefreshListener
-        , TimeLineAdapter.PostItemClickListener
+        , TimeLineCursorAdapter.PostItemClickListener
         , ObservableScrollViewCallbacks
         , MultiSwipeRefreshLayout.CanChildScrollUpCallback {
     private static final int POST_LOADER = 0;
@@ -50,7 +50,7 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
     public static final String POST_ID_EXTRA = "post_id_extra";
     public static final String IS_FAVOURITED_EXTRA = "is_favourited_extra";
 
-    private TimeLineAdapter mAdapter;
+    private TimeLineCursorAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
     @InjectView(R.id.swip_refresh_layout) MultiSwipeRefreshLayout mSwipeRefreshLayout;
@@ -105,7 +105,7 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new TimeLineAdapter(getActivity(), null);
+        mAdapter = new TimeLineCursorAdapter(getActivity(), null);
         mAdapter.setPostItemClickListener(this);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
