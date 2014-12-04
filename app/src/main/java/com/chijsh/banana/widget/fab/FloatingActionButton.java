@@ -1,406 +1,157 @@
 package com.chijsh.banana.widget.fab;
 
-import android.annotation.SuppressLint;
+import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
-import android.graphics.Outline;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
-import android.graphics.drawable.RippleDrawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.StateListDrawable;
-import android.graphics.drawable.shapes.OvalShape;
 import android.os.Build;
-import android.support.annotation.ColorRes;
-import android.support.annotation.DimenRes;
-import android.support.annotation.IntDef;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.view.Display;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewOutlineProvider;
-import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
-import android.widget.AbsListView;
-import android.widget.ImageButton;
 
 import com.chijsh.banana.R;
 
-/**
- * Android Google+ like floating action button which reacts on the attached list view scrolling events.
- *
- * @author Oleksandr Melnykov
- */
-public class FloatingActionButton extends ImageButton {
-    private static final int TRANSLATE_DURATION_MILLIS = 200;
-    private FabOnScrollListener mOnScrollListener;
-    private FabRecyclerOnViewScrollListener mRecyclerViewOnScrollListener;
-
-    @IntDef({TYPE_NORMAL, TYPE_MINI})
-    public @interface TYPE {
-    }
-
-    public static final int TYPE_NORMAL = 0;
-    public static final int TYPE_MINI = 1;
-
-    protected AbsListView mListView;
-    protected RecyclerView mRecyclerView;
-
-    private boolean mVisible;
-
-    private int mColorNormal;
-    private int mColorPressed;
-    private int mColorRipple;
-    private boolean mShadow;
-    private int mType;
+public class FloatingActionButton extends View {
 
     private final Interpolator mInterpolator = new AccelerateDecelerateInterpolator();
+    private final Paint mButtonPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final Paint mDrawablePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private Bitmap mBitmap;
+    private int mColor;
+    private boolean mHidden = false;
+    /**
+     * The FAB button's Y position when it is displayed.
+     */
+    private float mYDisplayed = -1;
+    /**
+     * The FAB button's Y position when it is hidden.
+     */
+    private float mYHidden = -1;
 
     public FloatingActionButton(Context context) {
         this(context, null);
     }
 
-    public FloatingActionButton(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init(context, attrs);
+    public FloatingActionButton(Context context, AttributeSet attributeSet) {
+        this(context, attributeSet, 0);
     }
 
-    public FloatingActionButton(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-        init(context, attrs);
+
+    public FloatingActionButton(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+
+        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.FloatingActionButton);
+        mColor = a.getColor(R.styleable.FloatingActionButton_fabColor, Color.WHITE);
+        mButtonPaint.setStyle(Paint.Style.FILL);
+        mButtonPaint.setColor(mColor);
+        float radius, dx, dy;
+        radius = a.getFloat(R.styleable.FloatingActionButton_fabShadowRadius, 10.0f);
+        dx = a.getFloat(R.styleable.FloatingActionButton_fabShadowDx, 0.0f);
+        dy = a.getFloat(R.styleable.FloatingActionButton_fabShadowDy, 3.5f);
+        int color = a.getInteger(R.styleable.FloatingActionButton_fabShadowColor, Color.argb(100, 0, 0, 0));
+        mButtonPaint.setShadowLayer(radius, dx, dy, color);
+
+        Drawable drawable = a.getDrawable(R.styleable.FloatingActionButton_fabDrawable);
+        if (null != drawable) {
+            mBitmap = ((BitmapDrawable) drawable).getBitmap();
+        }
+        setWillNotDraw(false);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+            setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+
+        WindowManager mWindowManager = (WindowManager)
+                context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = mWindowManager.getDefaultDisplay();
+        Point size = new Point();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            display.getSize(size);
+            mYHidden = size.y;
+        } else mYHidden = display.getHeight();
+    }
+
+    public static int darkenColor(int color) {
+        float[] hsv = new float[3];
+        Color.colorToHSV(color, hsv);
+        hsv[2] *= 0.8f;
+        return Color.HSVToColor(hsv);
+    }
+
+    public void setColor(int color) {
+        mColor = color;
+        mButtonPaint.setColor(mColor);
+        invalidate();
+    }
+
+    public void setDrawable(Drawable drawable) {
+        mBitmap = ((BitmapDrawable) drawable).getBitmap();
+        invalidate();
     }
 
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        int size = getDimension(
-                mType == TYPE_NORMAL ? R.dimen.fab_size_normal : R.dimen.fab_size_mini);
-        if (mShadow && !hasLollipopApi()) {
-            int shadowSize = getDimension(R.dimen.fab_shadow_size);
-            size += shadowSize * 2;
-        }
-        setMeasuredDimension(size, size);
-    }
-
-    private void init(Context context, AttributeSet attributeSet) {
-        mVisible = true;
-        mColorNormal = getColor(R.color.fab_blue_normal);
-        mColorPressed = getColor(R.color.fab_blue_pressed);
-        mColorRipple = getColor(android.R.color.white);
-        mType = TYPE_NORMAL;
-        mShadow = true;
-        if (attributeSet != null) {
-            initAttributes(context, attributeSet);
-        }
-        updateBackground();
-    }
-
-    private void initAttributes(Context context, AttributeSet attributeSet) {
-        TypedArray attr = getTypedArray(context, attributeSet, R.styleable.FloatingActionButton);
-        if (attr != null) {
-            try {
-                mColorNormal = attr.getColor(R.styleable.FloatingActionButton_fab_colorNormal,
-                        getColor(R.color.fab_blue_normal));
-                mColorPressed = attr.getColor(R.styleable.FloatingActionButton_fab_colorPressed,
-                        getColor(R.color.fab_blue_pressed));
-                mColorRipple = attr.getColor(R.styleable.FloatingActionButton_fab_colorRipple,
-                        getColor(android.R.color.white));
-                mShadow = attr.getBoolean(R.styleable.FloatingActionButton_fab_shadow, true);
-                mType = attr.getInt(R.styleable.FloatingActionButton_fab_type, TYPE_NORMAL);
-            } finally {
-                attr.recycle();
-            }
+    protected void onDraw(Canvas canvas) {
+        canvas.drawCircle(getWidth() / 2, getHeight() / 2, (float) (getWidth() / 2.6), mButtonPaint);
+        if (null != mBitmap) {
+            canvas.drawBitmap(mBitmap, (getWidth() - mBitmap.getWidth()) / 2,
+                    (getHeight() - mBitmap.getHeight()) / 2, mDrawablePaint);
         }
     }
 
-    private void updateBackground() {
-        StateListDrawable drawable = new StateListDrawable();
-        drawable.addState(new int[]{android.R.attr.state_pressed}, createDrawable(mColorPressed));
-        drawable.addState(new int[]{}, createDrawable(mColorNormal));
-        setBackgroundCompat(drawable);
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        // Perform the default behavior
+        super.onLayout(changed, left, top, right, bottom);
+
+        // Store the FAB button's displayed Y position if we are not already aware of it
+        if (mYDisplayed == -1) {
+
+            mYDisplayed = this.getY();
+        }
     }
 
-    private Drawable createDrawable(int color) {
-        OvalShape ovalShape = new OvalShape();
-        ShapeDrawable shapeDrawable = new ShapeDrawable(ovalShape);
-        shapeDrawable.getPaint().setColor(color);
-
-        if (mShadow && !hasLollipopApi()) {
-            LayerDrawable layerDrawable = new LayerDrawable(
-                    new Drawable[]{getResources().getDrawable(R.drawable.fab_shadow),
-                            shapeDrawable});
-            int shadowSize = getDimension(
-                    mType == TYPE_NORMAL ? R.dimen.fab_shadow_size : R.dimen.fab_mini_shadow_size);
-            layerDrawable.setLayerInset(1, shadowSize, shadowSize, shadowSize, shadowSize);
-            return layerDrawable;
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        int color;
+        if (event.getAction() == MotionEvent.ACTION_UP) {
+            color = mColor;
         } else {
-            return shapeDrawable;
+            color = darkenColor(mColor);
+        }
+        mButtonPaint.setColor(color);
+        invalidate();
+        return super.onTouchEvent(event);
+    }
+
+    public void hide(boolean hide) {
+        // If the hidden state is being updated
+        if (mHidden != hide) {
+
+            // Store the new hidden state
+            mHidden = hide;
+
+            // Animate the FAB to it's new Y position
+
+            ObjectAnimator animator = ObjectAnimator.ofFloat(this, "y", mHidden ? mYHidden : mYDisplayed).setDuration(500);
+            animator.setInterpolator(mInterpolator);
+            animator.start();
         }
     }
 
-    private TypedArray getTypedArray(Context context, AttributeSet attributeSet, int[] attr) {
-        return context.obtainStyledAttributes(attributeSet, attr, 0, 0);
-    }
-
-    private int getColor(@ColorRes int id) {
-        return getResources().getColor(id);
-    }
-
-    private int getDimension(@DimenRes int id) {
-        return getResources().getDimensionPixelSize(id);
-    }
-
-    @SuppressWarnings("deprecation")
-    @SuppressLint("NewApi")
-    private void setBackgroundCompat(Drawable drawable) {
-        if (hasLollipopApi()) {
-            setElevation(mShadow ? getDimension(R.dimen.fab_elevation_lollipop) : 0.0f);
-            RippleDrawable rippleDrawable = new RippleDrawable(new ColorStateList(new int[][]{{}},
-                new int[]{mColorRipple}), drawable, null);
-            setOutlineProvider(new ViewOutlineProvider() {
-                @Override
-                public void getOutline(View view, Outline outline) {
-                    int size = getDimension(mType == TYPE_NORMAL ? R.dimen.fab_size_normal : R.dimen.fab_size_mini);
-                    outline.setOval(0, 0, size, size);
-                }
-            });
-            setClipToOutline(true);
-            setBackground(rippleDrawable);
-        } else if (hasJellyBeanApi()) {
-            setBackground(drawable);
-        } else {
-            setBackgroundDrawable(drawable);
+    public void listenTo(RecyclerView recyclerView) {
+        if (null != recyclerView) {
+            recyclerView.setOnScrollListener(new DirectionScrollListener(this));
         }
     }
 
-    /**
-     * @deprecated to be removed in next release.
-     * Now {@link com.melnykov.fab.ScrollDirectionDetector} is used to detect scrolling direction.
-     */
-    @Deprecated
-    protected int getListViewScrollY() {
-        View topChild = mListView.getChildAt(0);
-        return topChild == null ? 0 : mListView.getFirstVisiblePosition() * topChild.getHeight() -
-                topChild.getTop();
-    }
 
-    private int getMarginBottom() {
-        int marginBottom = 0;
-        final ViewGroup.LayoutParams layoutParams = getLayoutParams();
-        if (layoutParams instanceof ViewGroup.MarginLayoutParams) {
-            marginBottom = ((ViewGroup.MarginLayoutParams) layoutParams).bottomMargin;
-        }
-        return marginBottom;
-    }
-
-    public void setColorNormal(int color) {
-        if (color != mColorNormal) {
-            mColorNormal = color;
-            updateBackground();
-        }
-    }
-
-    public void setColorNormalResId(@ColorRes int colorResId) {
-        setColorNormal(getColor(colorResId));
-    }
-
-    public int getColorNormal() {
-        return mColorNormal;
-    }
-
-    public void setColorPressed(int color) {
-        if (color != mColorPressed) {
-            mColorPressed = color;
-            updateBackground();
-        }
-    }
-
-    public void setColorPressedResId(@ColorRes int colorResId) {
-        setColorPressed(getColor(colorResId));
-    }
-
-    public int getColorPressed() {
-        return mColorPressed;
-    }
-
-    public void setColorRipple(int color) {
-        if (color != mColorRipple) {
-            mColorRipple = color;
-            updateBackground();
-        }
-    }
-
-    public void setColorRippleResId(@ColorRes int colorResId) {
-        setColorRipple(getColor(colorResId));
-    }
-
-    public int getColorRipple() {
-        return mColorRipple;
-    }
-
-    public void setShadow(boolean shadow) {
-        if (shadow != mShadow) {
-            mShadow = shadow;
-            updateBackground();
-        }
-    }
-
-    public boolean hasShadow() {
-        return mShadow;
-    }
-
-    public void setType(@TYPE int type) {
-        if (type != mType) {
-            mType = type;
-            updateBackground();
-        }
-    }
-
-    @TYPE
-    public int getType() {
-        return mType;
-    }
-
-    protected AbsListView.OnScrollListener getOnScrollListener() {
-        return mOnScrollListener;
-    }
-
-    protected RecyclerView.OnScrollListener getRecyclerViewOnScrollListener() {
-        return mRecyclerViewOnScrollListener;
-    }
-
-    public void show() {
-        show(true);
-    }
-
-    public void hide() {
-        hide(true);
-    }
-
-    public void show(boolean animate) {
-        toggle(true, animate, false);
-    }
-
-    public void hide(boolean animate) {
-        toggle(false, animate, false);
-    }
-
-    private void toggle(final boolean visible, final boolean animate, boolean force) {
-        if (mVisible != visible || force) {
-            mVisible = visible;
-            int height = getHeight();
-            if (height == 0 && !force) {
-                ViewTreeObserver vto = getViewTreeObserver();
-                if (vto.isAlive()) {
-                    vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-                        @Override
-                        public boolean onPreDraw() {
-                            ViewTreeObserver currentVto = getViewTreeObserver();
-                            if (currentVto.isAlive()) {
-                                currentVto.removeOnPreDrawListener(this);
-                            }
-                            toggle(visible, animate, true);
-                            return true;
-                        }
-                    });
-                    return;
-                }
-            }
-            int translationY = visible ? 0 : height + getMarginBottom();
-            if (animate) {
-                animate().setInterpolator(mInterpolator)
-                        .setDuration(TRANSLATE_DURATION_MILLIS)
-                        .translationY(translationY);
-            } else {
-                setTranslationY(translationY);
-            }
-        }
-    }
-
-    /**
-     * If need to use custom {@link android.widget.AbsListView.OnScrollListener},
-     * pass it to {@link #attachToListView(android.widget.AbsListView, com.melnykov.fab.FloatingActionButton.FabOnScrollListener)}
-     */
-    public void attachToListView(@NonNull AbsListView listView) {
-        attachToListView(listView, new FabOnScrollListener());
-    }
-
-    /**
-     * If need to use custom {@link android.widget.AbsListView.OnScrollListener},
-     * pass it to {@link #attachToListView(android.widget.AbsListView, com.melnykov.fab.FloatingActionButton.FabOnScrollListener)}
-     */
-    public void attachToRecyclerView(@NonNull RecyclerView recyclerView) {
-        attachToRecyclerView(recyclerView, new FabRecyclerOnViewScrollListener());
-    }
-
-    public void attachToListView(@NonNull AbsListView listView, @NonNull FabOnScrollListener onScrollListener) {
-        mListView = listView;
-        mOnScrollListener = onScrollListener;
-        onScrollListener.setFloatingActionButton(this);
-        onScrollListener.setListView(listView);
-        mListView.setOnScrollListener(onScrollListener);
-    }
-
-    public void attachToRecyclerView(@NonNull RecyclerView recyclerView, @NonNull FabRecyclerOnViewScrollListener onScrollListener) {
-        mRecyclerView = recyclerView;
-        mRecyclerViewOnScrollListener = onScrollListener;
-        onScrollListener.setFloatingActionButton(this);
-        onScrollListener.setRecyclerView(recyclerView);
-        mRecyclerView.setOnScrollListener(onScrollListener);
-    }
-
-    private boolean hasLollipopApi() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
-    }
-
-    private boolean hasJellyBeanApi() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
-    }
-
-    public static class FabOnScrollListener extends ScrollDirectionDetector {
-        private FloatingActionButton mFloatingActionButton;
-
-        public FabOnScrollListener() {
-            setScrollDirectionListener(new ScrollDirectionListener() {
-                @Override
-                public void onScrollDown() {
-                    mFloatingActionButton.show();
-                }
-
-                @Override
-                public void onScrollUp() {
-                    mFloatingActionButton.hide();
-                }
-            });
-        }
-
-        public void setFloatingActionButton(FloatingActionButton floatingActionButton) {
-            mFloatingActionButton = floatingActionButton;
-        }
-    }
-
-    public static class FabRecyclerOnViewScrollListener extends ScrollDirectionRecyclerViewDetector {
-        private FloatingActionButton mFloatingActionButton;
-
-        public FabRecyclerOnViewScrollListener() {
-            setScrollDirectionListener(new ScrollDirectionListener() {
-                @Override
-                public void onScrollDown() {
-                    mFloatingActionButton.show();
-                }
-
-                @Override
-                public void onScrollUp() {
-                    mFloatingActionButton.hide();
-                }
-            });
-        }
-
-        public void setFloatingActionButton(FloatingActionButton floatingActionButton) {
-            mFloatingActionButton = floatingActionButton;
-        }
-    }
 }

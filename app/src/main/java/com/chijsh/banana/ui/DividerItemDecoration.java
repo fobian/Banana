@@ -17,7 +17,8 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
     @Override public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         outRect.top += padding;
-        //outRect.right += padding;
+        outRect.left += padding;
+        outRect.right += padding;
     }
 
 }

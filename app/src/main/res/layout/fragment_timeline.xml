@@ -1,12 +1,10 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:fab="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/card_screen_padding"
-    android:paddingRight="@dimen/card_screen_padding"
     android:clipChildren="false"
-    tools:context=".HomeTimeLineFragment">
+    tools:context=".ui.TimeLineFragment">
 
     <com.chijsh.banana.widget.MultiSwipeRefreshLayout
         android:id="@+id/swip_refresh_layout"
@@ -26,14 +24,13 @@
 
     <com.chijsh.banana.widget.fab.FloatingActionButton
         android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:src="@drawable/ic_mode_edit_white_24dp"
-        fab:fab_colorNormal="@color/theme_accent"
-        fab:fab_colorPressed="@color/theme_accent_pressed"
-        fab:fab_colorRipple="@color/ripple" />
+        android:layout_width="@dimen/fab_size"
+        android:layout_height="@dimen/fab_size"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="8dp"
+        app:fabDrawable="@drawable/ic_mode_edit_white_24dp"
+        app:fabColor="@color/theme_accent" />
 
 
-</RelativeLayout>
+</FrameLayout>

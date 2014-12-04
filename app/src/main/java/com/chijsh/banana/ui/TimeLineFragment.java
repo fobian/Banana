@@ -13,6 +13,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -100,7 +101,7 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setCanChildScrollUpCallback(this);
 
-        mFloatingButton.attachToRecyclerView(mRecyclerView);
+        mFloatingButton.listenTo(mRecyclerView);
 
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -111,7 +112,7 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setScrollViewCallbacks(this);
 
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(16));
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getResources().getDimensionPixelSize(R.dimen.divider_padding)));
 
         mHeaderView = ((TimeLineActivity)getActivity()).getHeaderView();
         return rootView;
