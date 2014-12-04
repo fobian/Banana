@@ -9,13 +9,10 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.chijsh.banana.AccessTokenKeeper;
-import com.chijsh.banana.Config;
 import com.chijsh.banana.R;
 import com.chijsh.banana.event.MessageEvent;
 import com.chijsh.banana.sync.WeiboSyncAdapter;
 import com.chijsh.banana.utils.Utility;
-
-import net.hockeyapp.android.CrashManager;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -83,16 +80,6 @@ public class TimeLineActivity extends BaseActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private void checkForCrashes() {
-        CrashManager.register(this, Config.HOCKEY_APP_ID);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        checkForCrashes();
     }
 
     @Override

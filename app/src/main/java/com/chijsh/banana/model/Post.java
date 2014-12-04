@@ -1,5 +1,9 @@
 package com.chijsh.banana.model;
 
+import android.database.Cursor;
+
+import com.chijsh.banana.ui.TimeLineAdapter;
+
 import java.util.List;
 
 /**
@@ -27,4 +31,5 @@ public class Post {
         }
         return false;
     }
+
 }

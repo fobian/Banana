@@ -50,6 +50,14 @@ public class TimeLineAdapter extends CursorRecyclerViewAdapter<TimeLineAdapter.V
     public static final int COL_COMMENT_COUNT = 16;
     public static final int COL_ATTITUDE_COUNT = 17;
 
+    private enum VIEW_TYPE {
+        NORMAL,
+        NORMAL_WITH_PIC,
+        RETWEET,
+        RETWEET_WITH_PIC
+
+    }
+
     public interface PostItemClickListener {
         public void onItemClicked(View itemView, String postId);
         public void onAvatarClicked(String userId);

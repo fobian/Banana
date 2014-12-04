@@ -11,6 +11,4 @@ public class Config {
     public static final String REDIRECT_URL = "http://weibo.com/hualilideyuming";
     public static final String SCOPE = "friendships_groups_read,friendships_groups_write,statuses_to_me_read";
 
-    public static final String HOCKEY_APP_ID = "563bdea94a354ce63e5ca51dd5265422";
-
 }
