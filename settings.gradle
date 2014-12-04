@@ -1,1 +1,1 @@
-include ':app', ':StackBlur'
+include ':app', ':app:library:StackBlur'
