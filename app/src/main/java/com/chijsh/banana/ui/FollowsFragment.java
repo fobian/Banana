@@ -58,6 +58,7 @@ public class FollowsFragment extends ScrollTabHolderFragment {
         mLayoutManager = new LinearLayoutManager(getActivity());
         mFollowsRecyclerView.setLayoutManager(mLayoutManager);
         mFollowsRecyclerView.setAdapter(mFollowsAdapter);
+        mFollowsRecyclerView.setHasFixedSize(true);
         mFollowsRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {

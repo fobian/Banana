@@ -111,7 +111,7 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setScrollViewCallbacks(this);
 
-        //mRecyclerView.addItemDecoration(new DividerItemDecoration(getResources().getDrawable(R.drawable.recycler_divider)));
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(16));
 
         mHeaderView = ((TimeLineActivity)getActivity()).getHeaderView();
         return rootView;
