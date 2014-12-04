@@ -120,7 +120,7 @@ public class TimeLineCursorAdapter extends RecyclerViewCursorAdapter<TimeLineCur
     }
 
     @Override
-    public ViewHolder newView(Context context, Cursor cursor) {
+    public ViewHolder newViewHolder(Context context, Cursor cursor) {
         View v = LayoutInflater.from(context)
                 .inflate(R.layout.card_item, null, false);
         ViewHolder vh = new ViewHolder(v);
@@ -198,6 +198,24 @@ public class TimeLineCursorAdapter extends RecyclerViewCursorAdapter<TimeLineCur
 
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        Cursor cursor = (Cursor) getItem(position);
+        if (cursor.getString(COL_RETWEETED_USER_SCREENNAME) == null) {
+            if (cursor.getString(COL_POST_PICURLS) == null) {
+                return VIEW_TYPE.NORMAL.ordinal();
+            } else {
+                return VIEW_TYPE.NORMAL_WITH_PIC.ordinal();
+            }
+        } else {
+            if (cursor.getString(COL_RETWEETED_PICURLS) == null) {
+                return VIEW_TYPE.RETWEET.ordinal();
+            } else {
+                return VIEW_TYPE.RETWEET_WITH_PIC.ordinal();
+            }
+        }
+
+    }
 
     @Override
     public void onTextLinkClick(View textView, String clickedString) {
