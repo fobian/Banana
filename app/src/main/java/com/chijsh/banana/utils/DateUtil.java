@@ -1,5 +1,6 @@
 package com.chijsh.banana.utils;
 
+import android.content.res.Resources;
 import android.util.Log;
 
 import com.chijsh.banana.R;
@@ -86,13 +87,15 @@ public class DateUtil {
             return Utility.getAppContext().getString(R.string.just_now);
         }
 
-        long deltaMin = deltaSecond / 60;
+        int deltaMin = (int) deltaSecond / 60;
 
         if (deltaMin < 60) {
-            return deltaMin + " " + Utility.getAppContext().getString(R.string.mins_ago);
+            Resources res = Utility.getAppContext().getResources();
+            return res.getQuantityString(R.plurals.numberOfMinsAvailable, deltaMin, deltaMin);
         } else {
-            long deltaHour = deltaMin / 60;
-            return deltaHour + " " + Utility.getAppContext().getString(R.string.hours_ago);
+            int deltaHour = deltaMin / 60;
+            Resources res = Utility.getAppContext().getResources();
+            return res.getQuantityString(R.plurals.numberOfHoursAvailable, deltaHour, deltaHour);
         }
 
     }
