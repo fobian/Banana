@@ -40,4 +40,10 @@
     <string name="title_activity_search">Search</string>
     <string name="title_activity_post_content">PostContent</string>
 
+
+    <string name="just_now">Just now</string>
+    <string name="mins_ago">mins ago</string>
+    <string name="hours_ago">hours ago</string>
+    <string name="yesterday">Yesterday</string>
+
 </resources>

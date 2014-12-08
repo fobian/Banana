@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.chijsh.banana.R;
 import com.chijsh.banana.ui.recycursoradapter.RecyclerViewCursorAdapter;
+import com.chijsh.banana.utils.DateUtil;
 import com.chijsh.banana.utils.StringUtil;
 import com.chijsh.banana.utils.Utility;
 import com.chijsh.banana.widget.LinkEnabledTextView;
@@ -135,7 +136,7 @@ public class TimeLineCursorAdapter extends RecyclerViewCursorAdapter<TimeLineCur
                 .placeholder(R.drawable.user_avatar_empty)
                 .into(viewHolder.mAvatarView);
         viewHolder.mNameView.setText(cursor.getString(COL_USER_SCREENNAME));
-        viewHolder.mSubHeadView.setText(Utility.getFriendlyDate(cursor.getString(COL_CREATED_AT)) + " " + Html.fromHtml(cursor.getString(COL_POST_SOURCE)));
+        viewHolder.mSubHeadView.setText(DateUtil.getFriendlyDate(cursor.getString(COL_CREATED_AT)) + " " + Html.fromHtml(cursor.getString(COL_POST_SOURCE)));
 
         viewHolder.mTextView.setOnTextLinkClickListener(this);
         viewHolder.mTextView.gatherLinksForText(cursor.getString(COL_POST_TEXT));

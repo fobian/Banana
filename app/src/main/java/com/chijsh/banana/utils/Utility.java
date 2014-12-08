@@ -21,25 +21,7 @@ import java.util.TimeZone;
  */
 public class Utility {
 
-    private static final String DATE_FORMAT = "MM-dd HH:mm";
-
     public static float density = 1;
-
-    public static String getFriendlyDate(String time) {
-        //TODO
-        Date date = new Date(time);
-        try{
-            Calendar calendar = Calendar.getInstance();
-            TimeZone tz = TimeZone.getDefault();
-            calendar.setTimeZone(tz);
-            calendar.setTime(date);
-            SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
-            Date currentTimeZone = calendar.getTime();
-            return sdf.format(currentTimeZone);
-        }catch (Exception e) {
-        }
-        return "";
-    }
 
     public static int getSDKVersion() {
         return Build.VERSION.SDK_INT;
@@ -57,11 +39,4 @@ public class Utility {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
 
-    public static float getProgress(int value, int min, int max) {
-        if (min == max) {
-            throw new IllegalArgumentException("Max (" + max + ") cannot equal min (" + min + ")");
-        }
-
-        return (value - min) / (float) (max - min);
-    }
 }
