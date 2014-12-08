@@ -67,17 +67,14 @@ public class FloatingActionButton extends View {
             mBitmap = ((BitmapDrawable) drawable).getBitmap();
         }
         setWillNotDraw(false);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-            setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
         WindowManager mWindowManager = (WindowManager)
                 context.getSystemService(Context.WINDOW_SERVICE);
         Display display = mWindowManager.getDefaultDisplay();
         Point size = new Point();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            display.getSize(size);
-            mYHidden = size.y;
-        } else mYHidden = display.getHeight();
+        display.getSize(size);
+        mYHidden = size.y;
     }
 
     public static int darkenColor(int color) {
