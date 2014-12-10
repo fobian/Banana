@@ -166,11 +166,9 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public void onItemClicked(View itemView, String postId) {
-//        Intent intent = new Intent(getActivity(), PostContentActivity.class);
-//        intent.putExtra(POST_ID, postId);
-//        startActivity(intent);
-        TimePickerDialog timePicker = new TimePickerDialog(getActivity(), null, 3, 4, true);
-        timePicker.show();
+        Intent intent = new Intent(getActivity(), PostContentActivity.class);
+        intent.putExtra(POST_ID, postId);
+        startActivity(intent);
     }
 
     @Override

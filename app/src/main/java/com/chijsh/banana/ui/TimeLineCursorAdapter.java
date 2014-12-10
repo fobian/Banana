@@ -58,7 +58,7 @@ public class TimeLineCursorAdapter extends RecyclerViewCursorAdapter<TimeLineCur
 
     }
 
-    private final float CONTENT_THUMBNAIL_SIZE = 0.1f;
+    private final float CONTENT_THUMBNAIL_SIZE = 0.9f;
 
     public interface PostItemClickListener {
         public void onItemClicked(View itemView, String postId);
@@ -175,9 +175,12 @@ public class TimeLineCursorAdapter extends RecyclerViewCursorAdapter<TimeLineCur
             viewHolder.mRetweetStub.setVisibility(View.GONE);
         }
 
+        final int position = cursor.getPosition();
+
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                cursor.moveToPosition(position);
                 mListener.onItemClicked(viewHolder.itemView, cursor.getString(COL_POST_ID));
             }
         });
@@ -185,6 +188,7 @@ public class TimeLineCursorAdapter extends RecyclerViewCursorAdapter<TimeLineCur
         viewHolder.mAvatarView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                cursor.moveToPosition(position);
                 mListener.onAvatarClicked(cursor.getString(COL_USER_SCREENNAME));
             }
         });
@@ -192,18 +196,21 @@ public class TimeLineCursorAdapter extends RecyclerViewCursorAdapter<TimeLineCur
         viewHolder.mFavouriteAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                cursor.moveToPosition(position);
                 mListener.onFavouriteActionClicked(cursor.getString(COL_POST_ID), cursor.getInt(COL_POST_FAVORITED) == 0 ? false : true);
             }
         });
         viewHolder.mCommentAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                cursor.moveToPosition(position);
                 mListener.onCommentActionClicked(cursor.getString(COL_POST_ID));
             }
         });
         viewHolder.mForwardAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                cursor.moveToPosition(position);
                 mListener.onForwardActionClicked(cursor.getString(COL_POST_ID));
             }
         });
