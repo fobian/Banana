@@ -2,6 +2,7 @@ package com.chijsh.banana.ui;
 
 import android.app.Fragment;
 import android.app.LoaderManager;
+import android.app.TimePickerDialog;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -17,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TimePicker;
 
 import com.chijsh.banana.R;
 
@@ -164,9 +166,11 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public void onItemClicked(View itemView, String postId) {
-        Intent intent = new Intent(getActivity(), PostContentActivity.class);
-        intent.putExtra(POST_ID, postId);
-        startActivity(intent);
+//        Intent intent = new Intent(getActivity(), PostContentActivity.class);
+//        intent.putExtra(POST_ID, postId);
+//        startActivity(intent);
+        TimePickerDialog timePicker = new TimePickerDialog(getActivity(), null, 3, 4, true);
+        timePicker.show();
     }
 
     @Override

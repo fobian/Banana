@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
 import com.chijsh.banana.R;
 import com.chijsh.banana.ui.recycursoradapter.RecyclerViewCursorAdapter;
@@ -57,6 +58,8 @@ public class TimeLineCursorAdapter extends RecyclerViewCursorAdapter<TimeLineCur
 
     }
 
+    private final float CONTENT_THUMBNAIL_SIZE = 0.1f;
+
     public interface PostItemClickListener {
         public void onItemClicked(View itemView, String postId);
         public void onAvatarClicked(String userId);
@@ -70,6 +73,8 @@ public class TimeLineCursorAdapter extends RecyclerViewCursorAdapter<TimeLineCur
     public void setPostItemClickListener(PostItemClickListener listener) {
         mListener = listener;
     }
+
+    DrawableRequestBuilder mRequestBuilder;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -117,6 +122,11 @@ public class TimeLineCursorAdapter extends RecyclerViewCursorAdapter<TimeLineCur
 
     public TimeLineCursorAdapter(Context context, Cursor cursor) {
         super(context, cursor);
+        mRequestBuilder = Glide.with(context)
+                .from(String.class)
+                .thumbnail(CONTENT_THUMBNAIL_SIZE)
+                .fitCenter()
+                .crossFade();
 
     }
 
@@ -135,6 +145,7 @@ public class TimeLineCursorAdapter extends RecyclerViewCursorAdapter<TimeLineCur
                 .thumbnail(0.1f)
                 .placeholder(R.drawable.user_avatar_empty)
                 .into(viewHolder.mAvatarView);
+        viewHolder.getItemViewType();
         viewHolder.mNameView.setText(cursor.getString(COL_USER_SCREENNAME));
         viewHolder.mSubHeadView.setText(DateUtil.getFriendlyDate(cursor.getString(COL_CREATED_AT)) + " " + Html.fromHtml(cursor.getString(COL_POST_SOURCE)));
 
@@ -292,26 +303,23 @@ public class TimeLineCursorAdapter extends RecyclerViewCursorAdapter<TimeLineCur
                 String[] picArray = StringUtil.fastSplit(pics, ',');
                 int size = picArray.length;
                 if(size > 1) {
+                    viewHolder.mRetwittThumbImageView.setVisibility(View.GONE);
                     viewHolder.mRetwittPicsGrid.setVisibility(View.VISIBLE);
                     ImageView view;
                     for(int i = 0; i < size; ++i) {
                         view = (ImageView)viewHolder.mRetwittPicsGrid.getChildAt(i);
-                        Glide.with(context)
-                                .load(picArray[i])
-                                .thumbnail(0.1f)
-                                .into(view);
+
+                        mRequestBuilder.load(picArray[i]).into(view);
+
                     }
 
                     handlePicsGrid(size, viewHolder.mRetwittPicsGrid);
 
-                    viewHolder.mRetwittThumbImageView.setVisibility(View.GONE);
                 } else {
                     viewHolder.mRetwittThumbImageView.setVisibility(View.VISIBLE);
                     viewHolder.mRetwittPicsGrid.setVisibility(View.GONE);
-                    Glide.with(context)
-                            .load(pics)
-                            .thumbnail(0.1f)
-                            .into(viewHolder.mRetwittThumbImageView);
+
+                    mRequestBuilder.load(pics).into(viewHolder.mRetwittThumbImageView);
 
                 }
 
@@ -325,26 +333,23 @@ public class TimeLineCursorAdapter extends RecyclerViewCursorAdapter<TimeLineCur
                 String[] picArray = StringUtil.fastSplit(pics, ',');
                 int size = picArray.length;
                 if(size > 1) {
+                    viewHolder.mThumbImageView.setVisibility(View.GONE);
                     viewHolder.mPicsGrid.setVisibility(View.VISIBLE);
                     ImageView view;
                     for(int i = 0; i < size; ++i) {
                         view = (ImageView)viewHolder.mPicsGrid.getChildAt(i);
-                        Glide.with(context)
-                                .load(picArray[i])
-                                .thumbnail(0.1f)
-                                .into(view);
+
+                        mRequestBuilder.load(picArray[i]).into(view);
+
                     }
 
                     handlePicsGrid(size, viewHolder.mPicsGrid);
 
-                    viewHolder.mThumbImageView.setVisibility(View.GONE);
                 } else {
                     viewHolder.mThumbImageView.setVisibility(View.VISIBLE);
                     viewHolder.mPicsGrid.setVisibility(View.GONE);
-                    Glide.with(context)
-                            .load(pics)
-                            .thumbnail(0.1f)
-                            .into(viewHolder.mThumbImageView);
+
+                    mRequestBuilder.load(pics).into(viewHolder.mThumbImageView);
 
                 }
 

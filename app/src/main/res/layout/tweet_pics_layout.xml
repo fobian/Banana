@@ -6,8 +6,8 @@
     <ImageView
         android:id="@+id/thumbnail_pic"
         android:scaleType="fitCenter"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:visibility="gone"/>
     <GridLayout
         android:id="@+id/pic_grid"
