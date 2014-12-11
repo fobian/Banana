@@ -36,8 +36,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public class ProfileActivity extends ActionBarActivity implements LoaderManager.LoaderCallbacks<Cursor>
-        , ScrollTabHolderListener
-        , ViewPager.OnPageChangeListener {
+    {
 
     @InjectView(R.id.profile_avatar) BezelImageView mAvatar;
     @InjectView(R.id.profile_name) TextView mName;
@@ -58,15 +57,6 @@ public class ProfileActivity extends ActionBarActivity implements LoaderManager.
     MyPagerAdapter mPagerAdapter;
 
     StackBlurManager mBlurManager;
-
-    private static AccelerateDecelerateInterpolator sSmoothInterpolator = new AccelerateDecelerateInterpolator();
-
-    private int mMinHeaderHeight;
-    private int mHeaderHeight;
-    private int mMinHeaderTranslation;
-
-    private RectF mRect1 = new RectF();
-    private RectF mRect2 = new RectF();
 
 
     @Override
@@ -96,108 +86,21 @@ public class ProfileActivity extends ActionBarActivity implements LoaderManager.
 //                getResources().getColor(R.color.refresh_progress_3)
 //        );
 
-        mMinHeaderHeight = getResources().getDimensionPixelSize(R.dimen.min_header_height);
-        mHeaderHeight = getResources().getDimensionPixelSize(R.dimen.header_height);
-        mMinHeaderTranslation = -mMinHeaderHeight + mToolbar.getHeight();
-
         Intent intent = getIntent();
         if (intent != null) {
-            Bitmap avatar = intent.getParcelableExtra(PostActivity.AVATAR_EXTRA);
             String name = intent.getStringExtra(PostActivity.NAME_EXTRA);
-            if (avatar != null) {
-                mAvatar.setImageBitmap(avatar);
-                mBlurManager = new StackBlurManager(avatar);
-                if (Utility.getSDKVersion() >= 16) {
-                    mAvatarBg.setBackground(new BitmapDrawable(getResources(), mBlurManager.process(20)));
-                } else {
-                    mAvatarBg.setBackgroundDrawable(new BitmapDrawable(getResources(), mBlurManager.process(20)));
-                }
-            }
+//            if (avatar != null) {
+//                mAvatar.setImageBitmap(avatar);
+//                mBlurManager = new StackBlurManager(avatar);
+//                if (Utility.getSDKVersion() >= 16) {
+//                    mAvatarBg.setBackground(new BitmapDrawable(getResources(), mBlurManager.process(20)));
+//                } else {
+//                    mAvatarBg.setBackgroundDrawable(new BitmapDrawable(getResources(), mBlurManager.process(20)));
+//                }
+//            }
             mName.setText(name);
         }
 
-    }
-
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-    }
-
-    @Override
-    public void onPageSelected(int position) {
-        SparseArrayCompat<ScrollTabHolderListener> scrollTabHolders = mPagerAdapter.getScrollTabHolders();
-        ScrollTabHolderListener currentHolder = scrollTabHolders.valueAt(position);
-
-        currentHolder.adjustScroll((int) (mAvatarBg.getHeight() + mHeader.getTranslationY()));
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int state) {
-
-    }
-
-    @Override
-    public void adjustScroll(int scrollHeight) {
-
-    }
-
-    @Override
-    public void onScroll(RecyclerView view, int firstVisibleItem, int visibleItemCount, int totalItemCount, int pagePosition) {
-        if (mViewPager.getCurrentItem() == pagePosition) {
-            int scrollY = getScrollY(view);
-            mHeader.setTranslationY(Math.max(-scrollY, mMinHeaderTranslation));
-            float ratio = clamp(mHeader.getTranslationY() / mMinHeaderTranslation, 0.0f, 1.0f);
-            interpolate(mAvatar, mToolBarAvatar, sSmoothInterpolator.getInterpolation(ratio));
-            //interpolate(mName, mToolBarName, sSmoothInterpolator.getInterpolation(ratio));
-            //setTitleAlpha(clamp(5.0F * ratio - 4.0F, 0.0F, 1.0F));
-        }
-    }
-
-//    private void setTitleAlpha(float alpha) {
-//        mAlphaForegroundColorSpan.setAlpha(alpha);
-//        mSpannableString.setSpan(mAlphaForegroundColorSpan, 0, mSpannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-//        mToolBarName.setText("asdsadad");
-//    }
-
-    public static float clamp(float value, float max, float min) {
-        return Math.max(Math.min(value, min), max);
-    }
-
-    private void interpolate(View view1, View view2, float interpolation) {
-        getOnScreenRect(mRect1, view1);
-        getOnScreenRect(mRect2, view2);
-
-        float scaleX = 1.0F + interpolation * (mRect2.width() / mRect1.width() - 1.0F);
-        float scaleY = 1.0F + interpolation * (mRect2.height() / mRect1.height() - 1.0F);
-        float translationX = 0.5F * (interpolation * (mRect2.left + mRect2.right - mRect1.left - mRect1.right));
-        float translationY = 0.5F * (interpolation * (mRect2.top + mRect2.bottom - mRect1.top - mRect1.bottom));
-
-        view1.setTranslationX(translationX);
-        view1.setTranslationY(translationY - mHeader.getTranslationY());
-        view1.setScaleX(scaleX);
-        view1.setScaleY(scaleY);
-    }
-
-    private RectF getOnScreenRect(RectF rect, View view) {
-        rect.set(view.getLeft(), view.getTop(), view.getRight(), view.getBottom());
-        return rect;
-    }
-
-    public int getScrollY(RecyclerView view) {
-        View c = view.getChildAt(0);
-        if (c == null) {
-            return 0;
-        }
-
-        int firstVisiblePosition = ((LinearLayoutManager)view.getLayoutManager()).findFirstVisibleItemPosition();
-        int top = c.getTop();
-
-        int headerHeight = 0;
-        if (firstVisiblePosition >= 1) {
-            headerHeight = mHeaderHeight;
-        }
-
-        return -top + firstVisiblePosition * c.getHeight() + headerHeight;
     }
 
     @Override
@@ -236,42 +139,23 @@ public class ProfileActivity extends ActionBarActivity implements LoaderManager.
 
     private class MyPagerAdapter extends FragmentPagerAdapter {
 
-        private SparseArrayCompat<ScrollTabHolderListener> mScrollTabHolderListeners;
         private final int[] mTitles = {R.string.profile_weibo, R.string.profile_follow, R.string.profile_followers};
-        private ScrollTabHolderListener mListener;
 
         private MyPagerAdapter(FragmentManager fm) {
             super(fm);
-            mScrollTabHolderListeners = new SparseArrayCompat<ScrollTabHolderListener>();
-        }
-
-        public void setTabHolderScrollingContent(ScrollTabHolderListener listener) {
-            mListener = listener;
         }
 
         @Override
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    FollowsFragment fragment = FollowsFragment.newInstance(true);
-                    mScrollTabHolderListeners.put(position, fragment);
-                    if (mListener != null) {
-                        fragment.setScrollTabHolder(mListener);
-                    }
-                    return fragment;
+                    WeiboFragment weiboFragment = WeiboFragment.newInstance("", "");
+                    return weiboFragment;
                 case 1:
                     FollowsFragment followsFragment = FollowsFragment.newInstance(true);
-                    mScrollTabHolderListeners.put(position, followsFragment);
-                    if (mListener != null) {
-                        followsFragment.setScrollTabHolder(mListener);
-                    }
                     return followsFragment;
                 case 2:
                     FollowsFragment followersFragment = FollowsFragment.newInstance(false);
-                    mScrollTabHolderListeners.put(position, followersFragment);
-                    if (mListener != null) {
-                        followersFragment.setScrollTabHolder(mListener);
-                    }
                     return followersFragment;
                 default:
                     return null;
@@ -288,9 +172,6 @@ public class ProfileActivity extends ActionBarActivity implements LoaderManager.
             return getResources().getString(mTitles[position]);
         }
 
-        public SparseArrayCompat<ScrollTabHolderListener> getScrollTabHolders() {
-            return mScrollTabHolderListeners;
-        }
     }
 
 }

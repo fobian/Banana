@@ -61,10 +61,7 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
 
     public static final int PICK_OR_TAKE_PICTURE = 42;
     public static final String POST_WEIBO_EXTRA = "post_weibo_extra";
-    public static final String AVATAR_EXTRA = "avatar_extra";
     public static final String NAME_EXTRA = "name_extra";
-
-    private Bitmap mAvatarBitmap;
 
     @InjectView(R.id.toolbar_actionbar) Toolbar mToolbar;
     @InjectView(R.id.avatar_name) View mAvatarName;
@@ -152,7 +149,6 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
     @OnClick(R.id.avatar_name)
     public void viewProfile() {
         Intent intent = new Intent(this, ProfileActivity.class);
-        intent.putExtra(AVATAR_EXTRA, mAvatarBitmap);
         intent.putExtra(NAME_EXTRA, mNameTextView.getText());
         startActivity(intent);
     }
@@ -266,15 +262,9 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
             String name = cursor.getString(cursor.getColumnIndex(AccountEntry.COLUMN_SCREEN_NAME));
             Glide.with(this)
                     .load(avatarUrl)
-                    .asBitmap()
+                    .thumbnail(0.1f)
                     .placeholder(R.drawable.user_avatar_empty)
-                    .into(new SimpleTarget<Bitmap>(120, 120) {
-                        @Override
-                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                            mAvatar.setImageBitmap(resource);
-                            mAvatarBitmap = resource;
-                        }
-                    });
+                    .into(mAvatar);
             mNameTextView.setText(name);
         }
 

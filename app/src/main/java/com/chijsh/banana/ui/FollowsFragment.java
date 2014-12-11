@@ -1,6 +1,7 @@
 package com.chijsh.banana.ui;
 
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,7 +18,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 
-public class FollowsFragment extends ScrollTabHolderFragment {
+public class FollowsFragment extends Fragment {
 
 
     @InjectView(R.id.list_follows) RecyclerView mFollowsRecyclerView;
@@ -59,24 +60,6 @@ public class FollowsFragment extends ScrollTabHolderFragment {
         mFollowsRecyclerView.setLayoutManager(mLayoutManager);
         mFollowsRecyclerView.setAdapter(mFollowsAdapter);
         mFollowsRecyclerView.setHasFixedSize(true);
-        mFollowsRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
-                int firstVisibleItem = mLayoutManager.findFirstVisibleItemPosition();
-                int visibleItemCount = mLayoutManager.findLastVisibleItemPosition() - mLayoutManager.findFirstVisibleItemPosition() + 1;
-                int totalItemCount = mLayoutManager.getItemCount();
-                if (mScrollTabHolderListener != null)
-                    mScrollTabHolderListener.onScroll(recyclerView, firstVisibleItem, visibleItemCount, totalItemCount, 0);
-
-            }
-        });
         return rootView;
     }
 
@@ -107,12 +90,4 @@ public class FollowsFragment extends ScrollTabHolderFragment {
         getActivity().startService(intent);
     }
 
-    @Override
-    public void adjustScroll(int scrollHeight) {
-        if (scrollHeight == 0 && mLayoutManager.findFirstVisibleItemPosition() >= 1) {
-            return;
-        }
-
-        mLayoutManager.scrollToPositionWithOffset(1, scrollHeight);
-    }
 }
