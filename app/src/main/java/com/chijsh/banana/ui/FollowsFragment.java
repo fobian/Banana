@@ -26,13 +26,17 @@ public class FollowsFragment extends Fragment {
     private FollowsAdapter mFollowsAdapter;
     private LinearLayoutManager mLayoutManager;
 
-    private static final String ARG_IS_FOLLOWS = "is_follows";
+    private static final String ARG_IS_FOLLOWS = "args_is_follows";
+    private static final String ARG_USER_ID = "args_user_id";
+    public static final String EXTRA_USER_ID = "extra_user_id";
     public static final String EXTRA_IS_FOLLOWS = "extra_is_follows";
+    private String mUserId;
     private boolean mIsFollows;
 
-    public static FollowsFragment newInstance(boolean isFollows) {
+    public static FollowsFragment newInstance(String userId, boolean isFollows) {
         FollowsFragment fragment = new FollowsFragment();
         Bundle args = new Bundle();
+        args.putString(ARG_USER_ID, userId);
         args.putBoolean(ARG_IS_FOLLOWS, isFollows);
         fragment.setArguments(args);
         return fragment;
@@ -46,6 +50,7 @@ public class FollowsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            mUserId = getArguments().getString(ARG_USER_ID);
             mIsFollows = getArguments().getBoolean(ARG_IS_FOLLOWS);
         }
     }
@@ -86,6 +91,7 @@ public class FollowsFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Intent intent = new Intent(getActivity(), FollowsService.class);
+        intent.putExtra(EXTRA_USER_ID, mUserId);
         intent.putExtra(EXTRA_IS_FOLLOWS, mIsFollows);
         getActivity().startService(intent);
     }

@@ -251,10 +251,10 @@ public class ProfileActivity extends ActionBarActivity implements LoaderManager.
                     WeiboFragment weiboFragment = WeiboFragment.newInstance("", "");
                     return weiboFragment;
                 case 1:
-                    FollowsFragment followsFragment = FollowsFragment.newInstance(true);
+                    FollowsFragment followsFragment = FollowsFragment.newInstance(mUserId, true);
                     return followsFragment;
                 case 2:
-                    FollowsFragment followersFragment = FollowsFragment.newInstance(false);
+                    FollowsFragment followersFragment = FollowsFragment.newInstance(mUserId, false);
                     return followersFragment;
                 default:
                     return null;

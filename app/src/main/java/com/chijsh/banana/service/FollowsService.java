@@ -24,7 +24,7 @@ public class FollowsService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         boolean isFollows = intent.getBooleanExtra(FollowsFragment.EXTRA_IS_FOLLOWS, true);
         String token = AccessTokenKeeper.readAccessToken(this).getToken();
-        String uid = AccessTokenKeeper.readAccessToken(this).getUid();
+        String uid = intent.getStringExtra(FollowsFragment.EXTRA_USER_ID);
         Follows users;
         if (isFollows) {
             users = WeiboAPI.getInstance().getFollows(token, Long.parseLong(uid));
