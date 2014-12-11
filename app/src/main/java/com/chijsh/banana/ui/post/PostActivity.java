@@ -8,7 +8,6 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
@@ -30,8 +29,6 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.chijsh.banana.AccessTokenKeeper;
 import com.chijsh.banana.R;
 import com.chijsh.banana.data.PostContract;
@@ -61,7 +58,7 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
 
     public static final int PICK_OR_TAKE_PICTURE = 42;
     public static final String POST_WEIBO_EXTRA = "post_weibo_extra";
-    public static final String NAME_EXTRA = "name_extra";
+    public static final String USER_ID_EXTRA = "user_id_extra";
 
     @InjectView(R.id.toolbar_actionbar) Toolbar mToolbar;
     @InjectView(R.id.avatar_name) View mAvatarName;
@@ -149,7 +146,7 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
     @OnClick(R.id.avatar_name)
     public void viewProfile() {
         Intent intent = new Intent(this, ProfileActivity.class);
-        intent.putExtra(NAME_EXTRA, mNameTextView.getText());
+        intent.putExtra(USER_ID_EXTRA, AccessTokenKeeper.readAccessToken(this).getUid());
         startActivity(intent);
     }
 

@@ -172,8 +172,10 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     @Override
-    public void onAvatarClicked(String userName) {
-        Utility.toast(getActivity(), userName);
+    public void onAvatarClicked(String userId) {
+        Intent intent = new Intent(getActivity(), ProfileActivity.class);
+        intent.putExtra(PostActivity.USER_ID_EXTRA, userId);
+        startActivity(intent);
     }
 
     @Override

@@ -3,29 +3,33 @@ package com.chijsh.banana.ui;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.LoaderManager;
+import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
-import android.support.v4.util.SparseArrayCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.chijsh.banana.AccessTokenKeeper;
 import com.chijsh.banana.R;
+import com.chijsh.banana.data.PostContract.AccountEntry;
+import com.chijsh.banana.data.PostContract.UserEntry;
 import com.chijsh.banana.ui.post.PostActivity;
 import com.chijsh.banana.utils.Utility;
 import com.chijsh.banana.widget.BezelImageView;
@@ -35,8 +39,11 @@ import com.enrique.stackblur.StackBlurManager;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class ProfileActivity extends ActionBarActivity implements LoaderManager.LoaderCallbacks<Cursor>
-    {
+public class ProfileActivity extends ActionBarActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+
+    private static final String TAG = ProfileActivity.class.getSimpleName();
+
+    private static final int PROFILE_LOADER = 0;
 
     @InjectView(R.id.profile_avatar) BezelImageView mAvatar;
     @InjectView(R.id.profile_name) TextView mName;
@@ -54,9 +61,53 @@ public class ProfileActivity extends ActionBarActivity implements LoaderManager.
     @InjectView(R.id.my_avatar) ImageView mToolBarAvatar;
     @InjectView(R.id.my_name) TextView mToolBarName;
 
-    MyPagerAdapter mPagerAdapter;
+    private MyPagerAdapter mPagerAdapter;
 
-    StackBlurManager mBlurManager;
+    private StackBlurManager mBlurManager;
+
+    private String mUserId;
+
+    private static final String[] MY_PROFILE_COLUMNS = {
+            AccountEntry.TABLE_NAME + "." + AccountEntry._ID,
+            AccountEntry.COLUMN_USER_ID,
+            AccountEntry.COLUMN_SCREEN_NAME,
+//            AccountEntry.COLUMN_PROVINCE,
+//            AccountEntry.COLUMN_CITY,
+//            AccountEntry.COLUMN_LOCATION,
+            AccountEntry.COLUMN_DESCRIPTION,
+//            AccountEntry.COLUMN_PROFILE_URL,
+//            AccountEntry.COLUMN_GENDER,
+//            AccountEntry.COLUMN_FOLLOWERS_COUNT,
+//            AccountEntry.COLUMN_FRIENDS_COUNT,
+//            AccountEntry.COLUMN_STATUSES_COUNT,
+//            AccountEntry.COLUMN_FAVOURITES_COUNT,
+//            AccountEntry.COLUMN_CREATED_AT,
+//            AccountEntry.COLUMN_FOLLOWING,
+            AccountEntry.COLUMN_AVATAR_LARGE,
+//              AccountEntry.COLUMN_FOLLOW_ME,
+
+    };
+
+    private static final String[] USER_PROFILE_COLUMNS = {
+            UserEntry.TABLE_NAME + "." + UserEntry._ID,
+            UserEntry.COLUMN_USER_ID,
+            UserEntry.COLUMN_SCREEN_NAME,
+//            UserEntry.COLUMN_PROVINCE,
+//            UserEntry.COLUMN_CITY,
+//            UserEntry.COLUMN_LOCATION,
+            UserEntry.COLUMN_DESCRIPTION,
+//            UserEntry.COLUMN_PROFILE_URL,
+//            UserEntry.COLUMN_GENDER,
+//            UserEntry.COLUMN_FOLLOWERS_COUNT,
+//            UserEntry.COLUMN_FRIENDS_COUNT,
+//            UserEntry.COLUMN_STATUSES_COUNT,
+//            UserEntry.COLUMN_FAVOURITES_COUNT,
+//            UserEntry.COLUMN_CREATED_AT,
+//            UserEntry.COLUMN_FOLLOWING,
+            UserEntry.COLUMN_AVATAR_LARGE,
+//              UserEntry.COLUMN_FOLLOW_ME,
+
+    };
 
 
     @Override
@@ -88,29 +139,77 @@ public class ProfileActivity extends ActionBarActivity implements LoaderManager.
 
         Intent intent = getIntent();
         if (intent != null) {
-            String name = intent.getStringExtra(PostActivity.NAME_EXTRA);
-//            if (avatar != null) {
-//                mAvatar.setImageBitmap(avatar);
-//                mBlurManager = new StackBlurManager(avatar);
-//                if (Utility.getSDKVersion() >= 16) {
-//                    mAvatarBg.setBackground(new BitmapDrawable(getResources(), mBlurManager.process(20)));
-//                } else {
-//                    mAvatarBg.setBackgroundDrawable(new BitmapDrawable(getResources(), mBlurManager.process(20)));
-//                }
-//            }
-            mName.setText(name);
+            mUserId = intent.getStringExtra(PostActivity.USER_ID_EXTRA);
+            Log.d(TAG, mUserId);
         }
+
+        getLoaderManager().initLoader(PROFILE_LOADER, null, this);
 
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return null;
+
+        Uri uri;
+        String[] projection;
+        String selection;
+        if (mUserId.equals(AccessTokenKeeper.readAccessToken(this).getUid())) {
+            uri = AccountEntry.CONTENT_URI;
+            projection = MY_PROFILE_COLUMNS;
+            selection = AccountEntry.COLUMN_USER_ID + " = '" + mUserId + "'";
+        } else {
+            uri = UserEntry.CONTENT_URI;
+            projection = USER_PROFILE_COLUMNS;
+            selection = UserEntry.COLUMN_USER_ID + " = '" + mUserId + "'";
+        }
+
+        return new CursorLoader(
+                this,
+                uri,
+                projection,
+                selection,
+                null,
+                null
+        );
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
+        if(cursor != null && cursor.moveToFirst()) {
+
+            String avatarUrl;
+            String name;
+            String description;
+
+            if (mUserId.equals(AccessTokenKeeper.readAccessToken(this).getUid())) {
+                avatarUrl = cursor.getString(cursor.getColumnIndex(AccountEntry.COLUMN_AVATAR_LARGE));
+                name = cursor.getString(cursor.getColumnIndex(AccountEntry.COLUMN_SCREEN_NAME));
+                description = cursor.getString(cursor.getColumnIndex(AccountEntry.COLUMN_DESCRIPTION));
+            } else {
+                avatarUrl = cursor.getString(cursor.getColumnIndex(UserEntry.COLUMN_AVATAR_LARGE));
+                name = cursor.getString(cursor.getColumnIndex(UserEntry.COLUMN_SCREEN_NAME));
+                description = cursor.getString(cursor.getColumnIndex(UserEntry.COLUMN_DESCRIPTION));
+            }
+            Glide.with(this)
+                    .load(avatarUrl)
+                    .asBitmap()
+                    .placeholder(R.drawable.user_avatar_empty)
+                    .into(new SimpleTarget<Bitmap>(120, 120) {
+                        @Override
+                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                            mAvatar.setImageBitmap(resource);
+                            mBlurManager = new StackBlurManager(resource);
+                            if (Utility.getSDKVersion() >= 16) {
+                                mAvatarBg.setBackground(new BitmapDrawable(getResources(), mBlurManager.process(20)));
+                            } else {
+                                mAvatarBg.setBackgroundDrawable(new BitmapDrawable(getResources(), mBlurManager.process(20)));
+                            }
+                        }
+                    });
+            mName.setText(name);
+            mDescription.setText(description);
+        }
     }
 
     @Override

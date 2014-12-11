@@ -189,7 +189,7 @@ public class TimeLineCursorAdapter extends RecyclerViewCursorAdapter<TimeLineCur
             @Override
             public void onClick(View v) {
                 cursor.moveToPosition(position);
-                mListener.onAvatarClicked(cursor.getString(COL_USER_SCREENNAME));
+                mListener.onAvatarClicked(cursor.getString(COL_USER_ID));
             }
         });
 
