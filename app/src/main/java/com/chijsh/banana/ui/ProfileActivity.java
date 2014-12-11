@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -199,6 +200,14 @@ public class ProfileActivity extends ActionBarActivity implements LoaderManager.
                         @Override
                         public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                             mAvatar.setImageBitmap(resource);
+
+                            Palette.generateAsync(resource, new Palette.PaletteAsyncListener() {
+                                @Override
+                                public void onGenerated(Palette palette) {
+                                    mSlidingTab.setSelectedIndicatorColors(palette.getVibrantColor(getResources().getColor(R.color.tab_selected_strip)));
+                                }
+                            });
+
                             mBlurManager = new StackBlurManager(resource);
                             if (Utility.getSDKVersion() >= 16) {
                                 mAvatarBg.setBackground(new BitmapDrawable(getResources(), mBlurManager.process(20)));

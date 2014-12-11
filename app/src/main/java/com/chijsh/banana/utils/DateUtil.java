@@ -23,7 +23,7 @@ public class DateUtil {
 //    private static int MILL_DAY = MILL_HOUR * 24;
 
     //"Fri Aug 28 00:00:00 +0800 2009"
-    private static final String SINA_DATE_FORMAT = "EEE MMM dd kk:mm:ss z yyyy";
+    private static final String SINA_DATE_FORMAT = "EEE MMM dd HH:mm:ss z yyyy";
 
     private static final String DATE_FORMAT = "MM-dd HH:mm";
 
