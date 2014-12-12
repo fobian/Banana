@@ -16,6 +16,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.OvershootInterpolator;
 import android.widget.ImageButton;
 
 import com.chijsh.banana.R;
@@ -82,6 +83,8 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
 
     };
 
+    private static final int ANIM_DURATION_FAB = 400;
+
     public TimeLineFragment() {
     }
 
@@ -112,6 +115,9 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getResources().getDimensionPixelSize(R.dimen.divider_padding)));
 
         mHeaderView = ((TimeLineActivity)getActivity()).getHeaderView();
+
+        mFloatingButton.setTranslationY(2 * getResources().getDimensionPixelOffset(R.dimen.fab_size));
+
         return rootView;
     }
 
@@ -157,6 +163,16 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
             mHeaderView.animate().cancel();
             mHeaderView.setTranslationY(headerTranslationY);
         }
+    }
+
+    private void startFABAnimation() {
+
+        mFloatingButton.animate()
+                .translationY(0)
+                .setInterpolator(new OvershootInterpolator(1.f))
+                .setStartDelay(300)
+                .setDuration(ANIM_DURATION_FAB)
+                .start();
     }
 
     @Override
@@ -225,6 +241,7 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getLoaderManager().initLoader(POST_LOADER, null, this);
+        startFABAnimation();
     }
 
     @Override

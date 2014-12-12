@@ -38,7 +38,7 @@
     <string name="no_recent">No recent</string>
     <string name="title_activity_profile">Profile</string>
     <string name="title_activity_search">Search</string>
-    <string name="title_activity_post_content">PostContent</string>
+    <string name="title_activity_post_content">Weibo Content</string>
     <string name="just_now">Just now</string>
 
     <plurals name="numberOfMinsAvailable">
