@@ -149,7 +149,8 @@ public class SyncHelper {
             if(post.retweetedStatus.user != null)
                 values.put(PostEntry.COLUMN_RETWEETED_USER_SCREENNAME, post.retweetedStatus.user.screenName);
             values.put(PostEntry.COLUMN_RETWEETED_TEXT, post.retweetedStatus.text);
-            values.put(PostEntry.COLUMN_RETWEETED_PICURLS, StringUtil.urlsToString(post.retweetedStatus.picUrls));
+            if (post.retweetedStatus.picUrls != null)
+                values.put(PostEntry.COLUMN_RETWEETED_PICURLS, StringUtil.urlsToString(post.retweetedStatus.picUrls));
         }
         values.put(PostEntry.COLUMN_REPOST_COUNT, post.repostsCount);
         values.put(PostEntry.COLUMN_COMMENT_COUNT, post.commentsCount);

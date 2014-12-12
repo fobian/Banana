@@ -4,7 +4,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -320,7 +322,8 @@ public class TimeLineCursorAdapter extends RecyclerViewCursorAdapter<TimeLineCur
     private void handlePics(Context context, ViewHolder viewHolder, boolean isRetwitt, String pics) {
 
         if(isRetwitt) {
-            if (pics != null) {
+            if (!TextUtils.isEmpty(pics)) {
+
                 viewHolder.mRetweetPicsStub.setVisibility(View.VISIBLE);
                 String[] picArray = StringUtil.fastSplit(pics, ',');
                 int size = picArray.length;
@@ -350,7 +353,7 @@ public class TimeLineCursorAdapter extends RecyclerViewCursorAdapter<TimeLineCur
 
             }
         } else {
-            if (pics != null) {
+            if (!TextUtils.isEmpty(pics)) {
                 viewHolder.mTweetPicsStub.setVisibility(View.VISIBLE);
                 String[] picArray = StringUtil.fastSplit(pics, ',');
                 int size = picArray.length;

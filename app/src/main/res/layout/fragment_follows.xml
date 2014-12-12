@@ -5,6 +5,8 @@
     tools:context="com.chijsh.banana.ui.FollowsFragment">
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list_follows"
+        android:clipToPadding="false"
+        android:scrollbarStyle="outsideOverlay"
         android:scrollbars="vertical"
         android:paddingTop="@dimen/list_padding_top"
         android:paddingLeft="@dimen/list_padding_left"
