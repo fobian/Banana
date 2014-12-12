@@ -7,6 +7,7 @@ import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.GridLayout;
@@ -113,7 +114,6 @@ public class TimeLineCursorAdapter extends RecyclerViewCursorAdapter<TimeLineCur
             mRetweetPics = mRetweetPicsStub.inflate();
             mRetwittThumbImageView = (ImageView)mRetweetPics.findViewById(R.id.thumbnail_pic);
             mRetwittPicsGrid = (GridLayout)mRetweetPics.findViewById(R.id.pic_grid);
-
 
             mTweetPics = mTweetPicsStub.inflate();
             mThumbImageView = (ImageView)mTweetPics.findViewById(R.id.thumbnail_pic);
@@ -269,12 +269,12 @@ public class TimeLineCursorAdapter extends RecyclerViewCursorAdapter<TimeLineCur
             switch (size) {
                 case 8:
                     pic = (ImageView) gridLayout.getChildAt(8);
-                    pic.setVisibility(View.INVISIBLE);
+                    pic.setVisibility(View.GONE);
                     break;
                 case 7:
                     for (int i = 8; i > 6; i--) {
                         pic = (ImageView) gridLayout.getChildAt(i);
-                        pic.setVisibility(View.INVISIBLE);
+                        pic.setVisibility(View.GONE);
                     }
                     break;
                 case 6:
@@ -285,22 +285,17 @@ public class TimeLineCursorAdapter extends RecyclerViewCursorAdapter<TimeLineCur
 
                     break;
                 case 5:
-                    for (int i = 8; i > 5; i--) {
+                    for (int i = 8; i > 4; i--) {
                         pic = (ImageView) gridLayout.getChildAt(i);
                         pic.setVisibility(View.GONE);
                     }
-                    pic = (ImageView) gridLayout.getChildAt(5);
-                    pic.setVisibility(View.INVISIBLE);
+
                     break;
                 case 4:
-                    for (int i = 8; i > 5; i--) {
+                    for (int i = 8; i > 3; i--) {
                         pic = (ImageView) gridLayout.getChildAt(i);
                         pic.setVisibility(View.GONE);
                     }
-                    pic = (ImageView) gridLayout.getChildAt(5);
-                    pic.setVisibility(View.INVISIBLE);
-                    pic = (ImageView) gridLayout.getChildAt(4);
-                    pic.setVisibility(View.INVISIBLE);
                     break;
                 case 3:
                     for (int i = 8; i > 2; i--) {
@@ -309,12 +304,11 @@ public class TimeLineCursorAdapter extends RecyclerViewCursorAdapter<TimeLineCur
                     }
                     break;
                 case 2:
-                    for (int i = 8; i > 2; i--) {
+                    for (int i = 8; i > 1; i--) {
                         pic = (ImageView) gridLayout.getChildAt(i);
                         pic.setVisibility(View.GONE);
                     }
-                    pic = (ImageView) gridLayout.getChildAt(2);
-                    pic.setVisibility(View.INVISIBLE);
+
                     break;
 
 
@@ -334,9 +328,9 @@ public class TimeLineCursorAdapter extends RecyclerViewCursorAdapter<TimeLineCur
                     viewHolder.mRetwittThumbImageView.setVisibility(View.GONE);
                     viewHolder.mRetwittPicsGrid.setVisibility(View.VISIBLE);
                     ImageView view;
-                    for(int i = 0; i < size; ++i) {
-                        view = (ImageView)viewHolder.mRetwittPicsGrid.getChildAt(i);
 
+                    for(int i = 0; i < size; ++i) {
+                        view  = (ImageView)viewHolder.mRetwittPicsGrid.getChildAt(i);
                         mRequestBuilder.load(picArray[i]).into(view);
 
                     }
@@ -365,8 +359,7 @@ public class TimeLineCursorAdapter extends RecyclerViewCursorAdapter<TimeLineCur
                     viewHolder.mPicsGrid.setVisibility(View.VISIBLE);
                     ImageView view;
                     for(int i = 0; i < size; ++i) {
-                        view = (ImageView)viewHolder.mPicsGrid.getChildAt(i);
-
+                        view  = (ImageView)viewHolder.mRetwittPicsGrid.getChildAt(i);
                         mRequestBuilder.load(picArray[i]).into(view);
 
                     }

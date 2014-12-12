@@ -241,7 +241,7 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getLoaderManager().initLoader(POST_LOADER, null, this);
-        startFABAnimation();
+
     }
 
     @Override
@@ -265,6 +265,7 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mAdapter.swapCursor(data);
         mSwipeRefreshLayout.setRefreshing(false);
+        startFABAnimation();
     }
 
     @Override

@@ -27,4 +27,16 @@ public class ScreenUtil {
         display.getSize(size);
         return size;
     }
+
+    public static float getDensity(Context context) {
+        return context.getResources().getDisplayMetrics().density;
+    }
+
+    public static int dpToPx(int dp) {
+        return (int)(dp * getDensity(Utility.getAppContext()) / 160);
+    }
+
+    public static int pxToDp(int px) {
+        return (int)(px / getDensity(Utility.getAppContext()) * 160);
+    }
 }
