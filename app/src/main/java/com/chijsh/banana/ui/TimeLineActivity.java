@@ -1,6 +1,7 @@
 package com.chijsh.banana.ui;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -13,6 +14,7 @@ import com.chijsh.banana.R;
 import com.chijsh.banana.event.MessageEvent;
 import com.chijsh.banana.sync.WeiboSyncAdapter;
 import com.chijsh.banana.utils.Utility;
+import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -25,6 +27,7 @@ public class TimeLineActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_timeline);
 
         ButterKnife.inject(this);
@@ -45,6 +48,13 @@ public class TimeLineActivity extends BaseActivity {
         }
 
         WeiboSyncAdapter.initializeSyncAdapter(this);
+
+        SystemBarTintManager tintManager = new SystemBarTintManager(this);
+        tintManager.setStatusBarTintEnabled(true);
+        tintManager.setNavigationBarTintEnabled(true);
+
+        tintManager.setNavigationBarTintResource(R.drawable.transparent);
+        tintManager.setStatusBarTintColor(getResources().getColor(R.color.theme_primary_dark));
 
     }
 

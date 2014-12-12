@@ -362,7 +362,7 @@ public class TimeLineCursorAdapter extends RecyclerViewCursorAdapter<TimeLineCur
                     viewHolder.mPicsGrid.setVisibility(View.VISIBLE);
                     ImageView view;
                     for(int i = 0; i < size; ++i) {
-                        view  = (ImageView)viewHolder.mRetwittPicsGrid.getChildAt(i);
+                        view  = (ImageView)viewHolder.mPicsGrid.getChildAt(i);
                         mRequestBuilder.load(picArray[i]).into(view);
 
                     }
