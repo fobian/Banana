@@ -119,7 +119,7 @@ public abstract class RecyclerViewCursorAdapter<T extends RecyclerView.ViewHolde
 
     public abstract T newViewHolder(Context context, Cursor cursor);
 
-    public abstract void bindView(T viewHolder, Context context, Cursor cursor);
+    public abstract void bindView(T viewHolder, Context context, Cursor cursor, int position);
 
     public void changeCursor(Cursor cursor) {
         Cursor old = swapCursor(cursor);
@@ -237,7 +237,7 @@ public abstract class RecyclerViewCursorAdapter<T extends RecyclerView.ViewHolde
         if (!mCursor.moveToPosition(position)) {
             throw new IllegalStateException("couldn't move cursor to position " + position);
         }
-        bindView(viewHolder, mContext, mCursor);
+        bindView(viewHolder, mContext, mCursor, position);
     }
 
 

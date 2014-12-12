@@ -2,7 +2,6 @@ package com.chijsh.banana.ui;
 
 import android.app.Fragment;
 import android.app.LoaderManager;
-import android.app.TimePickerDialog;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -14,11 +13,10 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TimePicker;
+import android.widget.ImageButton;
 
 import com.chijsh.banana.R;
 
@@ -29,7 +27,6 @@ import com.chijsh.banana.ui.post.PostActivity;
 import com.chijsh.banana.utils.PrefUtil;
 import com.chijsh.banana.utils.Utility;
 import com.chijsh.banana.widget.MultiSwipeRefreshLayout;
-import com.chijsh.banana.widget.fab.FloatingActionButton;
 import com.chijsh.banana.widget.observablerecyclerview.ObservableRecyclerView;
 import com.chijsh.banana.widget.observablerecyclerview.ObservableScrollViewCallbacks;
 import com.chijsh.banana.widget.observablerecyclerview.ScrollState;
@@ -58,7 +55,7 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
 
     @InjectView(R.id.swip_refresh_layout) MultiSwipeRefreshLayout mSwipeRefreshLayout;
     @InjectView(R.id.time_line) ObservableRecyclerView mRecyclerView;
-    @InjectView(R.id.fab) FloatingActionButton mFloatingButton;
+    @InjectView(R.id.fab) ImageButton mFloatingButton;
 
     private View mHeaderView;
     private int mBaseTranslationY;
@@ -102,8 +99,6 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
                 );
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setCanChildScrollUpCallback(this);
-
-        mFloatingButton.listenTo(mRecyclerView);
 
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);

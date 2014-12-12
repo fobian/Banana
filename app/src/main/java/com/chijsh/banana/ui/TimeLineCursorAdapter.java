@@ -8,6 +8,7 @@ import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewStub;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.chijsh.banana.R;
 import com.chijsh.banana.ui.recycursoradapter.RecyclerViewCursorAdapter;
 import com.chijsh.banana.utils.DateUtil;
+import com.chijsh.banana.utils.ScreenUtil;
 import com.chijsh.banana.utils.StringUtil;
 import com.chijsh.banana.utils.Utility;
 import com.chijsh.banana.widget.LinkEnabledTextView;
@@ -58,7 +60,9 @@ public class TimeLineCursorAdapter extends RecyclerViewCursorAdapter<TimeLineCur
 
     }
 
-    private final float CONTENT_THUMBNAIL_SIZE = 0.9f;
+    private static final float CONTENT_THUMBNAIL_SIZE = 0.9f;
+    private static final int ANIMATED_ITEMS_COUNT = 2;
+    private int mLastAnimatedPosition = -1;
 
     public interface PostItemClickListener {
         public void onItemClicked(View itemView, String postId);
@@ -130,6 +134,22 @@ public class TimeLineCursorAdapter extends RecyclerViewCursorAdapter<TimeLineCur
 
     }
 
+    private void runEnterAnimation(View view, int position) {
+        if (position >= ANIMATED_ITEMS_COUNT - 1) {
+            return;
+        }
+
+        if (position > mLastAnimatedPosition) {
+            mLastAnimatedPosition = position;
+            view.setTranslationY(ScreenUtil.getScreenSize(mContext).y);
+            view.animate()
+                    .translationY(0)
+                    .setInterpolator(new DecelerateInterpolator(3.f))
+                    .setDuration(700)
+                    .start();
+        }
+    }
+
     @Override
     public ViewHolder newViewHolder(Context context, Cursor cursor) {
         View v = LayoutInflater.from(context)
@@ -139,7 +159,8 @@ public class TimeLineCursorAdapter extends RecyclerViewCursorAdapter<TimeLineCur
     }
 
     @Override
-    public void bindView(final ViewHolder viewHolder, Context context, final Cursor cursor) {
+    public void bindView(final ViewHolder viewHolder, Context context, final Cursor cursor, int position) {
+        runEnterAnimation(viewHolder.itemView, position);
         Glide.with(context)
                 .load(cursor.getString(COL_USER_AVATAR))
                 .thumbnail(0.1f)
@@ -175,12 +196,12 @@ public class TimeLineCursorAdapter extends RecyclerViewCursorAdapter<TimeLineCur
             viewHolder.mRetweetStub.setVisibility(View.GONE);
         }
 
-        final int position = cursor.getPosition();
+        final int cursorPosition = cursor.getPosition();
 
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cursor.moveToPosition(position);
+                cursor.moveToPosition(cursorPosition);
                 mListener.onItemClicked(viewHolder.itemView, cursor.getString(COL_POST_ID));
             }
         });
@@ -188,7 +209,7 @@ public class TimeLineCursorAdapter extends RecyclerViewCursorAdapter<TimeLineCur
         viewHolder.mAvatarView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cursor.moveToPosition(position);
+                cursor.moveToPosition(cursorPosition);
                 mListener.onAvatarClicked(cursor.getString(COL_USER_ID));
             }
         });
@@ -196,21 +217,21 @@ public class TimeLineCursorAdapter extends RecyclerViewCursorAdapter<TimeLineCur
         viewHolder.mFavouriteAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cursor.moveToPosition(position);
+                cursor.moveToPosition(cursorPosition);
                 mListener.onFavouriteActionClicked(cursor.getString(COL_POST_ID), cursor.getInt(COL_POST_FAVORITED) == 0 ? false : true);
             }
         });
         viewHolder.mCommentAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cursor.moveToPosition(position);
+                cursor.moveToPosition(cursorPosition);
                 mListener.onCommentActionClicked(cursor.getString(COL_POST_ID));
             }
         });
         viewHolder.mForwardAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cursor.moveToPosition(position);
+                cursor.moveToPosition(cursorPosition);
                 mListener.onForwardActionClicked(cursor.getString(COL_POST_ID));
             }
         });

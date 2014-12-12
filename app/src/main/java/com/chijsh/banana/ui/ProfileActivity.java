@@ -204,7 +204,10 @@ public class ProfileActivity extends ActionBarActivity implements LoaderManager.
                             Palette.generateAsync(resource, new Palette.PaletteAsyncListener() {
                                 @Override
                                 public void onGenerated(Palette palette) {
-                                    mSlidingTab.setSelectedIndicatorColors(palette.getVibrantColor(getResources().getColor(R.color.tab_selected_strip)));
+                                    int color = palette.getVibrantColor(getResources().getColor(R.color.tab_selected_strip));
+                                    //mName.setTextColor(color);
+                                    //mDescription.setTextColor(color);
+                                    mSlidingTab.setSelectedIndicatorColors(color);
                                 }
                             });
 

@@ -16,15 +16,6 @@
         <attr name="desaturateOnPress" format="boolean" />
     </declare-styleable>
 
-    <declare-styleable name="FloatingActionButton">
-        <attr name="fabDrawable" format="integer"/>
-        <attr name="fabColor" format="color"/>
-        <attr name="fabShadowRadius" format="float"/>
-        <attr name="fabShadowDx" format="float"/>
-        <attr name="fabShadowDy" format="float"/>
-        <attr name="fabShadowColor" format="integer"/>
-    </declare-styleable>
-
     <declare-styleable name="MultiSwipeRefreshLayout">
         <attr name="foreground" format="reference" />
     </declare-styleable>

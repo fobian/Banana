@@ -10,7 +10,9 @@
     <dimen name="login_logo_padding_top">120dp</dimen>
     <dimen name="divider_padding">8dp</dimen>
 
-    <dimen name="fab_size">72dp</dimen>
+    <dimen name="fab_size">56dp</dimen>
+    <dimen name="fab_margins">16dp</dimen>
+    <dimen name="fab_elevation">8dp</dimen>
 
     <!-- Action Bar auto-hide-on-scroll behavior parameters -->
     <dimen name="action_bar_auto_hide_min_y">152dp</dimen>
