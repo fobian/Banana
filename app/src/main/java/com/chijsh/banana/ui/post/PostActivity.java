@@ -97,7 +97,7 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
 //            AccountEntry.COLUMN_FAVOURITES_COUNT,
 //            AccountEntry.COLUMN_CREATED_AT,
 //            AccountEntry.COLUMN_FOLLOWING,
-            AccountEntry.COLUMN_AVATAR_LARGE,
+            AccountEntry.COLUMN_AVATAR_SMALL,
  //           AccountEntry.COLUMN_FOLLOW_ME,
 
     };

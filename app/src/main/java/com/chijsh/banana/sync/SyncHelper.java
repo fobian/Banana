@@ -143,7 +143,7 @@ public class SyncHelper {
             values.put(PostEntry.COLUMN_POST_GEO, post.geo.toString());
         values.put(PostEntry.COLUMN_USER_ID, post.user.idstr);
         values.put(PostEntry.COLUMN_USER_SCREENNAME, post.user.screenName);
-        values.put(PostEntry.COLUMN_USER_AVATAR, post.user.avatarLarge);
+        values.put(PostEntry.COLUMN_USER_AVATAR, post.user.profileImageUrl);
         if (post.retweetedStatus != null) {
             values.put(PostEntry.COLUMN_RETWEETED_ID, post.retweetedStatus.idstr);
             if(post.retweetedStatus.user != null)
@@ -168,6 +168,7 @@ public class SyncHelper {
             values.put(UserEntry.COLUMN_PROVINCE, user.province);
             values.put(UserEntry.COLUMN_CITY, user.city);
             values.put(UserEntry.COLUMN_LOCATION, user.location);
+            values.put(UserEntry.COLUMN_AVATAR_SMALL, user.profileImageUrl);
             values.put(UserEntry.COLUMN_DESCRIPTION, user.description);
             values.put(UserEntry.COLUMN_URL, user.url);
             values.put(UserEntry.COLUMN_PROFILE_URL, user.profileImageUrl);
@@ -186,6 +187,7 @@ public class SyncHelper {
             values.put(AccountEntry.COLUMN_PROVINCE, user.province);
             values.put(AccountEntry.COLUMN_CITY, user.city);
             values.put(AccountEntry.COLUMN_LOCATION, user.location);
+            values.put(AccountEntry.COLUMN_AVATAR_SMALL, user.profileImageUrl);
             values.put(AccountEntry.COLUMN_DESCRIPTION, user.description);
             values.put(AccountEntry.COLUMN_URL, user.url);
             values.put(AccountEntry.COLUMN_PROFILE_URL, user.profileImageUrl);

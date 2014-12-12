@@ -32,6 +32,7 @@ import com.chijsh.banana.R;
 import com.chijsh.banana.data.PostContract.AccountEntry;
 import com.chijsh.banana.data.PostContract.UserEntry;
 import com.chijsh.banana.ui.post.PostActivity;
+import com.chijsh.banana.utils.ScreenUtil;
 import com.chijsh.banana.utils.Utility;
 import com.chijsh.banana.widget.BezelImageView;
 import com.chijsh.banana.widget.tab.SlidingTabLayout;
@@ -196,7 +197,7 @@ public class ProfileActivity extends ActionBarActivity implements LoaderManager.
                     .load(avatarUrl)
                     .asBitmap()
                     .placeholder(R.drawable.user_avatar_empty)
-                    .into(new SimpleTarget<Bitmap>(120, 120) {
+                    .into(new SimpleTarget<Bitmap>(128, 128) {
                         @Override
                         public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                             mAvatar.setImageBitmap(resource);

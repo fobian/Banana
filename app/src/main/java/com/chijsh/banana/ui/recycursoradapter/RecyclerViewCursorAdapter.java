@@ -117,7 +117,7 @@ public abstract class RecyclerViewCursorAdapter<T extends RecyclerView.ViewHolde
 //    }
 
 
-    public abstract T newViewHolder(Context context, Cursor cursor);
+    public abstract T newViewHolder(Context context, Cursor cursor, int position);
 
     public abstract void bindView(T viewHolder, Context context, Cursor cursor, int position);
 
@@ -226,7 +226,7 @@ public abstract class RecyclerViewCursorAdapter<T extends RecyclerView.ViewHolde
         if (!mCursor.moveToPosition(position)) {
             throw new IllegalStateException("couldn't move cursor to position " + position);
         }
-        return newViewHolder(mContext, mCursor);
+        return newViewHolder(mContext, mCursor, position);
     }
 
     @Override

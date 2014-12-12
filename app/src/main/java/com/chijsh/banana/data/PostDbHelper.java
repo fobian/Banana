@@ -29,6 +29,7 @@ public class PostDbHelper extends SQLiteOpenHelper {
                 UserEntry.COLUMN_PROVINCE + " TEXT, " +
                 UserEntry.COLUMN_CITY + " TEXT, " +
                 UserEntry.COLUMN_LOCATION + " TEXT, " +
+                UserEntry.COLUMN_AVATAR_SMALL + " TEXT, " +
                 UserEntry.COLUMN_DESCRIPTION + " TEXT, " +
                 UserEntry.COLUMN_URL + " TEXT, " +
                 UserEntry.COLUMN_PROFILE_URL + " TEXT, " +
@@ -80,6 +81,7 @@ public class PostDbHelper extends SQLiteOpenHelper {
                 AccountEntry.COLUMN_PROVINCE + " TEXT, " +
                 AccountEntry.COLUMN_CITY + " TEXT, " +
                 AccountEntry.COLUMN_LOCATION + " TEXT, " +
+                AccountEntry.COLUMN_AVATAR_SMALL + " TEXT, " +
                 AccountEntry.COLUMN_DESCRIPTION + " TEXT, " +
                 AccountEntry.COLUMN_URL + " TEXT, " +
                 AccountEntry.COLUMN_PROFILE_URL + " TEXT, " +

@@ -49,13 +49,6 @@ public class TimeLineActivity extends BaseActivity {
 
         WeiboSyncAdapter.initializeSyncAdapter(this);
 
-        SystemBarTintManager tintManager = new SystemBarTintManager(this);
-        tintManager.setStatusBarTintEnabled(true);
-        tintManager.setNavigationBarTintEnabled(true);
-
-        tintManager.setNavigationBarTintResource(R.drawable.transparent);
-        tintManager.setStatusBarTintColor(getResources().getColor(R.color.theme_primary_dark));
-
     }
 
     public View getHeaderView() {

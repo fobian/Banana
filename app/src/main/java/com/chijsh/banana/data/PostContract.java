@@ -71,6 +71,7 @@ public class PostContract {
         public static final String COLUMN_PROVINCE = "province";
         public static final String COLUMN_CITY = "city";
         public static final String COLUMN_LOCATION = "location";
+        public static final String COLUMN_AVATAR_SMALL = "avatar_large";
 
         public static final String COLUMN_DESCRIPTION = "description";
         public static final String COLUMN_URL = "url";

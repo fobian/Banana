@@ -24,7 +24,6 @@ import com.chijsh.banana.ui.recycursoradapter.RecyclerViewCursorAdapter;
 import com.chijsh.banana.utils.DateUtil;
 import com.chijsh.banana.utils.ScreenUtil;
 import com.chijsh.banana.utils.StringUtil;
-import com.chijsh.banana.utils.Utility;
 import com.chijsh.banana.widget.LinkEnabledTextView;
 
 import butterknife.ButterKnife;
@@ -35,7 +34,7 @@ import butterknife.InjectView;
  * Created by chijsh on 10/28/14.
  */
 
-public class TimeLineCursorAdapter extends RecyclerViewCursorAdapter<TimeLineCursorAdapter.ViewHolder> implements LinkEnabledTextView.TextLinkClickListener {
+public class TimeLineCursorAdapter extends RecyclerViewCursorAdapter<RecyclerView.ViewHolder> implements LinkEnabledTextView.TextLinkClickListener {
 
     public static final int COL_CREATED_AT = 1;
     public static final int COL_POST_ID = 2;
@@ -54,14 +53,6 @@ public class TimeLineCursorAdapter extends RecyclerViewCursorAdapter<TimeLineCur
     public static final int COL_REPOST_COUNT = 15;
     public static final int COL_COMMENT_COUNT = 16;
     public static final int COL_ATTITUDE_COUNT = 17;
-
-    private enum VIEW_TYPE {
-        NORMAL,
-        NORMAL_WITH_PIC,
-        RETWEET,
-        RETWEET_WITH_PIC
-
-    }
 
     private static final float CONTENT_THUMBNAIL_SIZE = 0.9f;
     private static final int ANIMATED_ITEMS_COUNT = 2;
@@ -125,7 +116,6 @@ public class TimeLineCursorAdapter extends RecyclerViewCursorAdapter<TimeLineCur
 
     }
 
-
     public TimeLineCursorAdapter(Context context, Cursor cursor) {
         super(context, cursor);
         mRequestBuilder = Glide.with(context)
@@ -153,111 +143,98 @@ public class TimeLineCursorAdapter extends RecyclerViewCursorAdapter<TimeLineCur
     }
 
     @Override
-    public ViewHolder newViewHolder(Context context, Cursor cursor) {
+    public RecyclerView.ViewHolder newViewHolder(Context context, Cursor cursor, int position) {
+        RecyclerView.ViewHolder vh;
         View v = LayoutInflater.from(context)
                 .inflate(R.layout.card_item, null, false);
-        ViewHolder vh = new ViewHolder(v);
+        vh = new ViewHolder(v);
+
         return vh;
     }
 
     @Override
-    public void bindView(final ViewHolder viewHolder, Context context, final Cursor cursor, int position) {
-        runEnterAnimation(viewHolder.itemView, position);
-        Glide.with(context)
-                .load(cursor.getString(COL_USER_AVATAR))
-                .thumbnail(0.1f)
-                .placeholder(R.drawable.user_avatar_empty)
-                .into(viewHolder.mAvatarView);
-        viewHolder.getItemViewType();
-        viewHolder.mNameView.setText(cursor.getString(COL_USER_SCREENNAME));
-        viewHolder.mSubHeadView.setText(DateUtil.getFriendlyDate(cursor.getString(COL_CREATED_AT)) + " " + Html.fromHtml(cursor.getString(COL_POST_SOURCE)));
+    public void bindView(final RecyclerView.ViewHolder viewHolder, Context context, final Cursor cursor, int position) {
 
-        viewHolder.mTextView.setOnTextLinkClickListener(this);
-        viewHolder.mTextView.gatherLinksForText(cursor.getString(COL_POST_TEXT));
-        viewHolder.mTextView.setMovementMethod(LinkMovementMethod.getInstance());
+            ViewHolder vh = (ViewHolder)viewHolder;
+            runEnterAnimation(viewHolder.itemView, position);
+            Glide.with(context)
+                    .load(cursor.getString(COL_USER_AVATAR))
+                    .thumbnail(0.1f)
+                    .placeholder(R.drawable.user_avatar_empty)
+                    .into(vh.mAvatarView);
+            vh.getItemViewType();
+            vh.mNameView.setText(cursor.getString(COL_USER_SCREENNAME));
+            vh.mSubHeadView.setText(DateUtil.getFriendlyDate(cursor.getString(COL_CREATED_AT)) + " " + Html.fromHtml(cursor.getString(COL_POST_SOURCE)));
 
-        String pics = cursor.getString(COL_POST_PICURLS);
+            vh.mTextView.setOnTextLinkClickListener(this);
+            vh.mTextView.gatherLinksForText(cursor.getString(COL_POST_TEXT));
+            vh.mTextView.setMovementMethod(LinkMovementMethod.getInstance());
 
-        handlePics(context, viewHolder, false, pics);
+            String pics = cursor.getString(COL_POST_PICURLS);
 
-        String retwittUserName =  cursor.getString(COL_RETWEETED_USER_SCREENNAME);
-        String retwittText =  cursor.getString(COL_RETWEETED_TEXT);
-        String retweetPics = cursor.getString(COL_RETWEETED_PICURLS);
+            handlePics(context, vh, false, pics);
 
-        if(retwittUserName != null && retwittText != null) {
-            viewHolder.mRetweetStub.setVisibility(View.VISIBLE);
-            viewHolder.mRetwittTextView.setVisibility(View.VISIBLE);
-            retwittUserName  = "@" + retwittUserName;
-            viewHolder.mRetwittTextView.setOnTextLinkClickListener(this);
-            viewHolder.mRetwittTextView.gatherLinksForText(retwittUserName + ":" + retwittText);
-            viewHolder.mRetwittTextView.setMovementMethod(LinkMovementMethod.getInstance());
+            String retwittUserName =  cursor.getString(COL_RETWEETED_USER_SCREENNAME);
+            String retwittText =  cursor.getString(COL_RETWEETED_TEXT);
+            String retweetPics = cursor.getString(COL_RETWEETED_PICURLS);
 
-            handlePics(context, viewHolder, true, retweetPics);
+            if(retwittUserName != null && retwittText != null) {
+                vh.mRetweetStub.setVisibility(View.VISIBLE);
+                vh.mRetwittTextView.setVisibility(View.VISIBLE);
+                retwittUserName  = "@" + retwittUserName;
+                vh.mRetwittTextView.setOnTextLinkClickListener(this);
+                vh.mRetwittTextView.gatherLinksForText(retwittUserName + ":" + retwittText);
+                vh.mRetwittTextView.setMovementMethod(LinkMovementMethod.getInstance());
 
-        } else {
-            viewHolder.mRetweetStub.setVisibility(View.GONE);
-        }
+                handlePics(context, vh, true, retweetPics);
 
-        final int cursorPosition = cursor.getPosition();
-
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cursor.moveToPosition(cursorPosition);
-                mListener.onItemClicked(viewHolder.itemView, cursor.getString(COL_POST_ID));
+            } else {
+                vh.mRetweetStub.setVisibility(View.GONE);
             }
-        });
 
-        viewHolder.mAvatarView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cursor.moveToPosition(cursorPosition);
-                mListener.onAvatarClicked(cursor.getString(COL_USER_ID));
-            }
-        });
+            final int cursorPosition = cursor.getPosition();
 
-        viewHolder.mFavouriteAction.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cursor.moveToPosition(cursorPosition);
-                mListener.onFavouriteActionClicked(cursor.getString(COL_POST_ID), cursor.getInt(COL_POST_FAVORITED) == 0 ? false : true);
-            }
-        });
-        viewHolder.mCommentAction.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cursor.moveToPosition(cursorPosition);
-                mListener.onCommentActionClicked(cursor.getString(COL_POST_ID));
-            }
-        });
-        viewHolder.mForwardAction.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cursor.moveToPosition(cursorPosition);
-                mListener.onForwardActionClicked(cursor.getString(COL_POST_ID));
-            }
-        });
+            vh.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    cursor.moveToPosition(cursorPosition);
+                    mListener.onItemClicked(viewHolder.itemView, cursor.getString(COL_POST_ID));
+                }
+            });
+
+            vh.mAvatarView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    cursor.moveToPosition(cursorPosition);
+                    mListener.onAvatarClicked(cursor.getString(COL_USER_ID));
+                }
+            });
+
+            vh.mFavouriteAction.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    cursor.moveToPosition(cursorPosition);
+                    mListener.onFavouriteActionClicked(cursor.getString(COL_POST_ID), cursor.getInt(COL_POST_FAVORITED) == 0 ? false : true);
+                }
+            });
+            vh.mCommentAction.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    cursor.moveToPosition(cursorPosition);
+                    mListener.onCommentActionClicked(cursor.getString(COL_POST_ID));
+                }
+            });
+            vh.mForwardAction.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    cursor.moveToPosition(cursorPosition);
+                    mListener.onForwardActionClicked(cursor.getString(COL_POST_ID));
+                }
+            });
+
 
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        Cursor cursor = (Cursor) getItem(position);
-        if (cursor.getString(COL_RETWEETED_USER_SCREENNAME) == null) {
-            if (cursor.getString(COL_POST_PICURLS) == null) {
-                return VIEW_TYPE.NORMAL.ordinal();
-            } else {
-                return VIEW_TYPE.NORMAL_WITH_PIC.ordinal();
-            }
-        } else {
-            if (cursor.getString(COL_RETWEETED_PICURLS) == null) {
-                return VIEW_TYPE.RETWEET.ordinal();
-            } else {
-                return VIEW_TYPE.RETWEET_WITH_PIC.ordinal();
-            }
-        }
-
-    }
 
     @Override
     public void onTextLinkClick(View textView, String clickedString) {

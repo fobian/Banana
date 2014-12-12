@@ -1,7 +1,9 @@
 package com.chijsh.banana.ui;
 
+import android.app.ActivityManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -11,6 +13,7 @@ import android.view.View;
 import com.chijsh.banana.AccessTokenKeeper;
 import com.chijsh.banana.R;
 import com.chijsh.banana.utils.PrefUtil;
+import com.chijsh.banana.utils.Utility;
 
 public class SettingsActivity extends BaseActivity {
 
@@ -56,7 +59,15 @@ public class SettingsActivity extends BaseActivity {
             pref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    AccessTokenKeeper.clear(getActivity());
+
+                    if (Utility.getSDKVersion() >= 19) {
+                        ActivityManager manager = (ActivityManager)getActivity().getSystemService(ACTIVITY_SERVICE);
+                        manager.clearApplicationUserData();
+                    } else {
+                        //TODO clear data
+                        AccessTokenKeeper.clear(getActivity());
+                    }
+
                     Intent intent = new Intent(getActivity(), TimeLineActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
