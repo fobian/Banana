@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.GridLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -80,9 +81,9 @@ public class TimeLineCursorAdapter extends RecyclerViewCursorAdapter<RecyclerVie
         @InjectView(R.id.user_name) TextView mNameView;
         @InjectView(R.id.user_subhead) TextView mSubHeadView;
         @InjectView(R.id.user_text) LinkEnabledTextView mTextView;
-        @InjectView(R.id.favourite_action) ImageView mFavouriteAction;
-        @InjectView(R.id.comment_action) ImageView mCommentAction;
-        @InjectView(R.id.forward_action) ImageView mForwardAction;
+        @InjectView(R.id.favourite_action) ImageButton mFavouriteAction;
+        @InjectView(R.id.comment_action) ImageButton mCommentAction;
+        @InjectView(R.id.forward_action) ImageButton mForwardAction;
 
         @InjectView(R.id.tweet_pics_stub) ViewStub mTweetPicsStub;
         View mTweetPics;
