@@ -2,24 +2,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clipChildren="false"
     tools:context=".ui.TimeLineFragment">
 
-    <com.chijsh.banana.widget.MultiSwipeRefreshLayout
-        android:id="@+id/swip_refresh_layout"
+    <com.chijsh.banana.widget.observablerecyclerview.ObservableRecyclerView
+        android:id="@+id/time_line"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        >
-
-        <com.chijsh.banana.widget.observablerecyclerview.ObservableRecyclerView
-            android:id="@+id/time_line"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingTop="?actionBarSize"
-            android:clipToPadding="false"
-            android:scrollbars="vertical" />
-    </com.chijsh.banana.widget.MultiSwipeRefreshLayout>
+        android:paddingTop="?actionBarSize"
+        android:scrollbars="vertical" />
 
     <ImageButton
         android:id="@+id/fab"

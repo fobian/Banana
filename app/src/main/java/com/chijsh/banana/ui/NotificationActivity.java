@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 
 
 import com.chijsh.banana.R;
-import com.chijsh.banana.widget.MultiSwipeRefreshLayout;
 import com.chijsh.banana.widget.tab.SlidingTabLayout;
 
 import butterknife.ButterKnife;
@@ -26,7 +25,6 @@ public class NotificationActivity extends BaseActivity {
     @InjectView(R.id.view_pager) ViewPager mViewPager;
     MyPagerAdapter mPagerAdapter;
     @InjectView(R.id.sliding_tabs) SlidingTabLayout mSlidingTabLayout;
-    @InjectView(R.id.swipe_refresh_layout) MultiSwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,11 +54,6 @@ public class NotificationActivity extends BaseActivity {
         mSlidingTabLayout.setDistributeEvenly(true);
         mSlidingTabLayout.setViewPager(mViewPager);
 
-        mSwipeRefreshLayout.setColorSchemeColors(
-                getResources().getColor(R.color.refresh_progress_1),
-                getResources().getColor(R.color.refresh_progress_2),
-                getResources().getColor(R.color.refresh_progress_3)
-        );
     }
 
 

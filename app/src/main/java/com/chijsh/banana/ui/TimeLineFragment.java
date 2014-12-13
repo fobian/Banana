@@ -27,7 +27,6 @@ import com.chijsh.banana.sync.WeiboSyncAdapter;
 import com.chijsh.banana.ui.post.PostActivity;
 import com.chijsh.banana.utils.PrefUtil;
 import com.chijsh.banana.utils.Utility;
-import com.chijsh.banana.widget.MultiSwipeRefreshLayout;
 import com.chijsh.banana.widget.observablerecyclerview.ObservableRecyclerView;
 import com.chijsh.banana.widget.observablerecyclerview.ObservableScrollViewCallbacks;
 import com.chijsh.banana.widget.observablerecyclerview.ScrollState;
@@ -42,8 +41,7 @@ import butterknife.OnClick;
 public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>
         , SwipeRefreshLayout.OnRefreshListener
         , TimeLineCursorAdapter.PostItemClickListener
-        , ObservableScrollViewCallbacks
-        , MultiSwipeRefreshLayout.CanChildScrollUpCallback {
+        , ObservableScrollViewCallbacks {
     private static final int POST_LOADER = 0;
 
     public static final String POST_ID = "post_id";
@@ -54,7 +52,6 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
     private TimeLineCursorAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    @InjectView(R.id.swip_refresh_layout) MultiSwipeRefreshLayout mSwipeRefreshLayout;
     @InjectView(R.id.time_line) ObservableRecyclerView mRecyclerView;
     @InjectView(R.id.fab) ImageButton mFloatingButton;
 
@@ -94,14 +91,6 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
         View rootView = inflater.inflate(R.layout.fragment_timeline, container, false);
 
         ButterKnife.inject(this, rootView);
-
-        mSwipeRefreshLayout.setColorSchemeColors(
-                getResources().getColor(R.color.refresh_progress_1),
-                getResources().getColor(R.color.refresh_progress_2),
-                getResources().getColor(R.color.refresh_progress_3)
-                );
-        mSwipeRefreshLayout.setOnRefreshListener(this);
-        mSwipeRefreshLayout.setCanChildScrollUpCallback(this);
 
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -208,11 +197,6 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     @Override
-    public boolean canSwipeRefreshChildScrollUp() {
-        return canRecyclerViewScrollUp();
-    }
-
-    @Override
     public void onRefresh() {
         PrefUtil.markManuallySync(getActivity(), true);
         refreshTimeLine();
@@ -264,7 +248,6 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mAdapter.swapCursor(data);
-        mSwipeRefreshLayout.setRefreshing(false);
         startFABAnimation();
     }
 

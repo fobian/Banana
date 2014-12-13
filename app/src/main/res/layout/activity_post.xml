@@ -74,6 +74,7 @@
             android:layout_height="match_parent" />
         <ImageButton
             android:id="@+id/post_emotion"
+            android:visibility="gone"
             style="?android:actionButtonStyle"
             android:layout_toRightOf="@id/post_at"
             android:src="@drawable/ic_mood_grey600_24dp"
