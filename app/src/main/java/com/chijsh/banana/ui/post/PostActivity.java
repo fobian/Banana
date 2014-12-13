@@ -14,12 +14,14 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
 import android.widget.AutoCompleteTextView;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
@@ -181,6 +183,10 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
 
     @OnClick(R.id.post_send)
     public void postWeibo() {
+        if (TextUtils.isEmpty(mPostEdit.getText().toString())) {
+            mSendAction.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake_error));
+            return;
+        }
         Intent intent = new Intent(this, PostWeiboService.class);
         intent.putExtra(POST_WEIBO_EXTRA, mPostEdit.getText().toString());
         startService(intent);
