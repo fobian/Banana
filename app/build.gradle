@@ -63,4 +63,5 @@ dependencies {
     compile 'com.android.support:support-v4:21.0.2'
     compile 'de.greenrobot:eventbus:2.2.1'
     compile project(':app:library:StackBlur')
+    compile project(':app:library:PhotoView')
 }

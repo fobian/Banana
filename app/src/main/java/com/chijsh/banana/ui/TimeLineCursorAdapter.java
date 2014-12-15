@@ -65,6 +65,7 @@ public class TimeLineCursorAdapter extends RecyclerViewCursorAdapter<RecyclerVie
         public void onFavouriteActionClicked(String postId, boolean isFavourited);
         public void onCommentActionClicked(String postId);
         public void onForwardActionClicked(String postId);
+        public void onImageClicked(int position, String[] pics);
     }
 
     private PostItemClickListener mListener;
@@ -303,16 +304,23 @@ public class TimeLineCursorAdapter extends RecyclerViewCursorAdapter<RecyclerVie
             if (!TextUtils.isEmpty(pics)) {
 
                 viewHolder.mRetweetPicsStub.setVisibility(View.VISIBLE);
-                String[] picArray = StringUtil.fastSplit(pics, ',');
-                int size = picArray.length;
+                final String[] picArray = StringUtil.fastSplit(pics, ',');
+                final int size = picArray.length;
                 if(size > 1) {
                     viewHolder.mRetwittThumbImageView.setVisibility(View.GONE);
                     viewHolder.mRetwittPicsGrid.setVisibility(View.VISIBLE);
                     ImageView view;
 
                     for(int i = 0; i < size; ++i) {
+                        final int position = i;
                         view  = (ImageView)viewHolder.mRetwittPicsGrid.getChildAt(i);
                         mRequestBuilder.load(picArray[i]).into(view);
+                        view.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mListener.onImageClicked(position, picArray);
+                            }
+                        });
 
                     }
 
@@ -323,6 +331,12 @@ public class TimeLineCursorAdapter extends RecyclerViewCursorAdapter<RecyclerVie
                     viewHolder.mRetwittPicsGrid.setVisibility(View.GONE);
 
                     mRequestBuilder.load(pics).into(viewHolder.mRetwittThumbImageView);
+                    viewHolder.mRetwittThumbImageView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mListener.onImageClicked(0, picArray);
+                        }
+                    });
 
                 }
 
@@ -333,16 +347,22 @@ public class TimeLineCursorAdapter extends RecyclerViewCursorAdapter<RecyclerVie
         } else {
             if (!TextUtils.isEmpty(pics)) {
                 viewHolder.mTweetPicsStub.setVisibility(View.VISIBLE);
-                String[] picArray = StringUtil.fastSplit(pics, ',');
+                final String[] picArray = StringUtil.fastSplit(pics, ',');
                 int size = picArray.length;
                 if(size > 1) {
                     viewHolder.mThumbImageView.setVisibility(View.GONE);
                     viewHolder.mPicsGrid.setVisibility(View.VISIBLE);
                     ImageView view;
                     for(int i = 0; i < size; ++i) {
+                        final int position = i;
                         view  = (ImageView)viewHolder.mPicsGrid.getChildAt(i);
                         mRequestBuilder.load(picArray[i]).into(view);
-
+                        view.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mListener.onImageClicked(position, picArray);
+                            }
+                        });
                     }
 
                     handlePicsGrid(size, viewHolder.mPicsGrid);
@@ -352,6 +372,13 @@ public class TimeLineCursorAdapter extends RecyclerViewCursorAdapter<RecyclerVie
                     viewHolder.mPicsGrid.setVisibility(View.GONE);
 
                     mRequestBuilder.load(pics).into(viewHolder.mThumbImageView);
+
+                    viewHolder.mThumbImageView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mListener.onImageClicked(0, picArray);
+                        }
+                    });
 
                 }
 

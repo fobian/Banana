@@ -4,7 +4,6 @@
     <string name="app_name">Banana</string>
     <string name="app_author">by Xiaosi</string>
     <string name="app_intro">Count your age by friends, not years. Count your life by smiles, not tears.</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="action_me">Me</string>
     <string name="action_fav">Favourites</string>
@@ -53,5 +52,6 @@
 
     <string name="yesterday">Yesterday</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_photo_view">PhotoViewActivity</string>
 
 </resources>

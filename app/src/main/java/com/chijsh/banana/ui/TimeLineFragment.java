@@ -206,6 +206,14 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     @Override
+    public void onImageClicked(int position, String[] pics) {
+        Intent intent = new Intent(getActivity(), PhotoViewActivity.class);
+        intent.putExtra(PhotoViewActivity.EXTRA_PHOTO_POSITION, position);
+        intent.putExtra(PhotoViewActivity.EXTRA_PHOTO_ARRAY, pics);
+        startActivity(intent);
+    }
+
+    @Override
     public void onRefresh() {
         PrefUtil.markManuallySync(getActivity(), true);
         refreshTimeLine();

@@ -1,1 +1,1 @@
-include ':app', ':app:library:StackBlur'
+include ':app', ':app:library:StackBlur', ':app:library:PhotoView'

@@ -55,36 +55,6 @@ public class TimeLineActivity extends BaseActivity {
         return mHeaderView;
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.time_line, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//        switch (id) {
-//            case R.id.action_settings:
-//                startActivity(new Intent(this, SettingsActivity.class));
-//                break;
-//            case R.id.action_me:
-//                break;
-//            case R.id.notif:
-//                startActivity(new Intent(this, NotificationActivity.class));
-//                break;
-//            case R.id.search:
-//                startActivity(new Intent(this, SearchActivity.class));
-//                break;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
-
     @Override
     protected void onStart() {
         super.onStart();

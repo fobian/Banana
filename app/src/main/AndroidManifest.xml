@@ -91,6 +91,11 @@
             android:name=".ui.PostContentActivity"
             android:label="@string/title_activity_post_content" >
         </activity>
+        <activity
+            android:name=".ui.PhotoViewActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:label="@string/title_activity_photo_view" >
+        </activity>
     </application>
 
 </manifest>
