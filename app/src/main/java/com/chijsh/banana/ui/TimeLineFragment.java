@@ -209,8 +209,19 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
     public void onImageClicked(int position, String[] pics) {
         Intent intent = new Intent(getActivity(), PhotoViewActivity.class);
         intent.putExtra(PhotoViewActivity.EXTRA_PHOTO_POSITION, position);
-        intent.putExtra(PhotoViewActivity.EXTRA_PHOTO_ARRAY, pics);
+        intent.putExtra(PhotoViewActivity.EXTRA_PHOTO_ARRAY, getOriginalPics(pics));
         startActivity(intent);
+    }
+
+    private String[] getOriginalPics(String[] pics) {
+        int length = pics.length;
+        String[] newPics = new String[length];
+        String newString;
+        for (int i = 0; i < length; ++i) {
+            newString = pics[i].replace("thumbnail", "large");
+            newPics[i] = newString;
+        }
+        return newPics;
     }
 
     @Override
