@@ -61,6 +61,7 @@ public class PhotoViewActivity extends ActionBarActivity {
 
             Glide.with(container.getContext())
                     .load(mPics[position])
+                    .thumbnail(0.1f)
                     .into(photoView);
 
             container.addView(photoView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
