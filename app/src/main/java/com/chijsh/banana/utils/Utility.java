@@ -39,4 +39,8 @@ public class Utility {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
 
+    public static void toast(Context context, int resId) {
+        Toast.makeText(context, resId, Toast.LENGTH_SHORT).show();
+    }
+
 }

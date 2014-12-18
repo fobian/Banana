@@ -14,6 +14,7 @@ import com.chijsh.banana.R;
 import com.chijsh.banana.presenter.LoginPresenter;
 import com.chijsh.banana.presenter.LoginPresenterImpl;
 import com.chijsh.banana.presenter.LoginView;
+import com.chijsh.banana.utils.Utility;
 import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 import com.sina.weibo.sdk.auth.WeiboAuth;
 import com.sina.weibo.sdk.auth.WeiboAuthListener;
@@ -76,18 +77,17 @@ public class LoginActivity extends BaseActivity implements LoginView {
             if (!TextUtils.isEmpty(code)) {
                 message = message + "\nObtained the code: " + code;
             }
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            Utility.toast(this, message);
         }
     }
 
     @Override
     public void loginException(WeiboException e) {
-        Toast.makeText(this,
-                "Auth exception : " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        Utility.toast(this, "Auth exception : " + e.getMessage());
     }
 
     @Override
     public void loginCancelled() {
-        Toast.makeText(this, R.string.weibo_auth_cancel, Toast.LENGTH_SHORT).show();
+        Utility.toast(this, R.string.weibo_auth_cancel);
     }
 }
