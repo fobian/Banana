@@ -5,9 +5,9 @@ import java.util.List;
 /**
  * Created by chijsh on 12/2/14.
  */
-public class Follows {
+public class FollowsModel {
 
-    public List<User> users;
+    public List<UserModel> users;
     public int nextCursor;
     public int previousCursor;
     public int totalNumber;

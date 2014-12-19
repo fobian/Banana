@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.chijsh.banana.R;
-import com.chijsh.banana.model.User;
+import com.chijsh.banana.model.UserModel;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ import butterknife.InjectView;
 public class FollowsAdapter extends RecyclerView.Adapter<FollowsAdapter.ViewHolder>{
 
     private Context mContext;
-    private List<User> mFollows;
+    private List<UserModel> mFollows;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -42,7 +42,7 @@ public class FollowsAdapter extends RecyclerView.Adapter<FollowsAdapter.ViewHold
         mContext = context;
     }
 
-    public void setFollows(List<User> follows) {
+    public void setFollows(List<UserModel> follows) {
         mFollows = follows;
     }
 
@@ -56,7 +56,7 @@ public class FollowsAdapter extends RecyclerView.Adapter<FollowsAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        User user = mFollows.get(position);
+        UserModel user = mFollows.get(position);
         Glide.with(mContext)
                 .load(user.avatarLarge)
                 .thumbnail(0.1f)

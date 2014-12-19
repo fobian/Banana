@@ -35,9 +35,9 @@ import com.chijsh.banana.AccessTokenKeeper;
 import com.chijsh.banana.R;
 import com.chijsh.banana.data.PostContract;
 import com.chijsh.banana.data.PostContract.AccountEntry;
-import com.chijsh.banana.event.MessageEvent;
-import com.chijsh.banana.model.User;
-import com.chijsh.banana.service.PostWeiboService;
+import com.chijsh.banana.manager.Weibor;
+import com.chijsh.banana.model.UserModel;
+import com.chijsh.banana.network.WeiboAPI;
 import com.chijsh.banana.ui.ProfileActivity;
 import com.chijsh.banana.utils.ScreenUtil;
 import com.chijsh.banana.utils.Utility;
@@ -52,7 +52,9 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import de.greenrobot.event.EventBus;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class PostActivity extends ActionBarActivity implements LoaderManager.LoaderCallbacks<Cursor>, SizeNotifierRelativeLayout.SizeNotifierRelativeLayoutListener{
 
@@ -120,29 +122,12 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Override
     public void onBackPressed() {
         if (mEmojiPopup != null && mEmojiPopup.isShowing()) {
             hideEmojiPopup();
         } else {
             super.onBackPressed();
         }
-    }
-
-    public void onEventMainThread(MessageEvent event){
-        Utility.toast(this, event.getMessage());
-        finish();
     }
 
     @OnClick(R.id.avatar_name)
@@ -187,9 +172,20 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
             mSendAction.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake_error));
             return;
         }
-        Intent intent = new Intent(this, PostWeiboService.class);
-        intent.putExtra(POST_WEIBO_EXTRA, mPostEdit.getText().toString());
-        startService(intent);
+        Weibor weibor = new Weibor(WeiboAPI.getInstance());
+        String token = AccessTokenKeeper.readAccessToken(this).getToken();
+        weibor.postWeibo(token, mPostEdit.getText().toString(), new Callback<Response>() {
+            @Override
+            public void success(Response response, Response response2) {
+                Utility.toast(PostActivity.this, R.string.weibo_sent_success);
+                finish();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
     }
 
     @Override
@@ -261,7 +257,7 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
         if(cursor != null && cursor.moveToFirst()) {
-            String avatarUrl = cursor.getString(cursor.getColumnIndex(AccountEntry.COLUMN_AVATAR_LARGE));
+            String avatarUrl = cursor.getString(cursor.getColumnIndex(AccountEntry.COLUMN_AVATAR_SMALL));
             String name = cursor.getString(cursor.getColumnIndex(AccountEntry.COLUMN_SCREEN_NAME));
             Glide.with(this)
                     .load(avatarUrl)
@@ -347,7 +343,7 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
             implements Filterable {
 
         Context mContext;
-        List<User> mUserList;
+        List<UserModel> mUserList;
 
         class ViewHolder {
 
@@ -366,12 +362,12 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
             mContext = context;
         }
 
-        public void setUserList(List<User> userList) {
+        public void setUserList(List<UserModel> userList) {
             mUserList = userList;
         }
 
         @Override
-        public User getItem(int position) {
+        public UserModel getItem(int position) {
             return mUserList.get(position);
         }
 
@@ -383,7 +379,7 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             final ViewHolder holder;
-            User user = mUserList.get(position);
+            UserModel user = mUserList.get(position);
             if (convertView == null) {
                 convertView = LayoutInflater.from(mContext)
                         .inflate(R.layout.sugesstion_item, parent, false);
@@ -420,7 +416,7 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
 
                         filterResults.values = mUserList;
                         filterResults.count = mUserList.size();
-                        for(User user : mUserList) {
+                        for(UserModel user : mUserList) {
                             Log.d("ssssssssss", user.screenName);
                         }
 
@@ -440,7 +436,7 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
             return filter;
         }
 
-        private List<User> findUser(Context context, String n) {
+        private List<UserModel> findUser(Context context, String n) {
             Cursor cursor = context.getContentResolver().query(
                     PostContract.UserEntry.CONTENT_URI,
                     null,
@@ -449,8 +445,8 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
                     null
             );
 
-            List<User> users = new ArrayList<User>();
-            User user = new User();
+            List<UserModel> users = new ArrayList<UserModel>();
+            UserModel user = new UserModel();
             if(cursor != null) {
                 while (cursor.moveToFirst()) {
                     user.avatarLarge = cursor.getString(cursor.getColumnIndex(PostContract.UserEntry.COLUMN_AVATAR_LARGE));

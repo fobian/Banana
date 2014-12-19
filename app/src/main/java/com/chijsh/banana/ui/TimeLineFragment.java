@@ -9,7 +9,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.ViewCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,13 +21,14 @@ import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
 import android.widget.ImageButton;
 
+import com.chijsh.banana.AccessTokenKeeper;
 import com.chijsh.banana.R;
 
 import com.chijsh.banana.data.PostContract.PostEntry;
-import com.chijsh.banana.service.FavouriteWeiboService;
+import com.chijsh.banana.manager.Weibor;
+import com.chijsh.banana.network.WeiboAPI;
 import com.chijsh.banana.sync.WeiboSyncAdapter;
 import com.chijsh.banana.ui.post.PostActivity;
-import com.chijsh.banana.utils.PrefUtil;
 import com.chijsh.banana.utils.Utility;
 import com.chijsh.banana.widget.observablerecyclerview.ObservableRecyclerView;
 import com.chijsh.banana.widget.observablerecyclerview.ObservableScrollViewCallbacks;
@@ -37,20 +37,19 @@ import com.chijsh.banana.widget.observablerecyclerview.ScrollState;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * Created by chijsh on 10/20/14.
  */
 public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>
-        , SwipeRefreshLayout.OnRefreshListener
         , TimeLineCursorAdapter.PostItemClickListener
         , ObservableScrollViewCallbacks {
     private static final int POST_LOADER = 0;
 
     public static final String POST_ID = "post_id";
-
-    public static final String POST_ID_EXTRA = "post_id_extra";
-    public static final String IS_FAVOURITED_EXTRA = "is_favourited_extra";
 
     private TimeLineCursorAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -189,10 +188,33 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public void onFavouriteActionClicked(String postId, boolean isFavourited) {
-        Intent intent = new Intent(getActivity(), FavouriteWeiboService.class);
-        intent.putExtra(POST_ID_EXTRA, postId);
-        intent.putExtra(IS_FAVOURITED_EXTRA, isFavourited);
-        getActivity().startService(intent);
+        Weibor weibor = new Weibor(WeiboAPI.getInstance());
+        String token = AccessTokenKeeper.readAccessToken(getActivity()).getToken();
+        if (isFavourited) {
+            weibor.deleteFavorites(token, Long.valueOf(postId), new Callback<Response>() {
+                @Override
+                public void success(Response response, Response response2) {
+                    Utility.toast(getActivity(), R.string.deleted_favourite);
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    Utility.toast(getActivity(), R.string.delete_favourite_failure);
+                }
+            });
+        } else {
+            weibor.addFavorites(token, Long.valueOf(postId), new Callback<Response>() {
+                @Override
+                public void success(Response response, Response response2) {
+                    Utility.toast(getActivity(), R.string.added_to_favourite);
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    Utility.toast(getActivity(), R.string.added_favourite_failure);
+                }
+            });
+        }
     }
 
     @Override
@@ -224,11 +246,11 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
         return newPics;
     }
 
-    @Override
-    public void onRefresh() {
-        PrefUtil.markManuallySync(getActivity(), true);
-        refreshTimeLine();
-    }
+//    @Override
+//    public void onRefresh() {
+//        PrefUtil.markManuallySync(getActivity(), true);
+//        refreshTimeLine();
+//    }
 
 //    @Override
 //    public void onDestroyView() {

@@ -1,6 +1,6 @@
 package com.chijsh.banana.utils;
 
-import com.chijsh.banana.model.PicUrl;
+import com.chijsh.banana.model.PicUrlModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,7 @@ public class StringUtil {
         return elements;
     }
 
-    public static String urlsToString(List<PicUrl> urls) {
+    public static String urlsToString(List<PicUrlModel> urls) {
         if (urls != null) {
             String s = "";
             for (int i = 0; i < urls.size(); ++i) {

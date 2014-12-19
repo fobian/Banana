@@ -9,13 +9,15 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.chijsh.banana.AccessTokenKeeper;
-import com.chijsh.banana.api.WeiboAPI;
+import com.chijsh.banana.manager.Timeline;
+import com.chijsh.banana.manager.User;
+import com.chijsh.banana.model.PostModel;
+import com.chijsh.banana.model.PostsModel;
+import com.chijsh.banana.model.UserModel;
+import com.chijsh.banana.network.WeiboAPI;
 import com.chijsh.banana.data.PostContract.UserEntry;
 import com.chijsh.banana.data.PostContract.AccountEntry;
 import com.chijsh.banana.data.PostContract.PostEntry;
-import com.chijsh.banana.model.Post;
-import com.chijsh.banana.model.Posts;
-import com.chijsh.banana.model.User;
 import com.chijsh.banana.utils.PrefUtil;
 import com.chijsh.banana.utils.StringUtil;
 
@@ -73,12 +75,13 @@ public class SyncHelper {
         }
 
         String token = AccessTokenKeeper.readAccessToken(mContext).getToken();
-        Posts posts = WeiboAPI.getInstance().getHomeLine(token, PrefUtil.readSinceId(mContext));
+        Timeline timeline = new Timeline(WeiboAPI.getInstance(), null);
+        PostsModel posts = timeline.getTimeLine(token, PrefUtil.readSinceId(mContext));
         Vector<ContentValues> postVector = new Vector<ContentValues>(posts.size());
         Vector<ContentValues> userVector = new Vector<ContentValues>();
 
-        Post post;
-        User user;
+        PostModel post;
+        UserModel user;
 
         for (int i = posts.size() - 1; i >= 0; --i) {
 
@@ -115,10 +118,10 @@ public class SyncHelper {
         if (!isOnline()) {
             return;
         }
-
+        User user = new User(WeiboAPI.getInstance(), null);
         String token = AccessTokenKeeper.readAccessToken(mContext).getToken();
         String uid = AccessTokenKeeper.readAccessToken(mContext).getUid();
-        User account = WeiboAPI.getInstance().getUserInfo(token, Long.parseLong(uid));
+        UserModel account = user.getUserInfo(token, Long.parseLong(uid));
         mContext.getContentResolver().insert(AccountEntry.CONTENT_URI, createUserValues(account));
     }
 
@@ -129,7 +132,7 @@ public class SyncHelper {
                 cm.getActiveNetworkInfo().isConnectedOrConnecting();
     }
 
-    private ContentValues createPostValues(Post post) {
+    private ContentValues createPostValues(PostModel post) {
 
         ContentValues values = new ContentValues();
         values.put(PostEntry.COLUMN_CREATED_AT, post.createdAt);
@@ -159,7 +162,7 @@ public class SyncHelper {
         return values;
     }
 
-    private ContentValues createUserValues(User user) {
+    private ContentValues createUserValues(UserModel user) {
 
         ContentValues values = new ContentValues();
         if (!AccessTokenKeeper.readAccessToken(mContext).getUid().equals(user.idstr)) {

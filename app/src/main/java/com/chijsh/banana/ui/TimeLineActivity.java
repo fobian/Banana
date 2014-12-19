@@ -1,24 +1,17 @@
 package com.chijsh.banana.ui;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
+
 import android.view.View;
-import android.widget.Toast;
 
 import com.chijsh.banana.AccessTokenKeeper;
 import com.chijsh.banana.R;
-import com.chijsh.banana.event.MessageEvent;
 import com.chijsh.banana.sync.WeiboSyncAdapter;
-import com.chijsh.banana.utils.Utility;
-import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import de.greenrobot.event.EventBus;
 
 public class TimeLineActivity extends BaseActivity {
 
@@ -55,19 +48,4 @@ public class TimeLineActivity extends BaseActivity {
         return mHeaderView;
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
-    }
-
-    public void onEventMainThread(MessageEvent event){
-        Utility.toast(this, event.getMessage());
-    }
 }

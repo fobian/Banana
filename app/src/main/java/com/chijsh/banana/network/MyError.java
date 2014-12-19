@@ -1,4 +1,4 @@
-package com.chijsh.banana.api;
+package com.chijsh.banana.network;
 
 /**
  * Created by chijsh on 11/7/14.

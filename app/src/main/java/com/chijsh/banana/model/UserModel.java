@@ -3,7 +3,7 @@ package com.chijsh.banana.model;
 /**
  * Created by chijsh on 10/20/14.
  */
-public class User {
+public class UserModel {
     public String idstr;
     public String screenName;
     public String province;
@@ -27,8 +27,8 @@ public class User {
         if (object == this) {
             return true;
         }
-        if(object instanceof User) {
-            User other = (User)object;
+        if(object instanceof UserModel) {
+            UserModel other = (UserModel)object;
             if(idstr.equals(other.idstr)) {
                 return true;
             } else {

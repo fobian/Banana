@@ -1,15 +1,14 @@
-package com.chijsh.banana.api;
+package com.chijsh.banana.network;
 
 import com.chijsh.banana.Config;
-import com.chijsh.banana.model.Follows;
-import com.chijsh.banana.model.Posts;
-import com.chijsh.banana.model.User;
+import com.chijsh.banana.model.FollowsModel;
+import com.chijsh.banana.model.PostsModel;
+import com.chijsh.banana.model.UserModel;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.util.List;
-
+import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.client.Response;
 import retrofit.converter.GsonConverter;
@@ -44,37 +43,37 @@ public class WeiboAPI {
     }
 
 
-    public Posts getHomeLine(String token, long sinceId) {
-        return sWeiboService.getHomeTimeLine(token, sinceId);
+    public PostsModel getTimeline(String token, long sinceId) {
+        return sWeiboService.getTimeline(token, sinceId);
 
     }
 
-    public User getUserInfo(String token, String screenName) {
-        return sWeiboService.getUserInfo(token, screenName);
+    public void getUserInfo(String token, String screenName, Callback<UserModel> cb) {
+        sWeiboService.getUserInfo(token, screenName, cb);
     }
 
-    public User getUserInfo(String token, long uid) {
+    public UserModel getUserInfo(String token, long uid) {
         return sWeiboService.getUserInfo(token, uid);
     }
 
-    public Response postWeibo(String token, String content) {
-        return sWeiboService.postWeibo(token, content);
+    public void postWeibo(String token, String content, Callback<Response> cb) {
+        sWeiboService.postWeibo(token, content, cb);
     }
 
-    public Response addFavorites(String token, long postId) {
-        return sWeiboService.addFavorites(token, postId);
+    public void addFavorites(String token, long postId, Callback<Response> cb) {
+        sWeiboService.addFavorites(token, postId, cb);
     }
 
-    public Response deleteFavorites(String token, long postId) {
-        return sWeiboService.deleteFavorites(token, postId);
+    public void deleteFavorites(String token, long postId, Callback<Response> cb) {
+        sWeiboService.deleteFavorites(token, postId, cb);
     }
 
-    public Follows getFollows(String token, long uid) {
-        return sWeiboService.getFollows(token, uid);
+    public void getFollows(String token, long uid, Callback<FollowsModel> cb) {
+        sWeiboService.getFollows(token, uid, cb);
     }
 
-    public Follows getFollowers(String token, long uid) {
-        return sWeiboService.getFollowers(token, uid);
+    public void getFollowers(String token, long uid, Callback<FollowsModel> cb) {
+        sWeiboService.getFollowers(token, uid, cb);
     }
 
 }

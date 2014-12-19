@@ -1,4 +1,4 @@
-package com.chijsh.banana.api;
+package com.chijsh.banana.network;
 
 import android.util.Log;
 

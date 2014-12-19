@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.chijsh.banana.R;
-import com.chijsh.banana.model.User;
+import com.chijsh.banana.model.UserModel;
 import com.chijsh.banana.widget.BezelImageView;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public class AutoCompleteAdapter extends RecyclerView.Adapter<AutoCompleteAdapte
         implements Filterable {
 
     Context mContext;
-    List<User> mUserList;
+    List<UserModel> mUserList;
 
     static class ViewHolder extends RecyclerView.ViewHolder{
 
@@ -44,12 +44,12 @@ public class AutoCompleteAdapter extends RecyclerView.Adapter<AutoCompleteAdapte
         }
     }
 
-    public AutoCompleteAdapter(Context context, List<User> userList) {
+    public AutoCompleteAdapter(Context context, List<UserModel> userList) {
         mContext = context;
         mUserList = userList;
     }
 
-    public void setUserList(List<User> userList) {
+    public void setUserList(List<UserModel> userList) {
         mUserList = userList;
     }
 
@@ -104,7 +104,7 @@ public class AutoCompleteAdapter extends RecyclerView.Adapter<AutoCompleteAdapte
         return filter;
     }
 
-    private List<User> findUser(Context context, String n) {
+    private List<UserModel> findUser(Context context, String n) {
         Cursor cursor = context.getContentResolver().query(
                 UserEntry.CONTENT_URI,
                 null,
@@ -113,8 +113,8 @@ public class AutoCompleteAdapter extends RecyclerView.Adapter<AutoCompleteAdapte
                 null
         );
 
-        List<User> users = new ArrayList<User>();
-        User user = new User();
+        List<UserModel> users = new ArrayList<UserModel>();
+        UserModel user = new UserModel();
         if(cursor != null) {
             while (cursor.moveToFirst()) {
                 user.avatarLarge = cursor.getString(cursor.getColumnIndex(UserEntry.COLUMN_AVATAR_LARGE));
