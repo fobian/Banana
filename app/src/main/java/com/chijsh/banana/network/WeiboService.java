@@ -34,8 +34,8 @@ public interface WeiboService {
     void deleteFavorites(@Query("access_token") String token, @Query("id") long postId, Callback<Response> cb);
 
     @GET("/friendships/friends.json")
-    void getFollows(@Query("access_token") String token, @Query("uid") long id, Callback<FollowsModel> cb);
+    void getFollows(@Query("access_token") String token, @Query("uid") long id, @Query("count") int count, @Query("cursor") int cursor, Callback<FollowsModel> cb);
 
     @GET("/friendships/followers.json")
-    void getFollowers(@Query("access_token") String token, @Query("uid") long id, Callback<FollowsModel> cb);
+    void getFollowers(@Query("access_token") String token, @Query("uid") long id, @Query("count") int count, @Query("cursor") int cursor, Callback<FollowsModel> cb);
 }

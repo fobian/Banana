@@ -26,11 +26,11 @@ public class User {
         return mWeiboAPI.getUserInfo(token, uid);
     }
 
-    public void getFollows(String token, long uid, Callback<FollowsModel> cb) {
-        mWeiboAPI.getFollows(token, uid, cb);
+    public void getFollows(String token, long uid, int count, int cursor, Callback<FollowsModel> cb) {
+        mWeiboAPI.getFollows(token, uid, count, cursor, cb);
     }
 
-    public void getFollowers(String token, long uid,  Callback<FollowsModel> cb) {
-        mWeiboAPI.getFollowers(token, uid, cb);
+    public void getFollowers(String token, long uid,  int count, int cursor, Callback<FollowsModel> cb) {
+        mWeiboAPI.getFollowers(token, uid, count, cursor, cb);
     }
 }

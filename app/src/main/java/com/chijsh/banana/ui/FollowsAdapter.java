@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 import com.chijsh.banana.R;
 import com.chijsh.banana.model.UserModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -40,10 +41,12 @@ public class FollowsAdapter extends RecyclerView.Adapter<FollowsAdapter.ViewHold
     public FollowsAdapter(Context context) {
         super();
         mContext = context;
+        mFollows = new ArrayList<>();
     }
 
-    public void setFollows(List<UserModel> follows) {
-        mFollows = follows;
+    public void addFollows(List<UserModel> follows) {
+        mFollows.addAll(follows);
+        notifyDataSetChanged();
     }
 
     @Override

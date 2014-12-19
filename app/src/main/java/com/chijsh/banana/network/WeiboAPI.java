@@ -68,12 +68,12 @@ public class WeiboAPI {
         sWeiboService.deleteFavorites(token, postId, cb);
     }
 
-    public void getFollows(String token, long uid, Callback<FollowsModel> cb) {
-        sWeiboService.getFollows(token, uid, cb);
+    public void getFollows(String token, long uid, int count, int cursor, Callback<FollowsModel> cb) {
+        sWeiboService.getFollows(token, uid, count, cursor, cb);
     }
 
-    public void getFollowers(String token, long uid, Callback<FollowsModel> cb) {
-        sWeiboService.getFollowers(token, uid, cb);
+    public void getFollowers(String token, long uid, int count, int cursor,Callback<FollowsModel> cb) {
+        sWeiboService.getFollowers(token, uid, count, cursor, cb);
     }
 
 }

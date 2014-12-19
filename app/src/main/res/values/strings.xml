@@ -43,6 +43,9 @@
     <string name="title_activity_post_content">Weibo Content</string>
     <string name="just_now">Just now</string>
 
+    <string name="no_more_followers">No more followers</string>
+    <string name="no_more_follows">No more follows</string>
+
     <plurals name="numberOfMinsAvailable">
         <item quantity="one">%d min ago</item>
         <item quantity="other">%d mins ago</item>

@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.chijsh.banana.R;
 import com.chijsh.banana.manager.User;
 import com.chijsh.banana.model.FollowsModel;
 import com.chijsh.banana.network.WeiboAPI;
+import com.chijsh.banana.utils.Utility;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -33,8 +35,14 @@ public class FollowsFragment extends Fragment {
     private static final String ARG_IS_FOLLOWS = "args_is_follows";
     private static final String ARG_USER_ID = "args_user_id";
 
+    private static final int COUNT_SINGLE_PAGE = 20;
+
     private String mUserId;
     private boolean mIsFollows;
+
+    private int mNextCursor = 0;
+    private boolean mIsLoading = false;
+    private int mTotalNum = -1;
 
     public static FollowsFragment newInstance(String userId, boolean isFollows) {
         FollowsFragment fragment = new FollowsFragment();
@@ -68,41 +76,73 @@ public class FollowsFragment extends Fragment {
         mFollowsRecyclerView.setLayoutManager(mLayoutManager);
         mFollowsRecyclerView.setAdapter(mFollowsAdapter);
         mFollowsRecyclerView.setHasFixedSize(true);
+        mFollowsRecyclerView.setOnScrollListener(new ScrollToEndListener());
         return rootView;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        loadFollows();
+    }
+
+    private void loadFollows() {
+        if (mTotalNum == mNextCursor) {
+            Utility.toast(getActivity(), mIsFollows ? R.string.no_more_follows : R.string.no_more_followers);
+            return;
+        }
         User user = new User(WeiboAPI.getInstance(), null);
         String token = AccessTokenKeeper.readAccessToken(getActivity()).getToken();
         if (mIsFollows) {
-            user.getFollows(token, Long.parseLong(mUserId), new Callback<FollowsModel>() {
+            user.getFollows(token, Long.parseLong(mUserId), COUNT_SINGLE_PAGE, mNextCursor, new Callback<FollowsModel>() {
                 @Override
                 public void success(FollowsModel followsModel, Response response) {
-                    mFollowsAdapter.setFollows(followsModel.users);
-                    mFollowsAdapter.notifyDataSetChanged();
+                    mFollowsAdapter.addFollows(followsModel.users);
+                    mNextCursor = followsModel.nextCursor;
+                    mIsLoading = false;
+                    mTotalNum = followsModel.totalNumber;
+
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
-
+                    Utility.toast(getActivity(), error.getMessage());
+                    mIsLoading = false;
                 }
             });
         } else {
-            user.getFollowers(token, Long.parseLong(mUserId), new Callback<FollowsModel>() {
+            user.getFollowers(token, Long.parseLong(mUserId), COUNT_SINGLE_PAGE, mNextCursor, new Callback<FollowsModel>() {
                 @Override
                 public void success(FollowsModel followsModel, Response response) {
-                    mFollowsAdapter.setFollows(followsModel.users);
-                    mFollowsAdapter.notifyDataSetChanged();
+                    mFollowsAdapter.addFollows(followsModel.users);
+                    mNextCursor = followsModel.nextCursor;
+                    mIsLoading = false;
+                    mTotalNum = followsModel.totalNumber;
+                    Log.d("sdsfsdfsdfsdfsdfsdfsdf", mNextCursor + "");
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
-
+                    Utility.toast(getActivity(), error.getMessage());
+                    mIsLoading = false;
                 }
             });
         }
     }
 
+    private class ScrollToEndListener extends RecyclerView.OnScrollListener {
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            int lastVisibleItemPosition = mLayoutManager.findLastVisibleItemPosition() + 1;
+            int modelsCount = mFollowsAdapter.getItemCount();
+
+            if (lastVisibleItemPosition == modelsCount) {
+                if (!mIsLoading) {
+                    mIsLoading = true;
+                    loadFollows();
+                }
+
+            }
+        }
+    }
 }
