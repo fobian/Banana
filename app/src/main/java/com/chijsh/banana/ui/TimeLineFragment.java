@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.ViewCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,10 +30,8 @@ import com.chijsh.banana.manager.Weibor;
 import com.chijsh.banana.network.WeiboAPI;
 import com.chijsh.banana.sync.WeiboSyncAdapter;
 import com.chijsh.banana.ui.post.PostActivity;
+import com.chijsh.banana.utils.PrefUtil;
 import com.chijsh.banana.utils.Utility;
-import com.chijsh.banana.widget.observablerecyclerview.ObservableRecyclerView;
-import com.chijsh.banana.widget.observablerecyclerview.ObservableScrollViewCallbacks;
-import com.chijsh.banana.widget.observablerecyclerview.ScrollState;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -44,9 +43,10 @@ import retrofit.client.Response;
 /**
  * Created by chijsh on 10/20/14.
  */
-public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>
-        , TimeLineCursorAdapter.PostItemClickListener
-        , ObservableScrollViewCallbacks {
+public class TimeLineFragment extends Fragment implements
+        LoaderManager.LoaderCallbacks<Cursor>,
+        TimeLineCursorAdapter.PostItemClickListener,
+        SwipeRefreshLayout.OnRefreshListener {
     private static final int POST_LOADER = 0;
 
     public static final String POST_ID = "post_id";
@@ -54,11 +54,9 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
     private TimeLineCursorAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    @InjectView(R.id.time_line) ObservableRecyclerView mRecyclerView;
+    @InjectView(R.id.swipe_refresh) SwipeRefreshLayout mSwipeLayout;
+    @InjectView(R.id.time_line) RecyclerView mRecyclerView;
     @InjectView(R.id.fab) ImageButton mFloatingButton;
-
-    private View mHeaderView;
-    private int mBaseTranslationY;
 
     private static final String[] POST_COLUMNS = {
             PostEntry.TABLE_NAME + "." + PostEntry._ID,
@@ -100,6 +98,13 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
 
         ButterKnife.inject(this, rootView);
 
+        mSwipeLayout.setColorSchemeColors(
+                getResources().getColor(R.color.refresh_progress_1),
+                getResources().getColor(R.color.refresh_progress_2),
+                getResources().getColor(R.color.refresh_progress_3));
+
+        mSwipeLayout.setOnRefreshListener(this);
+
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
@@ -107,59 +112,12 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
         mAdapter.setPostItemClickListener(this);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.setScrollViewCallbacks(this);
 
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getResources().getDimensionPixelSize(R.dimen.divider_padding)));
-
-        mHeaderView = ((TimeLineActivity)getActivity()).getHeaderView();
 
         mFloatingButton.setTranslationY(2 * getResources().getDimensionPixelOffset(R.dimen.fab_size));
 
         return rootView;
-    }
-
-    @Override
-    public void onUpOrCancelMotionEvent(ScrollState scrollState) {
-        mBaseTranslationY = 0;
-
-        float headerTranslationY = mHeaderView.getTranslationY();
-        int toolbarHeight = mHeaderView.getHeight();
-        if (scrollState == ScrollState.UP) {
-            if (toolbarHeight < mRecyclerView.getCurrentScrollY()) {
-                if (headerTranslationY != -toolbarHeight) {
-                    mHeaderView.animate().cancel();
-                    mHeaderView.animate().translationY(-toolbarHeight).setDuration(200).start();
-                }
-            }
-        } else if (scrollState == ScrollState.DOWN) {
-            if (toolbarHeight < mRecyclerView.getCurrentScrollY()) {
-                if (headerTranslationY != 0) {
-                    mHeaderView.animate().cancel();
-                    mHeaderView.animate().translationY(0).setDuration(200).start();
-                }
-            }
-        }
-    }
-
-    @Override
-    public void onDownMotionEvent() {
-
-    }
-
-    @Override
-    public void onScrollChanged(int scrollY, boolean firstScroll, boolean dragging) {
-        if (dragging) {
-            int toolbarHeight = mHeaderView.getHeight();
-            if (firstScroll) {
-                float currentHeaderTranslationY = mHeaderView.getTranslationY();
-                if (-toolbarHeight < currentHeaderTranslationY && toolbarHeight < scrollY) {
-                    mBaseTranslationY = scrollY;
-                }
-            }
-            int headerTranslationY = Math.min(0, Math.max(-toolbarHeight, -(scrollY - mBaseTranslationY)));
-            mHeaderView.animate().cancel();
-            mHeaderView.setTranslationY(headerTranslationY);
-        }
     }
 
     private void startFABAnimation() {
@@ -170,6 +128,12 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
                 .setStartDelay(300)
                 .setDuration(ANIM_DURATION_FAB)
                 .start();
+    }
+
+    @Override
+    public void onRefresh() {
+        PrefUtil.markManuallySync(getActivity(), true);
+        refreshTimeLine();
     }
 
     @Override
@@ -299,11 +263,13 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mAdapter.swapCursor(data);
         startFABAnimation();
+        mSwipeLayout.setRefreshing(false);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mAdapter.swapCursor(null);
+        mSwipeLayout.setRefreshing(false);
     }
 
 
@@ -323,9 +289,6 @@ public class TimeLineFragment extends Fragment implements LoaderManager.LoaderCa
                 return true;
             case R.id.fav:
                 //startActivity(new Intent(this, NotificationActivity.class));
-                return true;
-            case R.id.refresh:
-                refreshTimeLine();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

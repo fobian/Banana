@@ -44,8 +44,4 @@ public class TimeLineActivity extends BaseActivity {
 
     }
 
-    public View getHeaderView() {
-        return mHeaderView;
-    }
-
 }

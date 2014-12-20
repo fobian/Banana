@@ -2,11 +2,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
-    <FrameLayout
-        android:id="@+id/container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </FrameLayout>
     <LinearLayout style="@style/HeaderBar"
         android:id="@+id/headerbar"
         android:layout_width="match_parent"
@@ -17,5 +12,11 @@
         <include layout="@layout/toolbar_actionbar" />
 
     </LinearLayout>
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_below="@id/headerbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </FrameLayout>
 
 </RelativeLayout>
