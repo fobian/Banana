@@ -89,7 +89,7 @@
         </activity>
         <activity
             android:name=".ui.PhotoViewActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:theme="@style/Transparent"
             android:label="@string/title_activity_photo_view" >
         </activity>
     </application>

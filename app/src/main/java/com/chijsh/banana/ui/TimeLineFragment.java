@@ -192,10 +192,18 @@ public class TimeLineFragment extends Fragment implements
     }
 
     @Override
-    public void onImageClicked(int position, String[] pics) {
+    public void onImageClicked(View view, int position, String[] pics) {
+        int[] screenLocation = new int[2];
+        view.getLocationOnScreen(screenLocation);
         Intent intent = new Intent(getActivity(), PhotoViewActivity.class);
+        intent.putExtra(PhotoViewActivity.EXTRA_PHOTO_LEFT, screenLocation[0]);
+        intent.putExtra(PhotoViewActivity.EXTRA_PHOTO_TOP, screenLocation[1]);
+        intent.putExtra(PhotoViewActivity.EXTRA_PHOTO_WIDTH, view.getWidth());
+        intent.putExtra(PhotoViewActivity.EXTRA_PHOTO_HEIGHT, view.getHeight());
+
         intent.putExtra(PhotoViewActivity.EXTRA_PHOTO_POSITION, position);
         intent.putExtra(PhotoViewActivity.EXTRA_PHOTO_ARRAY, getOriginalPics(pics));
+        getActivity().overridePendingTransition(0, 0);
         startActivity(intent);
     }
 

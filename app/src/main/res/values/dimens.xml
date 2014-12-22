@@ -14,6 +14,8 @@
     <dimen name="fab_margins">16dp</dimen>
     <dimen name="fab_elevation">8dp</dimen>
 
+    <dimen name="toolbar_elevation">8dp</dimen>
+
     <!-- Action Bar auto-hide-on-scroll behavior parameters -->
     <dimen name="action_bar_auto_hide_min_y">152dp</dimen>
     <dimen name="action_bar_auto_hide_sensivity">48dp</dimen>

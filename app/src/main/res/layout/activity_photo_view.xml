@@ -1,7 +1,20 @@
-<com.chijsh.banana.ui.PhotoViewPager
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/photo_pager"
+    android:id="@+id/photo_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.chijsh.banana.ui.PhotoViewActivity"/>
+    android:layout_height="match_parent">
+
+    <com.chijsh.banana.ui.PhotoViewPager
+        android:id="@+id/photo_pager"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:context="com.chijsh.banana.ui.PhotoViewActivity"/>
+    <TextView
+        android:id="@+id/indicator"
+        android:text="UHInk"
+        android:textColor="@android:color/white"
+        android:layout_gravity="bottom|right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</FrameLayout>
+
