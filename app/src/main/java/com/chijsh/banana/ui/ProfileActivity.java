@@ -1,5 +1,7 @@
 package com.chijsh.banana.ui;
 
+import android.animation.ObjectAnimator;
+import android.animation.TimeInterpolator;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.LoaderManager;
@@ -21,6 +23,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -46,6 +51,14 @@ public class ProfileActivity extends ActionBarActivity implements LoaderManager.
     private static final String TAG = ProfileActivity.class.getSimpleName();
 
     private static final int PROFILE_LOADER = 0;
+
+    private static final TimeInterpolator sDecelerator = new DecelerateInterpolator();
+    private static final int ANIM_DURATION = 1000;
+    int mLeftDelta;
+    int mTopDelta;
+    float mWidthScale;
+    float mHeightScale;
+
 
     @InjectView(R.id.profile_avatar) BezelImageView mAvatar;
     @InjectView(R.id.profile_name) TextView mName;
@@ -112,6 +125,7 @@ public class ProfileActivity extends ActionBarActivity implements LoaderManager.
     };
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -139,10 +153,39 @@ public class ProfileActivity extends ActionBarActivity implements LoaderManager.
 //                getResources().getColor(R.color.refresh_progress_3)
 //        );
 
-        Intent intent = getIntent();
-        if (intent != null) {
-            mUserId = intent.getStringExtra(PostActivity.USER_ID_EXTRA);
-            Log.d(TAG, mUserId);
+        Bundle bundle = getIntent().getExtras();
+        mUserId = bundle.getString(PostActivity.USER_ID_EXTRA);
+
+        final int thumbnailTop = bundle.getInt(PostActivity.EXTRA_AVATAR_TOP);
+        final int thumbnailLeft = bundle.getInt(PostActivity.EXTRA_AVATAR_LEFT);
+        final int thumbnailWidth = bundle.getInt(PostActivity.EXTRA_AVATAR_WIDTH);
+        final int thumbnailHeight = bundle.getInt(PostActivity.EXTRA_AVATAR_HEIGHT);
+
+        if (savedInstanceState == null) {
+
+            ViewTreeObserver observer = mAvatar.getViewTreeObserver();
+            observer.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+
+                @Override
+                public boolean onPreDraw() {
+                    mAvatar.getViewTreeObserver().removeOnPreDrawListener(this);
+
+                    // Figure out where the thumbnail and full size versions are, relative
+                    // to the screen and each other
+                    int[] screenLocation = new int[2];
+                    mAvatar.getLocationOnScreen(screenLocation);
+                    mLeftDelta = thumbnailLeft - screenLocation[0];
+                    mTopDelta = thumbnailTop - screenLocation[1];
+
+                    // Scale factors to make the large version the same size as the thumbnail
+                    mWidthScale = (float) thumbnailWidth / mAvatar.getWidth();
+                    mHeightScale = (float) thumbnailHeight / mAvatar.getHeight();
+
+                    runEnterAnimation(mAvatar);
+
+                    return true;
+                }
+            });
         }
 
         getLoaderManager().initLoader(PROFILE_LOADER, null, this);
@@ -227,6 +270,23 @@ public class ProfileActivity extends ActionBarActivity implements LoaderManager.
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+
+    }
+
+    public void runEnterAnimation(View view) {
+        final long duration = ANIM_DURATION;
+
+        view.setPivotX(0);
+        view.setPivotY(0);
+        view.setScaleX(mWidthScale);
+        view.setScaleY(mHeightScale);
+        view.setTranslationX(mLeftDelta);
+        view.setTranslationY(mTopDelta);
+
+        view.animate().setDuration(duration).
+                scaleX(1).scaleY(1).
+                translationX(0).translationY(0).
+                setInterpolator(sDecelerator);
 
     }
 

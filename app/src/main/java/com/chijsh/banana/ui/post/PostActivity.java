@@ -38,6 +38,7 @@ import com.chijsh.banana.data.PostContract.AccountEntry;
 import com.chijsh.banana.manager.Weibor;
 import com.chijsh.banana.model.UserModel;
 import com.chijsh.banana.network.WeiboAPI;
+import com.chijsh.banana.ui.PhotoViewActivity;
 import com.chijsh.banana.ui.ProfileActivity;
 import com.chijsh.banana.utils.ScreenUtil;
 import com.chijsh.banana.utils.Utility;
@@ -63,6 +64,11 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
     public static final int PICK_OR_TAKE_PICTURE = 42;
     public static final String POST_WEIBO_EXTRA = "post_weibo_extra";
     public static final String USER_ID_EXTRA = "user_id_extra";
+
+    public static final String EXTRA_AVATAR_LEFT = "extra_avatar_left";
+    public static final String EXTRA_AVATAR_TOP = "extra_avatar_top";
+    public static final String EXTRA_AVATAR_WIDTH = "extra_avatar_width";
+    public static final String EXTRA_AVATAR_HEIGHT = "extra_avatar_height";
 
     @InjectView(R.id.toolbar_actionbar) Toolbar mToolbar;
     @InjectView(R.id.avatar_name) View mAvatarName;
@@ -132,8 +138,15 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
 
     @OnClick(R.id.avatar_name)
     public void viewProfile() {
+        int[] screenLocation = new int[2];
+        mAvatar.getLocationOnScreen(screenLocation);
         Intent intent = new Intent(this, ProfileActivity.class);
+        intent.putExtra(EXTRA_AVATAR_LEFT, screenLocation[0]);
+        intent.putExtra(EXTRA_AVATAR_TOP, screenLocation[1]);
+        intent.putExtra(EXTRA_AVATAR_WIDTH, mAvatar.getWidth());
+        intent.putExtra(EXTRA_AVATAR_HEIGHT, mAvatar.getHeight());
         intent.putExtra(USER_ID_EXTRA, AccessTokenKeeper.readAccessToken(this).getUid());
+        overridePendingTransition(0, 0);
         startActivity(intent);
     }
 

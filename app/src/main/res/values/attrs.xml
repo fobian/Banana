@@ -33,4 +33,9 @@
         <attr name="shouldExpand" format="boolean" />
         <attr name="textAllCaps1" format="boolean" />
     </declare-styleable>
+
+    <declare-styleable name="ScrimInsetsView">
+        <attr name="insetForeground" format="reference|color" />
+    </declare-styleable>
+
 </resources>
