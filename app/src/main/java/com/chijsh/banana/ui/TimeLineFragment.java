@@ -295,7 +295,7 @@ public class TimeLineFragment extends Fragment implements
                 return true;
             case R.id.action_me:
                 return true;
-            case R.id.fav:
+            case R.id.action_search:
                 //startActivity(new Intent(this, NotificationActivity.class));
                 return true;
             default:
