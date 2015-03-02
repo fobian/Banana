@@ -1,9 +1,7 @@
 package com.chijsh.banana.manager;
 
-import com.chijsh.banana.model.PostsModel;
-import com.chijsh.banana.network.WeiboAPI;
-
-import retrofit.Callback;
+import com.chijsh.banana.presentation.model.PostsModel;
+import com.chijsh.banana.data.net.WeiboAPI;
 
 /**
  * Created by chijsh on 12/18/14.

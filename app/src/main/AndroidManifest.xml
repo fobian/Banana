@@ -12,13 +12,13 @@
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
 
     <application
-        android:name=".app.MyApplication"
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".ui.TimeLineActivity"
+            android:name=".presentation.ui.TimeLineActivity"
             android:label="@string/app_name"
             >
             <intent-filter>
@@ -57,39 +57,39 @@
         </service>
 
         <activity
-            android:name=".ui.LoginActivity"
+            android:name=".presentation.ui.LoginActivity"
             android:label="@string/title_activity_login" >
         </activity>
         <activity
-            android:name=".ui.SettingsActivity"
+            android:name=".presentation.ui.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".ui.TimeLineActivity" >
+            android:parentActivityName=".presentation.ui.TimeLineActivity" >
         </activity>
         <activity
-            android:name=".ui.NotificationActivity"
+            android:name=".presentation.ui.NotificationActivity"
             android:label="@string/title_activity_notification"
-            android:parentActivityName=".ui.TimeLineActivity" >
+            android:parentActivityName=".presentation.ui.TimeLineActivity" >
         </activity>
         <activity
-            android:name=".ui.post.PostActivity"
+            android:name=".presentation.ui.post.PostActivity"
             android:label="@string/title_activity_post"
             android:windowSoftInputMode="stateVisible|adjustResize" >
         </activity>
 
         <activity
-            android:name=".ui.ProfileActivity"
+            android:name=".presentation.ui.ProfileActivity"
             android:label="@string/title_activity_profile" >
         </activity>
         <activity
-            android:name=".ui.SearchActivity"
+            android:name=".presentation.ui.SearchActivity"
             android:label="@string/title_activity_search" >
         </activity>
         <activity
-            android:name=".ui.PostContentActivity"
+            android:name=".presentation.ui.PostContentActivity"
             android:label="@string/title_activity_post_content" >
         </activity>
         <activity
-            android:name=".ui.PhotoViewActivity"
+            android:name=".presentation.ui.PhotoViewActivity"
             android:theme="@style/Transparent"
             android:label="@string/title_activity_photo_view" >
         </activity>

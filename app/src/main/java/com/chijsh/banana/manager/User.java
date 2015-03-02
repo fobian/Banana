@@ -1,8 +1,8 @@
 package com.chijsh.banana.manager;
 
-import com.chijsh.banana.model.FollowsModel;
-import com.chijsh.banana.model.UserModel;
-import com.chijsh.banana.network.WeiboAPI;
+import com.chijsh.banana.presentation.model.FollowsModel;
+import com.chijsh.banana.presentation.model.UserModel;
+import com.chijsh.banana.data.net.WeiboAPI;
 
 import retrofit.Callback;
 

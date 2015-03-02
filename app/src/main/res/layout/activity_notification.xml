@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.chijsh.banana.ui.NotificationActivity"
+    tools:context="com.chijsh.banana.presentation.ui.NotificationActivity"
     >
 
     <LinearLayout
@@ -14,7 +14,7 @@
 
         <include layout="@layout/toolbar_actionbar" />
 
-        <com.chijsh.banana.widget.tab.SlidingTabLayout
+        <com.chijsh.banana.presentation.widget.tab.SlidingTabLayout
             android:id="@+id/sliding_tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

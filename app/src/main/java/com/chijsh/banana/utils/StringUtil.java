@@ -1,6 +1,6 @@
 package com.chijsh.banana.utils;
 
-import com.chijsh.banana.model.PicUrlModel;
+import com.chijsh.banana.presentation.model.PicUrlModel;
 
 import java.util.ArrayList;
 import java.util.List;

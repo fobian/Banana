@@ -25,7 +25,7 @@
             android:layout_below="@id/header_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <com.chijsh.banana.widget.LinkEnabledTextView
+            <com.chijsh.banana.presentation.widget.LinkEnabledTextView
                 android:id="@+id/user_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

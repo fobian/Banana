@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Build;
 import android.widget.Toast;
 
-import com.chijsh.banana.app.MyApplication;
+import com.chijsh.banana.MyApplication;
 
 /**
  * Created by chijsh on 10/28/14.

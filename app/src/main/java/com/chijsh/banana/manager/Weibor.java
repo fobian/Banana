@@ -1,6 +1,6 @@
 package com.chijsh.banana.manager;
 
-import com.chijsh.banana.network.WeiboAPI;
+import com.chijsh.banana.data.net.WeiboAPI;
 
 import retrofit.Callback;
 import retrofit.client.Response;
