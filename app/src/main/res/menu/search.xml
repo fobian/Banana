@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.chijsh.banana.presentation.ui.SearchActivity" >
+    tools:context="com.chijsh.banana.presentation.view.activity.SearchActivity" >
     <item android:id="@+id/menu_search"
         android:icon="@drawable/ic_search_white_24dp"
         android:title="@string/action_search"

@@ -41,3 +41,9 @@
 
 # For okio
 -dontwarn okio.**
+
+# For Realm
+-keepnames public class * extends io.realm.RealmObject
+-keep class io.realm.** { *; }
+-dontwarn javax.**
+-dontwarn io.realm.**

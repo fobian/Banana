@@ -62,6 +62,7 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.4.0'
     compile 'com.android.support:support-v4:21.0.2'
     //compile 'de.greenrobot:eventbus:2.2.1'
+    compile 'io.realm:realm-android:0.79.0'
     compile project(':app:library:StackBlur')
     compile project(':app:library:PhotoView')
 }

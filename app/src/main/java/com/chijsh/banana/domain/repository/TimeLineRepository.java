@@ -13,10 +13,10 @@ public interface TimeLineRepository {
     interface TimeLineCallback {
         void onTimeLineLoaded(List<Post> posts);
 
-        void onError(ErrorBundle errorBundle);
+        void onError(String error);
     }
 
-    public void getUserTimeLine(String userId);
+    public void getUserTimeLine(long sinceId, TimeLineCallback callback);
 
     public void nextPage();
 

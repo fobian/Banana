@@ -24,12 +24,7 @@ public class TimeLinePresenterImpl implements TimeLinePresenter {
     }
 
     @Override
-    public void addFavourite(String postId) {
-
-    }
-
-    @Override
-    public void removeFavourite(String postId) {
+    public void nextPage() {
 
     }
 }

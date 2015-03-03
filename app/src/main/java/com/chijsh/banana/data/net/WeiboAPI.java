@@ -1,6 +1,7 @@
 package com.chijsh.banana.data.net;
 
 import com.chijsh.banana.Config;
+import com.chijsh.banana.data.entity.PostsEntity;
 import com.chijsh.banana.presentation.model.FollowsModel;
 import com.chijsh.banana.presentation.model.PostsModel;
 import com.chijsh.banana.presentation.model.UserModel;
@@ -20,8 +21,9 @@ public class WeiboAPI {
 
     private static WeiboService sWeiboService;
     private static WeiboAPI sAPI;
+    private String mToken;
 
-    private WeiboAPI() {
+    private WeiboAPI(String token) {
         Gson gson = new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
                 .create();
@@ -33,47 +35,48 @@ public class WeiboAPI {
                 .build();
 
         sWeiboService = restAdapter.create(WeiboService.class);
+        mToken = token;
     }
 
-    public static WeiboAPI getInstance() {
+    public static WeiboAPI getInstance(String token) {
         if(sAPI == null) {
-            sAPI = new WeiboAPI();
+            sAPI = new WeiboAPI(token);
         }
         return sAPI;
     }
 
 
-    public PostsModel getTimeline(String token, long sinceId) {
-        return sWeiboService.getTimeline(token, sinceId);
+    public PostsModel getTimeline(long sinceId, Callback<PostsEntity> cb) {
+        return sWeiboService.getTimeline(mToken, sinceId, cb);
 
     }
 
-    public void getUserInfo(String token, String screenName, Callback<UserModel> cb) {
-        sWeiboService.getUserInfo(token, screenName, cb);
+    public void getUserInfo(String screenName, Callback<UserModel> cb) {
+        sWeiboService.getUserInfo(mToken, screenName, cb);
     }
 
-    public UserModel getUserInfo(String token, long uid) {
-        return sWeiboService.getUserInfo(token, uid);
+    public UserModel getUserInfo(long uid) {
+        return sWeiboService.getUserInfo(mToken, uid);
     }
 
-    public void postWeibo(String token, String content, Callback<Response> cb) {
-        sWeiboService.postWeibo(token, content, cb);
+    public void postWeibo(String content, Callback<Response> cb) {
+        sWeiboService.postWeibo(mToken, content, cb);
     }
 
-    public void addFavorites(String token, long postId, Callback<Response> cb) {
-        sWeiboService.addFavorites(token, postId, cb);
+    public void addFavorites(long postId, Callback<Response> cb) {
+        sWeiboService.addFavorites(mToken, postId, cb);
     }
 
-    public void deleteFavorites(String token, long postId, Callback<Response> cb) {
-        sWeiboService.deleteFavorites(token, postId, cb);
+    public void deleteFavorites(long postId, Callback<Response> cb) {
+        sWeiboService.deleteFavorites(mToken, postId, cb);
     }
 
-    public void getFollows(String token, long uid, int count, int cursor, Callback<FollowsModel> cb) {
-        sWeiboService.getFollows(token, uid, count, cursor, cb);
+    public void getFollows(long uid, int count, int cursor, Callback<FollowsModel> cb) {
+        sWeiboService.getFollows(mToken, uid, count, cursor, cb);
     }
 
-    public void getFollowers(String token, long uid, int count, int cursor,Callback<FollowsModel> cb) {
-        sWeiboService.getFollowers(token, uid, count, cursor, cb);
+    public void getFollowers(long uid, int count, int cursor,Callback<FollowsModel> cb) {
+        sWeiboService.getFollowers(mToken, uid, count, cursor, cb);
     }
 
 }

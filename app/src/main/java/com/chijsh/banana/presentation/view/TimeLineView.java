@@ -1,7 +1,6 @@
 package com.chijsh.banana.presentation.view;
 
 import com.chijsh.banana.presentation.model.PostModel;
-import com.chijsh.banana.presentation.model.PostsModel;
 
 import java.util.List;
 
@@ -10,7 +9,7 @@ import java.util.List;
  */
 public interface TimeLineView extends LoadDataView {
 
-    public void renderTimeLine(List<PostsModel> posts);
+    public void renderTimeLine(List<PostModel> posts);
 
     public void viewPost(PostModel post);
 

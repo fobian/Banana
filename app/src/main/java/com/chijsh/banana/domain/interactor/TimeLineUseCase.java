@@ -1,7 +1,6 @@
 package com.chijsh.banana.domain.interactor;
 
 import com.chijsh.banana.domain.Post;
-import com.chijsh.banana.domain.exception.ErrorBundle;
 
 import java.util.List;
 
@@ -12,7 +11,7 @@ public interface TimeLineUseCase extends Interactor {
 
     interface Callback {
         void onTimeLineLoaded(List<Post> posts);
-        void onError(ErrorBundle errorBundle);
+        void onError(String error);
     }
 
     public void execute(String userId, Callback callback);

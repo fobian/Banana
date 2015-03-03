@@ -6,7 +6,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
-    <com.chijsh.banana.presentation.widget.BezelImageView
+    <com.chijsh.banana.presentation.view.widget.BezelImageView
         android:id="@+id/at_user_avatar"
         android:src="@drawable/user_avatar_empty"
         android:layout_width="32dp"

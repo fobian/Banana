@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    <com.chijsh.banana.presentation.widget.BezelImageView
+    <com.chijsh.banana.presentation.view.widget.BezelImageView
         style="?android:actionButtonStyle"
         android:id="@+id/user_avatar"
         android:src="@drawable/user_avatar_empty"

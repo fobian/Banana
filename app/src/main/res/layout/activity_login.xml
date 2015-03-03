@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    tools:context="com.chijsh.banana.presentation.ui.LoginActivity">
+    tools:context="com.chijsh.banana.presentation.view.activity.LoginActivity">
 
     <ImageView
         android:layout_marginTop="@dimen/login_logo_padding_top"

@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:background="@color/background_material_light"
     android:padding="10dp">
-    <com.chijsh.banana.presentation.widget.LinkEnabledTextView
+    <com.chijsh.banana.presentation.view.widget.LinkEnabledTextView
         android:id="@+id/retwitt_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

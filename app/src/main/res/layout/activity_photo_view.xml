@@ -4,11 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.chijsh.banana.presentation.ui.PhotoViewPager
+    <com.chijsh.banana.presentation.view.widget.PhotoViewPager
         android:id="@+id/photo_pager"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:context="com.chijsh.banana.presentation.ui.PhotoViewActivity"/>
+        tools:context="com.chijsh.banana.presentation.view.activity.PhotoViewActivity"/>
     <TextView
         android:id="@+id/indicator"
         android:text="UHInk"
