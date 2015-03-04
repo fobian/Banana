@@ -2,13 +2,17 @@ package com.chijsh.banana.data.net;
 
 import com.chijsh.banana.Config;
 import com.chijsh.banana.data.entity.PostsEntity;
+import com.chijsh.banana.data.entity.UserEntity;
 import com.chijsh.banana.presentation.model.FollowsModel;
 import com.chijsh.banana.presentation.model.PostsModel;
 import com.chijsh.banana.presentation.model.UserModel;
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import io.realm.RealmObject;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.client.Response;
@@ -26,6 +30,17 @@ public class WeiboAPI {
     private WeiboAPI(String token) {
         Gson gson = new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                .setExclusionStrategies(new ExclusionStrategy() {
+                    @Override
+                    public boolean shouldSkipField(FieldAttributes f) {
+                        return f.getDeclaringClass().equals(RealmObject.class);
+                    }
+
+                    @Override
+                    public boolean shouldSkipClass(Class<?> clazz) {
+                        return false;
+                    }
+                })
                 .create();
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint(Config.BASE_URL)
@@ -46,12 +61,12 @@ public class WeiboAPI {
     }
 
 
-    public PostsModel getTimeline(long sinceId, Callback<PostsEntity> cb) {
-        return sWeiboService.getTimeline(mToken, sinceId, cb);
+    public void getTimeline(long sinceId, Callback<PostsEntity> cb) {
+        sWeiboService.getTimeline(mToken, sinceId, cb);
 
     }
 
-    public void getUserInfo(String screenName, Callback<UserModel> cb) {
+    public void getUserInfo(String screenName, Callback<UserEntity> cb) {
         sWeiboService.getUserInfo(mToken, screenName, cb);
     }
 

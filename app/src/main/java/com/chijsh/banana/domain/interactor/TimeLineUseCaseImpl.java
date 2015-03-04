@@ -36,7 +36,7 @@ public class TimeLineUseCaseImpl implements TimeLineUseCase {
     public void execute(String userId, Callback callback) {
         mUserId = userId;
         mCallback = callback;
-        mTimeLineRepo.getUserTimeLine(mUserId, timeLineCallback);
+        mTimeLineRepo.getUserTimeLine(Long.valueOf(mUserId), timeLineCallback);
     }
 
 }

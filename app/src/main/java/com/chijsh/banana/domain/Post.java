@@ -14,7 +14,6 @@ public class Post {
     public boolean favorited;
     //public boolean truncated;
     public List<PicUrl> picUrls;
-    public Geo geo;
     public User user;
     public Post retweetedStatus;
     public int repostsCount;
@@ -67,14 +66,6 @@ public class Post {
 
     public void setPicUrls(List<PicUrl> picUrls) {
         this.picUrls = picUrls;
-    }
-
-    public Geo getGeo() {
-        return geo;
-    }
-
-    public void setGeo(Geo geo) {
-        this.geo = geo;
     }
 
     public User getUser() {

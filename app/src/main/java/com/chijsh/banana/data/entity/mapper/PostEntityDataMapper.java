@@ -1,9 +1,7 @@
 package com.chijsh.banana.data.entity.mapper;
 
-import com.chijsh.banana.data.entity.GeoEntity;
 import com.chijsh.banana.data.entity.PicUrlEntity;
 import com.chijsh.banana.data.entity.PostEntity;
-import com.chijsh.banana.domain.Geo;
 import com.chijsh.banana.domain.PicUrl;
 import com.chijsh.banana.domain.Post;
 
@@ -27,7 +25,6 @@ public class PostEntityDataMapper {
             post.setSource(postEntity.getSource());
             post.setFavorited(postEntity.isFavorited());
             post.setPicUrls(transform(postEntity.getPicUrls()));
-            post.setGeo(transform(postEntity.getGeo()));
             post.setUser(UserEntityDataMapper.transform(postEntity.getUser()));
             post.setRetweetedStatus(transform(postEntity.getRetweetedStatus()));
         }
@@ -69,13 +66,4 @@ public class PostEntityDataMapper {
         return picUrl;
     }
 
-    public static Geo transform(GeoEntity geoEntity) {
-        Geo geo = null;
-        if (geoEntity != null) {
-            geo = new Geo();
-            geo.setType(geoEntity.getType());
-            geo.setCoordinates(geoEntity.getCoordinates());
-        }
-        return geo;
-    }
 }

@@ -5,6 +5,15 @@ package com.chijsh.banana.presentation.model;
  */
 public class PicUrlModel {
     public String thumbnailPic;
+
+    public String getThumbnailPic() {
+        return thumbnailPic;
+    }
+
+    public void setThumbnailPic(String thumbnailPic) {
+        this.thumbnailPic = thumbnailPic;
+    }
+
     public String toString() {
         return thumbnailPic;
     }

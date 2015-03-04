@@ -13,6 +13,15 @@ public class UserCacheImpl implements UserCache {
     private static final long EXPIRATION_TIME = 5 * 24 * 60 * 60 * 1000;
     private Realm mRealm;
 
+    private static UserCacheImpl INSTANCE;
+
+    public static synchronized UserCacheImpl getInstance(Realm mRealm) {
+        if (INSTANCE == null) {
+            INSTANCE = new UserCacheImpl(mRealm);
+        }
+        return INSTANCE;
+    }
+
     public UserCacheImpl(Realm mRealm) {
         this.mRealm = mRealm;
     }

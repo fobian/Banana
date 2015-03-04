@@ -35,11 +35,8 @@ import com.chijsh.banana.AccessTokenKeeper;
 import com.chijsh.banana.R;
 import com.chijsh.banana.data.PostContract;
 import com.chijsh.banana.data.PostContract.AccountEntry;
-import com.chijsh.banana.manager.Weibor;
 import com.chijsh.banana.presentation.model.UserModel;
-import com.chijsh.banana.data.net.WeiboAPI;
 import com.chijsh.banana.utils.ScreenUtil;
-import com.chijsh.banana.utils.Utility;
 import com.chijsh.banana.presentation.view.widget.BezelImageView;
 import com.chijsh.banana.presentation.view.widget.SizeNotifierRelativeLayout;
 import com.chijsh.banana.presentation.view.widget.emoji.Emoji;
@@ -51,9 +48,6 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 public class PostActivity extends ActionBarActivity implements LoaderManager.LoaderCallbacks<Cursor>, SizeNotifierRelativeLayout.SizeNotifierRelativeLayoutListener{
 
@@ -179,24 +173,24 @@ public class PostActivity extends ActionBarActivity implements LoaderManager.Loa
 
     @OnClick(R.id.post_send)
     public void postWeibo() {
-        if (TextUtils.isEmpty(mPostEdit.getText().toString())) {
-            mSendAction.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake_error));
-            return;
-        }
-        Weibor weibor = new Weibor(WeiboAPI.getInstance());
-        String token = AccessTokenKeeper.readAccessToken(this).getToken();
-        weibor.postWeibo(token, mPostEdit.getText().toString(), new Callback<Response>() {
-            @Override
-            public void success(Response response, Response response2) {
-                Utility.toast(PostActivity.this, R.string.weibo_sent_success);
-                finish();
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-
-            }
-        });
+//        if (TextUtils.isEmpty(mPostEdit.getText().toString())) {
+//            mSendAction.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake_error));
+//            return;
+//        }
+//        Weibor weibor = new Weibor(WeiboAPI.getInstance());
+//        String token = AccessTokenKeeper.readAccessToken(this).getToken();
+//        weibor.postWeibo(token, mPostEdit.getText().toString(), new Callback<Response>() {
+//            @Override
+//            public void success(Response response, Response response2) {
+//                Utility.toast(PostActivity.this, R.string.weibo_sent_success);
+//                finish();
+//            }
+//
+//            @Override
+//            public void failure(RetrofitError error) {
+//
+//            }
+//        });
     }
 
     @Override

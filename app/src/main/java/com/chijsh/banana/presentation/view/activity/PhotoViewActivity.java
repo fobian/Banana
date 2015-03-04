@@ -19,7 +19,7 @@ import android.widget.FrameLayout;
 
 import com.bumptech.glide.Glide;
 import com.chijsh.banana.R;
-import com.chijsh.banana.presentation.ui.PhotoViewPager;
+import com.chijsh.banana.presentation.view.widget.PhotoViewPager;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;

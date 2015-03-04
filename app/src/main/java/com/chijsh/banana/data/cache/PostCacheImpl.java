@@ -11,6 +11,15 @@ public class PostCacheImpl implements PostCache {
     private static final long EXPIRATION_TIME = 24 * 60 * 60 * 1000;
     private Realm mRealm;
 
+    private static PostCacheImpl INSTANCE;
+
+    public static synchronized PostCacheImpl getInstance(Realm mRealm) {
+        if (INSTANCE == null) {
+            INSTANCE = new PostCacheImpl(mRealm);
+        }
+        return INSTANCE;
+    }
+
     public PostCacheImpl(Realm mRealm) {
         this.mRealm = mRealm;
     }
@@ -28,9 +37,9 @@ public class PostCacheImpl implements PostCache {
     @Override
     public void put(PostEntity entity) {
         if (!isCached(entity.getIdstr())) {
-            mRealm.beginTransaction();
-            PostEntity realmPost = mRealm.copyToRealm(entity);
-            mRealm.commitTransaction();
+//            mRealm.beginTransaction();
+//            PostEntity realmPost = mRealm.copyToRealm(entity);
+//            mRealm.commitTransaction();
         }
     }
 

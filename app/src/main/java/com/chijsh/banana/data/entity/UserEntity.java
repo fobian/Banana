@@ -2,30 +2,32 @@ package com.chijsh.banana.data.entity;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.RealmClass;
 
 /**
  * Created by chijsh on 3/3/15.
  */
+@RealmClass
 public class UserEntity extends RealmObject {
 
     @PrimaryKey
-    public String idstr;
-    public String screenName;
-    public String province;
-    public String city;
-    public String location;
-    public String description;
-    public String url;
-    public String profileImageUrl;
-    public String gender;
-    public int followersCount;
-    public int friendsCount;
-    public int statusesCount;
-    public int favouritesCount;
-    public String createdAt;
-    public boolean following;
-    public String avatarLarge;
-    public boolean followMe;
+    private String idstr;
+    private String screenName;
+    private String province;
+    private String city;
+    private String location;
+    private String description;
+    private String url;
+    private String profileImageUrl;
+    private String gender;
+    private int followersCount;
+    private int friendsCount;
+    private int statusesCount;
+    private int favouritesCount;
+    private String createdAt;
+    private boolean following;
+    private String avatarLarge;
+    private boolean followMe;
 
     public String getIdstr() {
         return idstr;

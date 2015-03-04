@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 
 import com.chijsh.banana.AccessTokenKeeper;
 import com.chijsh.banana.R;
-import com.chijsh.banana.manager.User;
 import com.chijsh.banana.presentation.model.FollowsModel;
 import com.chijsh.banana.data.net.WeiboAPI;
 import com.chijsh.banana.presentation.view.adapter.FollowsAdapter;
@@ -93,47 +92,47 @@ public class FollowsFragment extends BaseFragment {
     }
 
     private void loadFollows() {
-        if (mTotalNum == mNextCursor) {
-            Utility.toast(getActivity(), mIsFollows ? R.string.no_more_follows : R.string.no_more_followers);
-            return;
-        }
-        User user = new User(WeiboAPI.getInstance(), null);
-        String token = AccessTokenKeeper.readAccessToken(getActivity()).getToken();
-        if (mIsFollows) {
-            user.getFollows(token, Long.parseLong(mUserId), COUNT_SINGLE_PAGE, mNextCursor, new Callback<FollowsModel>() {
-                @Override
-                public void success(FollowsModel followsModel, Response response) {
-                    mFollowsAdapter.addFollows(followsModel.users);
-                    mNextCursor = followsModel.nextCursor;
-                    mIsLoading = false;
-                    mTotalNum = followsModel.totalNumber;
-
-                }
-
-                @Override
-                public void failure(RetrofitError error) {
-                    Utility.toast(getActivity(), error.getMessage());
-                    mIsLoading = false;
-                }
-            });
-        } else {
-            user.getFollowers(token, Long.parseLong(mUserId), COUNT_SINGLE_PAGE, mNextCursor, new Callback<FollowsModel>() {
-                @Override
-                public void success(FollowsModel followsModel, Response response) {
-                    mFollowsAdapter.addFollows(followsModel.users);
-                    mNextCursor = followsModel.nextCursor;
-                    mIsLoading = false;
-                    mTotalNum = followsModel.totalNumber;
-                    Log.d("sdsfsdfsdfsdfsdfsdfsdf", mNextCursor + "");
-                }
-
-                @Override
-                public void failure(RetrofitError error) {
-                    Utility.toast(getActivity(), error.getMessage());
-                    mIsLoading = false;
-                }
-            });
-        }
+//        if (mTotalNum == mNextCursor) {
+//            Utility.toast(getActivity(), mIsFollows ? R.string.no_more_follows : R.string.no_more_followers);
+//            return;
+//        }
+//        User user = new User(WeiboAPI.getInstance(), null);
+//        String token = AccessTokenKeeper.readAccessToken(getActivity()).getToken();
+//        if (mIsFollows) {
+//            user.getFollows(token, Long.parseLong(mUserId), COUNT_SINGLE_PAGE, mNextCursor, new Callback<FollowsModel>() {
+//                @Override
+//                public void success(FollowsModel followsModel, Response response) {
+//                    mFollowsAdapter.addFollows(followsModel.users);
+//                    mNextCursor = followsModel.nextCursor;
+//                    mIsLoading = false;
+//                    mTotalNum = followsModel.totalNumber;
+//
+//                }
+//
+//                @Override
+//                public void failure(RetrofitError error) {
+//                    Utility.toast(getActivity(), error.getMessage());
+//                    mIsLoading = false;
+//                }
+//            });
+//        } else {
+//            user.getFollowers(token, Long.parseLong(mUserId), COUNT_SINGLE_PAGE, mNextCursor, new Callback<FollowsModel>() {
+//                @Override
+//                public void success(FollowsModel followsModel, Response response) {
+//                    mFollowsAdapter.addFollows(followsModel.users);
+//                    mNextCursor = followsModel.nextCursor;
+//                    mIsLoading = false;
+//                    mTotalNum = followsModel.totalNumber;
+//                    Log.d("sdsfsdfsdfsdfsdfsdfsdf", mNextCursor + "");
+//                }
+//
+//                @Override
+//                public void failure(RetrofitError error) {
+//                    Utility.toast(getActivity(), error.getMessage());
+//                    mIsLoading = false;
+//                }
+//            });
+//        }
     }
 
     private class ScrollToEndListener extends RecyclerView.OnScrollListener {

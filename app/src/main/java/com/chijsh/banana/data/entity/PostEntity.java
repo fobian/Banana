@@ -3,26 +3,28 @@ package com.chijsh.banana.data.entity;
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.RealmClass;
 
 /**
  * Created by chijsh on 3/2/15.
  */
+@RealmClass
 public class PostEntity extends RealmObject {
 
     @PrimaryKey
-    public String idstr;
-    public String createdAt;
-    public String text;
-    public String source;
-    public boolean favorited;
+    private String idstr;
+
+    private String createdAt;
+    private String text;
+    private String source;
+    private boolean favorited;
     //public boolean truncated;
-    public RealmList<PicUrlEntity> picUrls;
-    public GeoEntity geo;
-    public UserEntity user;
-    public PostEntity retweetedStatus;
-    public int repostsCount;
-    public int commentsCount;
-    public int attitudesCount;
+    private RealmList<PicUrlEntity> picUrls;
+    private UserEntity user;
+    private PostEntity retweetedStatus;
+    private int repostsCount;
+    private int commentsCount;
+    private int attitudesCount;
 
     public String getIdstr() {
         return idstr;
@@ -70,14 +72,6 @@ public class PostEntity extends RealmObject {
 
     public void setPicUrls(RealmList<PicUrlEntity> picUrls) {
         this.picUrls = picUrls;
-    }
-
-    public GeoEntity getGeo() {
-        return geo;
-    }
-
-    public void setGeo(GeoEntity geo) {
-        this.geo = geo;
     }
 
     public UserEntity getUser() {

@@ -1,6 +1,7 @@
 package com.chijsh.banana.data.net;
 
 import com.chijsh.banana.data.entity.PostsEntity;
+import com.chijsh.banana.data.entity.UserEntity;
 import com.chijsh.banana.presentation.model.FollowsModel;
 import com.chijsh.banana.presentation.model.PostsModel;
 import com.chijsh.banana.presentation.model.UserModel;
@@ -17,10 +18,10 @@ import retrofit.http.Query;
 public interface WeiboService {
 
     @GET("/statuses/friends_timeline.json")
-    PostsModel getTimeline(@Query("access_token") String token, @Query("since_id") long sinceId, Callback<PostsEntity> cb);
+    void getTimeline(@Query("access_token") String token, @Query("since_id") long sinceId, Callback<PostsEntity> cb);
 
     @GET("/users/show.json")
-    void getUserInfo(@Query("access_token") String token, @Query("screen_name") String screenName, Callback<UserModel> cb);
+    void getUserInfo(@Query("access_token") String token, @Query("screen_name") String screenName, Callback<UserEntity> cb);
 
     @GET("/users/show.json")
     UserModel getUserInfo(@Query("access_token") String token, @Query("uid") long uid);

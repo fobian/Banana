@@ -1,11 +1,7 @@
 package com.chijsh.banana.presentation.view.fragment;
 
-import android.app.LoaderManager;
-import android.content.CursorLoader;
+import android.content.Context;
 import android.content.Intent;
-import android.content.Loader;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -23,60 +19,77 @@ import android.widget.ImageButton;
 
 import com.chijsh.banana.R;
 
-import com.chijsh.banana.data.PostContract.PostEntry;
+import com.chijsh.banana.data.cache.PostCache;
+import com.chijsh.banana.data.cache.PostCacheImpl;
+import com.chijsh.banana.data.cache.UserCache;
+import com.chijsh.banana.data.cache.UserCacheImpl;
+import com.chijsh.banana.data.repository.TimeLineDataRepository;
+import com.chijsh.banana.data.repository.datasource.TimeLineDataStoreFactory;
+import com.chijsh.banana.domain.interactor.TimeLineUseCase;
+import com.chijsh.banana.domain.interactor.TimeLineUseCaseImpl;
+import com.chijsh.banana.domain.repository.TimeLineRepository;
+import com.chijsh.banana.presentation.model.PicUrlModel;
+import com.chijsh.banana.presentation.model.PostModel;
+import com.chijsh.banana.presentation.presenter.TimeLinePresenter;
+import com.chijsh.banana.presentation.presenter.TimeLinePresenterImpl;
+import com.chijsh.banana.presentation.view.TimeLineView;
 import com.chijsh.banana.presentation.view.activity.PhotoViewActivity;
 import com.chijsh.banana.presentation.view.activity.PostContentActivity;
 import com.chijsh.banana.presentation.view.activity.ProfileActivity;
 import com.chijsh.banana.presentation.view.activity.SettingsActivity;
-import com.chijsh.banana.presentation.view.adapter.TimeLineCursorAdapter;
-import com.chijsh.banana.sync.WeiboSyncAdapter;
+import com.chijsh.banana.presentation.view.adapter.TimeLineAdapter;
+import com.chijsh.banana.presentation.view.widget.DividerItemDecoration;
 import com.chijsh.banana.presentation.view.activity.PostActivity;
-import com.chijsh.banana.utils.PrefUtil;
 import com.chijsh.banana.utils.Utility;
+
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import io.realm.Realm;
 
 /**
  * Created by chijsh on 10/20/14.
  */
 public class TimeLineFragment extends BaseFragment implements
-        LoaderManager.LoaderCallbacks<Cursor>,
-        TimeLineCursorAdapter.PostItemClickListener,
-        SwipeRefreshLayout.OnRefreshListener {
-    private static final int POST_LOADER = 0;
+        TimeLineAdapter.PostItemClickListener,
+        SwipeRefreshLayout.OnRefreshListener ,
+        TimeLineView {
+//    private static final int POST_LOADER = 0;
 
     public static final String POST_ID = "post_id";
 
-    private TimeLineCursorAdapter mAdapter;
+    private TimeLineAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+
+    private TimeLinePresenter mTimeLinePresenter;
 
     @InjectView(R.id.swipe_refresh) SwipeRefreshLayout mSwipeLayout;
     @InjectView(R.id.time_line) RecyclerView mRecyclerView;
     @InjectView(R.id.fab) ImageButton mFloatingButton;
 
-    private static final String[] POST_COLUMNS = {
-            PostEntry.TABLE_NAME + "." + PostEntry._ID,
-            PostEntry.COLUMN_CREATED_AT,
-            PostEntry.COLUMN_POST_ID,
-            PostEntry.COLUMN_POST_TEXT,
-            PostEntry.COLUMN_POST_SOURCE,
-            PostEntry.COLUMN_POST_FAVORITED,
-            PostEntry.COLUMN_POST_PICURLS,
-            PostEntry.COLUMN_POST_GEO,
-            PostEntry.COLUMN_USER_ID,
-            PostEntry.COLUMN_USER_SCREENNAME,
-            PostEntry.COLUMN_USER_AVATAR,
-            PostEntry.COLUMN_RETWEETED_ID,
-            PostEntry.COLUMN_RETWEETED_USER_SCREENNAME,
-            PostEntry.COLUMN_RETWEETED_TEXT,
-            PostEntry.COLUMN_RETWEETED_PICURLS,
-            PostEntry.COLUMN_REPOST_COUNT,
-            PostEntry.COLUMN_COMMENT_COUNT,
-            PostEntry.COLUMN_ATTITUDE_COUNT,
-
-    };
+//    private static final String[] POST_COLUMNS = {
+//            PostEntry.TABLE_NAME + "." + PostEntry._ID,
+//            PostEntry.COLUMN_CREATED_AT,
+//            PostEntry.COLUMN_POST_ID,
+//            PostEntry.COLUMN_POST_TEXT,
+//            PostEntry.COLUMN_POST_SOURCE,
+//            PostEntry.COLUMN_POST_FAVORITED,
+//            PostEntry.COLUMN_POST_PICURLS,
+//            PostEntry.COLUMN_POST_GEO,
+//            PostEntry.COLUMN_USER_ID,
+//            PostEntry.COLUMN_USER_SCREENNAME,
+//            PostEntry.COLUMN_USER_AVATAR,
+//            PostEntry.COLUMN_RETWEETED_ID,
+//            PostEntry.COLUMN_RETWEETED_USER_SCREENNAME,
+//            PostEntry.COLUMN_RETWEETED_TEXT,
+//            PostEntry.COLUMN_RETWEETED_PICURLS,
+//            PostEntry.COLUMN_REPOST_COUNT,
+//            PostEntry.COLUMN_COMMENT_COUNT,
+//            PostEntry.COLUMN_ATTITUDE_COUNT,
+//
+//    };
 
     private static final int ANIM_DURATION_FAB = 400;
 
@@ -106,7 +119,7 @@ public class TimeLineFragment extends BaseFragment implements
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new TimeLineCursorAdapter(getActivity(), null);
+        mAdapter = new TimeLineAdapter(getActivity(), null);
         mAdapter.setPostItemClickListener(this);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -120,7 +133,44 @@ public class TimeLineFragment extends BaseFragment implements
 
     @Override
     void initPresenter() {
+        Realm realm = Realm.getInstance(getActivity());
+        PostCache postCache = PostCacheImpl.getInstance(realm);
+        UserCache userCache = UserCacheImpl.getInstance(realm);
+        TimeLineDataStoreFactory dataStoreFactory = new TimeLineDataStoreFactory(getActivity(), postCache, userCache);
+        TimeLineRepository timeLineRepository = TimeLineDataRepository.getInstance(dataStoreFactory);
+        TimeLineUseCase timeLineUseCase = new TimeLineUseCaseImpl(timeLineRepository);
+        mTimeLinePresenter = new TimeLinePresenterImpl(this, timeLineUseCase);
+    }
 
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void showError(String message) {
+        Utility.toast(getActivity(), message);
+    }
+
+    @Override
+    public void viewPost(PostModel post) {
+
+    }
+
+    @Override
+    public void renderTimeLine(List<PostModel> posts) {
+        mAdapter.setData(posts);
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public Context getContext() {
+        return getActivity();
     }
 
     private void startFABAnimation() {
@@ -135,8 +185,9 @@ public class TimeLineFragment extends BaseFragment implements
 
     @Override
     public void onRefresh() {
-        PrefUtil.markManuallySync(getActivity(), true);
-        refreshTimeLine();
+//        PrefUtil.markManuallySync(getActivity(), true);
+//        refreshTimeLine();
+        mTimeLinePresenter.loadTimeLine();
     }
 
     @Override
@@ -195,7 +246,7 @@ public class TimeLineFragment extends BaseFragment implements
     }
 
     @Override
-    public void onImageClicked(View view, int position, String[] pics) {
+    public void onImageClicked(View view, int position, List<PicUrlModel> pics) {
         int[] screenLocation = new int[2];
         view.getLocationOnScreen(screenLocation);
         Intent intent = new Intent(getActivity(), PhotoViewActivity.class);
@@ -205,7 +256,7 @@ public class TimeLineFragment extends BaseFragment implements
         intent.putExtra(PhotoViewActivity.EXTRA_PHOTO_HEIGHT, view.getHeight());
 
         intent.putExtra(PhotoViewActivity.EXTRA_PHOTO_POSITION, position);
-        intent.putExtra(PhotoViewActivity.EXTRA_PHOTO_ARRAY, getOriginalPics(pics));
+        //intent.putExtra(PhotoViewActivity.EXTRA_PHOTO_ARRAY, getOriginalPics(pics));
         getActivity().overridePendingTransition(0, 0);
         startActivity(intent);
     }
@@ -233,9 +284,9 @@ public class TimeLineFragment extends BaseFragment implements
 //        ButterKnife.reset(this);
 //    }
 
-    private void refreshTimeLine() {
-        WeiboSyncAdapter.triggerSyncAdapter(getActivity());
-    }
+//    private void refreshTimeLine() {
+//        WeiboSyncAdapter.triggerSyncAdapter(getActivity());
+//    }
 
     @OnClick(R.id.fab)
     public void postNewWeibo() {
@@ -249,40 +300,8 @@ public class TimeLineFragment extends BaseFragment implements
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getLoaderManager().initLoader(POST_LOADER, null, this);
-
+        mTimeLinePresenter.loadTimeLine();
     }
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-
-
-        Uri uri = PostEntry.CONTENT_URI;
-        String sortOrder = PostEntry._ID + " DESC";
-
-        return new CursorLoader(
-                getActivity(),
-                uri,
-                POST_COLUMNS,
-                null,
-                null,
-                sortOrder
-        );
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        mAdapter.swapCursor(data);
-        startFABAnimation();
-        mSwipeLayout.setRefreshing(false);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        mAdapter.swapCursor(null);
-        mSwipeLayout.setRefreshing(false);
-    }
-
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

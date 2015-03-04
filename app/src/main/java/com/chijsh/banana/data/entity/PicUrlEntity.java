@@ -6,7 +6,7 @@ import io.realm.RealmObject;
  * Created by chijsh on 3/3/15.
  */
 public class PicUrlEntity extends RealmObject {
-    public String thumbnailPic;
+    private String thumbnailPic;
 
     public String getThumbnailPic() {
         return thumbnailPic;

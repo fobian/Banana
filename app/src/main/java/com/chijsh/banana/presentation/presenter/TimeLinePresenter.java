@@ -7,8 +7,6 @@ public interface TimeLinePresenter extends Presenter {
 
     public void loadTimeLine();
 
-    public void showError();
-
     public void nextPage();
 
 }
